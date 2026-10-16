@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers no-applicationcache svg inlinesvg smil svgclippaths" lang="en" style=""><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="CMR Form">
+<meta name="keywords" content="CMR, Form, PDF">
+
+<title>CMR Form</title>
+
+<link rel="stylesheet" href="cmr_files/normalize.css">
+<link rel="stylesheet" href="cmr_files/animate.css">
+<link rel="stylesheet" href="cmr_files/stellarnav.min.css">
+<link rel="stylesheet" href="cmr_files/owl.carousel.css">
+<link href="cmr_files/bootstrap.min.css" rel="stylesheet">
+<link href="cmr_files/font-awesome.min.css" rel="stylesheet">
+<link href="cmr_files/style.css" rel="stylesheet">
+<link href="cmr_files/responsive.css" rel="stylesheet">
+
+<script src="cmr_files/modernizr-2.8.3.min.js"></script>
+<script type="text/javascript" charset="UTF-8" src="cmr_files/common.js"></script>
+<script type="text/javascript" charset="UTF-8" src="cmr_files/util.js"></script>
+
+<!-- Bootstrap for form -->
+<link href="cmr_files/bootstrap.min2.css" rel="stylesheet" media="screen">
+<link href="cmr_files/bootstrap-responsive.css" rel="stylesheet">
+<link rel="stylesheet" href="cmr_files/jquery-ui.css">
+
+<script type="text/javascript" src="cmr_files/basic.js"></script>
+<script type="text/javascript" src="cmr_files/variables.js"></script>
+<script type="text/javascript" src="cmr_files/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="cmr_files/jquery-ui-1.8.17.custom.min.js"></script>
+<script type="text/javascript" src="cmr_files/jspdf.debug.js"></script>
+<script src="cmr_files/jquery.js"></script>
+<script src="cmr_files/bootstrap.min.js"></script>
+<script src="cmr_files/jquery-1.9.1.js"></script>
+<script src="cmr_files/jquery-ui.js"></script>
+
+<style type="text/css">
+  body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #fcfcfc;
+  }
+  @font-face {
+    font-family: NHaasLt;
+    src: url(font/NHaasLt.ttf);
+  }
+  @font-face {
+    font-family: NHaasBd;
+    src: url(font/NHaasBd.ttf);
+  }
+  p.small { padding: 1px; font-size: 0.75em; margin:0px;}
+  h1.typein { text-align: center; font-family: NHaasBd; color:#002453; }
+  h3.typein { text-align: center; font-family: NHaasBd; color:#002453; }
+  h4.align-right { text-align: right; }
+  .form-signin {
+    max-width: 1000px;
+    padding: 19px 29px 29px;
+    margin: 0 auto 0px;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    box-shadow: 0 1px 2px rgba(0,0,0,.05);
+  }
+  .form-signin .form-signin-heading,
+  .form-signin .checkbox {
+    margin-bottom: 10px;
+  }
+  .form-signin input[type="text"],
+  .form-signin input[type="password"] {
+    font-size: 16px;
+    height: auto;
+    margin-bottom: 15px;
+    padding: 7px 9px;
+  }
+</style>
+</head>
+
+<body>
+<section class="contact-area" id="contact">
+    <div class="container">
+        <form class="form-signin" charset="windows-1252" onclick="usun_pl(this)">
+
+<div class="row-fluid">
+  <div class="span6" style="position:relative; min-height:80px"><div style="position:absolute; bottom:0; left:0"> <font style="font-size:35px; color:#ED1748">1</font><font style="color:#ED1748">Copy for sender</font> </div>
+</div>
+  <div class="span6" style="position:relative; min-height:80px"><div style="position:absolute; bottom:25px; right:10px"><!--<img src="img/logo.png">--></div></div>
+</div>
+
+<div class="row-fluid">
+  <div class="span12">
+    <div class="row-fluid">
+      <div class="span6" style="border:1px; border-style:solid; color:#ED1748; padding:6px; min-height:135px">
+          <b>&nbsp;&nbsp; 1. Sender (name, address, country)</b>
+	  <textarea class="input-block-level" id="senderaddress" style="resize:none; border:0px; margin-left:12px; width:95%" rows="4" cols="60" placeholder="Írja be Feladó adatait"></textarea>
+        <div class="row-fluid">
+        </div>
+      </div>
+      <div class="span6" style="border:1px; border-bottom:0px; border-left:0px; border-style:solid; color:#ED1748; padding:6px; min-height:135px; margin-left:0px">
+          INTERNATIONAL CONSIGNMENT
+<div class="row-fluid">
+          <div class="span6"><h4 class="align-right">CMR no.</h4></div>
+          <div class="span5"><input type="number" class="input-block-level" id="cmrnumber" placeholder="Írja be a  számát" style="border:0px" min="1" max="99999" onkeypress="return isNumberKey(event)"></div>
+		<div class="span10"><p class="small">This carriage is subject 
+notwithstanding any clause to the contrary, to the Convention on the 
+Contract for the International Carriage of goods by road</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="row-fluid">
+  <div class="span12">
+    <div class="row-fluid">
+      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:165px">
+          <b>&nbsp;&nbsp; 2. Consignee (name, address, country)</b>
+	  <textarea class="input-block-level" id="consigneename" style="resize:none; border:0px; margin-left:12px; width:95%" rows="4" placeholder="Írja be a Feladó adatait"></textarea>
+        <div class="row-fluid">
+        </div>
+      </div>
+      <div class="span6" style="border:3px; border-bottom:1px; border-left:2px; border-style:solid; color:#ED1748; padding:6px; min-height:165px; margin-left:0px"><b>&nbsp;&nbsp; 16. Carrier (name, address, country)</b>
+	  <textarea class="input-block-level" id="carrieraddress" style="resize:none; border:0px; margin-left:12px; width:95%" rows="3" placeholder="Írja be a Fuvarozó adatait"></textarea>
+          <div class="span6">Vehicle Reg. no.</div>
+          <div class="span5"><input type="text" id="vehiclereg" class="input-block-level" placeholder="Jármű Rendszáma
+			  " style="border:0px"></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="row-fluid">
+  <div class="span12">
+    <div class="row-fluid">
+      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:135px">
+          <b>&nbsp;&nbsp; 3. Place of delivery of the goods (place, country)</b>
+	  <textarea class="input-block-level" id="deliveryplace" style="resize:none; border:0px; margin-left:12px; width:95%" rows="4" placeholder="Írja be a Lerakóhely adatait"></textarea>
+        <div class="row-fluid">
+        </div>
+      </div>
+      <div class="span6" style="border:3px; border-bottom:1px; border-top:0px; border-left:2px; border-style:solid; color:#ED1748; padding:6px; min-height:135px; margin-left:0px"><b>&nbsp;&nbsp; 17. Successive carriers (name, address, country)</b>
+	  <textarea class="input-block-level" id="nextcarriers" style="resize:none; border:0px; margin-left:12px; width:95%" rows="4" placeholder="További Fuvarozók adatai"></textarea>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+$(document).ready(
+
+  /* This is the function that will get executed after the DOM is fully loaded */
+  function () { $( "#datepicker" ).datepicker({
+      changeMonth: true,//this option for allowing user to select month
+      changeYear: true, //this option for allowing user to select from year range
+      dateFormat: "dd/mm/yy"
+    });
+  }
+);
+</script>
+
+<div class="row-fluid">
+  <div class="span12">
+    <div class="row-fluid">
+      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:80px">
+          <b>&nbsp;&nbsp; 4. Place and date taking over the goods (place, country, date)</b>
+	  <div class="span7"><textarea class="input-block-level" id="takingoverplace" style="resize:none; border:0px; margin-left:12px; width:95%" rows="1" placeholder="Indulás helye"></textarea></div>
+	  <div class="span3"><input class="input-block-level hasDatepicker" id="datepicker" style="resize:none; border:0px; margin-left:12px; width:95%" rows="1" placeholder="dátuma"></div>
+        <div class="row-fluid">
+        </div>
+      </div>
+      <div class="span6" style="border:3px; border-bottom:0px; border-left:2px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:80px; margin-left:0px"><b>&nbsp;&nbsp; 18. Carriers reservations and observations</b>
+          <textarea class="input-block-level" id="carrierobservations" style="resize:none; border:0px; margin-left:12px; width:95%;" rows="1" placeholder="Írja be a Fuvarozó esetleges fenntartásait, megjegyzéseit"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="row-fluid">
+  <div class="span12">
+    <div class="row-fluid">
+      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:80px">
+          <b>&nbsp;&nbsp; 5. Documents attached</b>
+	  <textarea class="input-block-level" id="documents" style="resize:none; border:0px; margin-left:12px; width:95%" rows="1" placeholder="Csatolt okmányok"></textarea>
+        <div class="row-fluid">
+        </div>
+      </div>
+      <div class="span6" style="border:3px; border-top:0px; border-left:2px; border-style:solid; color:#ED1748; padding:6px; min-height:80px; margin-left:0px">
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="row-fluid">
+  <div class="span12">
+    <div class="row-fluid">
+
+      <div class="span2" style="border:1px; border-top:0px; border-right:0px; border-style:solid; color:#ED1748; padding:2px; margin-right:0px; min-height:220px">
+          <b>&nbsp;&nbsp; 6. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Jelek, és számok</font></b>
+	  <input class="input-block-level" id="6marks1" style="border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Jelek, és számok" maxlength="16">
+      <input class="input-block-level" id="6marks2" style="border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Jelek, és számok" maxlength="16">
+      <input class="input-block-level" id="6marks3" style="border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Jelek, és számok" maxlength="16">
+      <input class="input-block-level" id="6marks4" style="border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Jelek, és számok" maxlength="16">
+      </div>
+
+      <div class="span2" style="width:125px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px"><b>&nbsp;&nbsp; 7. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Csomag darabszám</font></b>
+            <input type="number" class="input-block-level" id="7number1" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Csomag darabszám" min="1" max="99999" onkeypress="return isNumberKey(event)">
+            <input type="number" class="input-block-level" id="7number2" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Csomag darabszám" min="1" max="99999" onkeypress="return isNumberKey(event)">
+            <input type="number" class="input-block-level" id="7number3" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Csomag darabszám" min="1" max="99999" onkeypress="return isNumberKey(event)">
+            <input type="number" class="input-block-level" id="7number4" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Csomag darabszám" min="1" max="99999" onkeypress="return isNumberKey(event)">
+        </div>
+
+        <div class="span2" style="width:115px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px"><b>&nbsp;&nbsp; 8. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Csomagolás fajtája</font></b>
+	  <input class="input-block-level" id="8method1" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Csomagolás fajtája" maxlength="16">
+      <input class="input-block-level" id="8method2" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Csomagolás fajtája" maxlength="16">
+      <input class="input-block-level" id="8method3" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Csomagolás fajtája" maxlength="16">
+      <input class="input-block-level" id="8method4" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Csomagolás fajtája" maxlength="16">
+        </div>
+
+        <div class="span2" style="width:165px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px"><b>&nbsp;&nbsp; 9. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Árumegnevezés</font></b>
+	  <input class="input-block-level" id="9nature1" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Árumegnevezés" maxlength="16">
+      <input class="input-block-level" id="9nature2" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Árumegnevezés" maxlength="16">
+      <input class="input-block-level" id="9nature3" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Árumegnevezés">
+      <input class="input-block-level" id="9nature4" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Árumegnevezés">
+        </div>
+
+        <div class="span2" style="width:120px; border:0px; border-bottom:0px; border-left:1px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px"><b>&nbsp;&nbsp; 10. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Vámtarifaszám</font></b>
+	  <input class="input-block-level" id="10number1" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Vámtarifaszám">
+      <input class="input-block-level" id="10number2" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Vámtarifaszám">
+      <input class="input-block-level" id="10number3" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Vámtarifaszám">
+      <input class="input-block-level" id="10number4" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Vámtarifaszám">
+        </div>
+
+        <div class="span2" style="width:129px; border:0px; border-bottom:0px; border-left:1px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px"><b>&nbsp;&nbsp; 11. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Bruttó súly [kg]</font></b>
+	       <input type="number" class="input-block-level" id="11kg1" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Bruttó súly [kg]" min="1" max="28000" onkeypress="return isNumberKey(event)">
+            <input type="number" class="input-block-level" id="11kg2" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Bruttó súly [kg]" min="1" max="28000" onkeypress="return isNumberKey(event)">
+            <input type="number" class="input-block-level" id="11kg3" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Bruttó súly [kg]" min="1" max="28000" onkeypress="return isNumberKey(event)">
+            <input type="number" class="input-block-level" id="11kg4" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Bruttó súly [kg]" min="1" max="28000" onkeypress="return isNumberKey(event)">
+        </div>
+        <div class="span2" style="width:125px; border:1px; border-bottom:0px; border-top:0px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px; margin-right:0px"><b>&nbsp;&nbsp; 12. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Térfogat [m3]</font></b>
+	       <input type="number" class="input-block-level" id="12volume1" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Térfogat [m3]" min="1" max="28000" onkeypress="return isNumberKey(event)">
+            <input type="number" class="input-block-level" id="12volume2" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Térfogat [m3]" min="1" max="28000" onkeypress="return isNumberKey(event)">
+            <input type="number" class="input-block-level" id="12volume3" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Térfogat [m3]" min="1" max="28000" onkeypress="return isNumberKey(event)">
+            <input type="number" class="input-block-level" id="12volume4" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Térfogat [m3]" min="1" max="28000" onkeypress="return isNumberKey(event)">
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="row-fluid">
+  <div class="span12">
+    <div class="row-fluid">
+
+      <div class="span2" style="width:100px; border:1px; border-top:0px; border-right:0px; border-style:solid; color:#ED1748; padding:2px; margin-right:0px; min-height:66px">
+          <b><font style="font-size:11px">&nbsp;&nbsp;&nbsp; Class</font></b>
+	  <input class="input-block-level" id="6class" style="border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Osztály">
+      </div>
+
+      <div class="span2" style="width:70px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:69px; margin-left:0px"><b><font style="font-size:11px">&nbsp;&nbsp;&nbsp; Number</font></b>
+            <input type="number" class="input-block-level" id="7number" style="resize:none; border:0px; margin-left:12px; width:95%" placeholder="Szám" min="1" max="99999" onkeypress="return isNumberKey(event)">
+        </div>
+
+        <div class="span2" style="width:90px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:66px; margin-left:0px"><b><font style="font-size:11px">&nbsp;&nbsp;&nbsp; Letter</font></b>
+	  <input class="input-block-level" id="8letter" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Csom.csoport">
+        </div>
+
+        <div class="span2" style="width:282px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:66px; margin-left:0px"><b><font style="font-size:11px">&nbsp;&nbsp;&nbsp; (ADR*)</font></b>
+	  <input class="input-block-level" id="9adr" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="UN szám, ADR szállítási megnevezés">
+        </div>
+
+        <div class="span2" style="width:119px; border:0px; border-bottom:1px; border-left:1px; border-style:solid; color:#ED1748; padding:2px; min-height:69px; margin-left:0px">
+        </div>
+
+        <div class="span2" style="width:129px; border:0px; border-bottom:1px; border-left:1px; border-style:solid; color:#ED1748; padding:2px; min-height:69px; margin-left:0px">
+        </div>
+
+        <div class="span2" style="width:125px; border:1px; border-bottom:1px; border-top:0px; border-style:solid; color:#ED1748; padding:2px; min-height:69px; margin-left:0px; margin-right:0px">
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="row-fluid">
+  <div class="span12">
+    <div class="row-fluid">
+      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:120px">
+          <b>&nbsp;&nbsp; 13. Sender's instructions</b>
+	  <textarea class="input-block-level" id="sendersinstructions" style="resize:none; border:0px; margin-left:12px; width:90%" rows="3" placeholder="Írja be a feladó utasításai"></textarea>
+        <div class="row-fluid">
+        </div>
+      </div>
+      <div class="span6" style="border:1px; border-top:0px; border-left:0px; border-style:solid; color:#ED1748; padding:6px; min-height:120px; margin-left:0px">
+        <b>&nbsp;&nbsp; 19. Special agreements</b>
+        <textarea class="input-block-level" id="specialagreements" style="resize:none; border:0px; margin-left:12px; width:90%" rows="3" placeholder="Irja be a külön utasításokat"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="row-fluid">
+  <div class="span12">
+    <div class="row-fluid">
+      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:120px">
+          <b>&nbsp;&nbsp; 14. Instruction as to payment for carriage</b>
+	  <textarea class="input-block-level" id="carriageinstructions" style="resize:none; border:0px; margin-left:12px; width:90%" rows="1" placeholder="Írja be a fuvardíj fizetésére vonatkozó utasításokat"></textarea>
+        <div class="row-fluid">
+        <div class="span3" style="width:105px; margin:-4px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
+            Carriage paid:
+            </div>
+            <div class="span3" style="margin-top:-4px; margin-left:3px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
+
+            <input class="input-block-level" id="carriagepaid" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Fizetve">
+            </div>
+            <div class="span3" style="width:125px; margin:-4px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
+            Carriage forward:
+            </div>
+            <div class="span3" style="margin-top:-4px; margin-left:3px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
+
+            <input class="input-block-level" id="carriageforward" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Fizetendő">
+            </div>
+          </div>
+      </div>
+      <div class="span6" style="border:3px;  border-style:solid; color:#ED1748; padding:6px; min-height:120px; margin-left:0px">
+        <b>&nbsp;&nbsp; 20. To be paid by</b>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="row-fluid">
+  <div class="span12">
+    <div class="row-fluid">
+      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:83px">
+          <b>&nbsp;&nbsp; 21. Established in:</b>
+        <div class="row-fluid">
+            <div class="span6" style="margin-top:-4px; margin-left:3px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
+            <input class="input-block-level" id="establishedin" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Kiállítva">
+            </div>
+            <div class="span6" style="margin-top:-4px; margin-left:3px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
+            <input class="input-block-level hasDatepicker" style="resize:none; border:0px; margin-left:12px; width:95%" rows="1" placeholder="Dátum" id="datepicker2">
+            </div>
+          </div>
+      </div>
+      <div class="span6" style="border:1px; border-top:0px; border-left:0px; border-style:solid; color:#ED1748; padding:6px; min-height:85px; margin-left:0px">
+        <b>&nbsp;&nbsp; 15. Cash on delivery</b>
+        <input class="input-block-level" id="cashondelivery" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Átvételkor készpénzben fizetendő">
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+$(document).ready(
+
+  /* This is the function that will get executed after the DOM is fully loaded */
+  function () { $( "#datepicker2" ).datepicker({
+      changeMonth: true,//this option for allowing user to select month
+      changeYear: true, //this option for allowing user to select from year range
+      dateFormat: "yyyy.mm.dd"
+    });
+  }
+);
+</script>
+
+ <div class="row-fluid">
+  <div class="span12">
+    <div class="row-fluid">
+      <div class="span4" style="width:306px; border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:83px">
+          <b>&nbsp;&nbsp; 22. Signature and stamp of the sender</b>
+      </div>
+      <div class="span4" style="width:300px; border:1px; border-top:0px; border-left:0px; border-style:solid; color:#ED1748; padding:6px; min-height:83px; margin-left:0px">
+        <b>&nbsp;&nbsp; 23. Signature and stamp of the carrier</b>
+        </div>
+      <div class="span4" style="width:310px; border:1px; border-top:0px; border-left:0px; border-style:solid; color:#ED1748; padding:6px; min-height:83px; margin-left:0px">
+        <b>&nbsp;&nbsp; 24. Signature and stamp of the consignee</b>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<br><p>A program négy példányt fog generálni (feladó, fuvarozó, címzett, plusz 1 példányt). </p><br>
+
+      <button class="btn btn-large btn-primary" type="button" onclick="usun_pl(this); setTimeout( generatePDF, 400 );">Nyomtatás -&gt; PDF fájlba!</button>
+
+      </form>
+    </div>
+
+<script>
+// Input max length
+    numberId.oninput = function () {
+    if (this.value.length > 5)
+        this.value = this.value.slice(0,5);
+}
+// Allow only numbers to the input
+    function isNumberKey(evt) {
+    var charCode = (evt.which) ? evt.which : event.keyCode;
+    if (charCode != 46 && charCode > 31
+    && (charCode < 48 || charCode > 57))
+        return false;
+
+    return true;
+}
+
+    function usun_pl(formularz)
+{
+	for (i = 0; i < formularz.length; i++)
+	{
+		var pole = formularz.elements[i];
+		if (pole.type != "text" && pole.type != "textarea") continue;
+		var str = "";
+		for (j = 0; j < pole.value.length; j++)
+		{
+			switch (pole.value.charAt(j))
+			{
+				case "ą": str += "a"; break;
+				case "ć": str += "c"; break;
+				case "ę": str += "e"; break;
+				case "ł": str += "l"; break;
+				case "ń": str += "n"; break;
+				case "ó": str += "o"; break;
+				case "ś": str += "s"; break;
+				case "ź": str += "z"; break;
+				case "ż": str += "z"; break;
+				case "Ą": str += "a"; break;
+				case "Ć": str += "c"; break;
+				case "Ę": str += "e"; break;
+				case "Ł": str += "l"; break;
+				case "Ń": str += "n"; break;
+				case "Ó": str += "o"; break;
+				case "Ś": str += "s"; break;
+				case "Ź": str += "z"; break;
+				case "Ż": str += "z"; break;
+				default: str += pole.value.charAt(j); break;
+			}
+		}
+		pole.value = str;
+	}
+};
+
+</script>
+
+<br><br>
+
+<div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>
+    </section>
+
+    <!--====== SCRIPTS JS ======-->
+    <script src="CMR%20form%20to%20PDF_files/jquery-1.12.4.min.js"></script>
+    <script src="CMR%20form%20to%20PDF_files/bootstrap.min_002.js"></script>
+
+    <!--====== PLUGINS JS ======-->
+    <script src="CMR%20form%20to%20PDF_files/jquery.easing.1.3.js"></script>
+    <script src="CMR%20form%20to%20PDF_files/jquery-migrate-1.2.1.min.js"></script>
+    <script src="CMR%20form%20to%20PDF_files/jquery.appear.js"></script>
+    <script src="CMR%20form%20to%20PDF_files/owl.carousel.min.js"></script>
+    <script src="CMR%20form%20to%20PDF_files/stellar.js"></script>
+    <script src="CMR%20form%20to%20PDF_files/wow.min.js"></script>
+    <script src="CMR%20form%20to%20PDF_files/stellarnav.min.js"></script>
+    <script src="CMR%20form%20to%20PDF_files/contact-form.js"></script>
+    <script src="CMR%20form%20to%20PDF_files/jquery.sticky.js"></script>
+
+    <!--===== ACTIVE JS=====-->
+    <script src="CMR%20form%20to%20PDF_files/main.js"></script>
+    <script type="text/javascript" src="CMR%20form%20to%20PDF_files/js"></script>
+    <script src="CMR%20form%20to%20PDF_files/maps.active.js"></script>
+</body>
+</html>
