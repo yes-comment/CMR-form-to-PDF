@@ -129,7 +129,7 @@ function cmrLabels(doc, labels, x, yTop, maxWidth, size, lineGap) {
     for (var i = 0; i < labels.length; i++) {
         if (!labels[i]) continue;
         var fit = cmrFit(doc, labels[i], maxWidth, size, 3.5, "normal", 3);
-        cmrDrawLines(doc, fit.lines, x, y + fit.size * 0.8, gap);
+        cmrDrawLines(doc, fit.lines, x, y + fit.size * 0.28, gap);
         y += fit.lines.length * gap;
     }
     return y;
@@ -149,22 +149,29 @@ function cmrLabelLines(doc, labels, x, yTop, maxWidth, startSize, minSize, gap) 
         }
         var use = Math.max(size, minSize);
         doc.setFontSize(use);
-        doc.text(x, yTop + use * 0.8, labels[i]);
+        doc.text(x, yTop + use * 0.28, labels[i]);
         yTop += g;
     }
     return yTop;
 }
 
-/* Draw a field number in bold at the top-left of its box; returns the x where
-   labels may start, a few points right of the number. */
-function cmrNumber(doc, n, x, y) {
+/* Padding between a box edge and the content aligned to it (mm). */
+var CMR_PAD = 1.5;
+
+/* Draw a field number in bold inside its box at (boxX, boxY). The number's
+   top is CMR_PAD below the box top line and its left is CMR_PAD from the box
+   left line. Returns the x where labels may start: the same CMR_PAD gap
+   right of the number as between number and the left cell line. */
+function cmrNumber(doc, n, boxX, boxY) {
     doc.setFont("DejaVuSans", "bold");
     doc.setFontSize(13);
     doc.setTextColor(CMR_COLOR[0], CMR_COLOR[1], CMR_COLOR[2]);
     var str = String(n);
     var w = doc.getTextWidth(str);
+    var x = boxX + CMR_PAD;
+    var y = boxY + CMR_PAD + 3.3;
     doc.text(x, y, str);
-    return x + w + 2;
+    return x + w + CMR_PAD;
 }
 
 /* Draw an input value wrapped into its area, shrinking to fit. Returns bottom y used. */
@@ -260,24 +267,24 @@ function cmrDrawPage(doc, copyIndex) {
     for (var b = 0; b < boxes123.length; b++) {
         var bx = boxes123[b];
         doc.rect(14, bx.y, 91, bx.h);
-        var lxn = cmrNumber(doc, bx.n, 15.5, bx.y + 3.6);
-        var after = cmrLabels(doc, bx.labels, lxn, bx.y + 1.2, 104 - lxn, 5.5, 2.2);
+        var lxn = cmrNumber(doc, bx.n, 14, bx.y);
+        var after = cmrLabels(doc, bx.labels, lxn, bx.y + CMR_PAD, 104 - lxn, 5.5, 2.2);
         var yv = Math.max(after + 1, bx.y + 10);
         cmrValue(doc, bx.ids.map(cmrVal).filter(Boolean).join("\n"), 21, yv, 82, bx.y + bx.h - 1.5 - yv, 8, 4);
     }
 
     /* 4: place and date taking over */
     doc.rect(14, 97, 91, 15);
-    var lx4 = cmrNumber(doc, 4, 15.5, 100.6);
-    var after4 = cmrLabels(doc, CMR_LABELS.f4, lx4, 98.2, 68, 5.5, 2.2);
+    var lx4 = cmrNumber(doc, 4, 14, 97);
+    var after4 = cmrLabels(doc, CMR_LABELS.f4, lx4, 97 + CMR_PAD, 68, 5.5, 2.2);
     var y4 = Math.max(after4 + 1, 103.5);
     cmrValue(doc, cmrVal("takingoverplace"), 21, y4, 46, 111.5 - y4, 8, 4);
     cmrValue(doc, cmrVal("datepicker"), 70, y4, 33, 111.5 - y4, 8, 4);
 
     /* 5: documents attached */
     doc.rect(14, 112, 91, 15);
-    var lx5 = cmrNumber(doc, 5, 15.5, 115.6);
-    var after5 = cmrLabels(doc, CMR_LABELS.f5, lx5, 113.2, 76, 5.5, 2.2);
+    var lx5 = cmrNumber(doc, 5, 14, 112);
+    var after5 = cmrLabels(doc, CMR_LABELS.f5, lx5, 112 + CMR_PAD, 76, 5.5, 2.2);
     cmrValue(doc, cmrVal("documents"), 21, Math.max(after5 + 1, 118.5), 82, 126 - Math.max(after5 + 1, 118.5), 8, 4);
 
     /* goods table 6-12 */
@@ -295,8 +302,8 @@ function cmrDrawPage(doc, copyIndex) {
     for (var c = 0; c < cols.length; c++) {
         var col = cols[c];
         if (c > 0) doc.line(col.x, 127, col.x, 180);
-        var lcx = cmrNumber(doc, col.n, col.x + 1.5, 130.6);
-        cmrLabels(doc, col.labels, lcx, 128.2, col.x + col.w - lcx - 0.5, 5, 2.2);
+        var lcx = cmrNumber(doc, col.n, col.x, 127);
+        cmrLabels(doc, col.labels, lcx, 127 + CMR_PAD, col.x + col.w - lcx - 0.5, 5, 2.2);
         for (var r = 0; r < 4; r++) {
             if (r > 0) doc.line(col.x, rowTop + r * 10.5 - 2.5, col.x + col.w, rowTop + r * 10.5 - 2.5);
             cmrValue(doc, cmrVal(col.ids[r]), col.x + 2, rowTop + r * 10.5, col.w - 4, 9, 7, 4);
@@ -322,40 +329,46 @@ function cmrDrawPage(doc, copyIndex) {
     doc.setLineWidth(fat);
     doc.rect(14, 187, 88, 42);
     doc.setLineWidth(thin);
-    var lx13 = cmrNumber(doc, 13, 15, 190.6);
-    var after13 = cmrLabels(doc, CMR_LABELS.f13, lx13, 188.2, 100 - lx13, 5.5, 2.2);
+    var lx13 = cmrNumber(doc, 13, 14, 187);
+    var after13 = cmrLabels(doc, CMR_LABELS.f13, lx13, 187 + CMR_PAD, 100 - lx13, 5.5, 2.2);
     cmrValue(doc, cmrVal("sendersinstructions"), 21, Math.max(after13 + 1, 197), 78, 227 - Math.max(after13 + 1, 197), 8, 4);
 
     /* 14: payment for carriage */
     doc.rect(14, 229, 88, 14);
-    var lx14 = cmrNumber(doc, 14, 15, 232.6);
-    var after14 = cmrLabels(doc, CMR_LABELS.f14, lx14, 230.2, 102 - lx14, 5.5, 2.2);
+    var lx14 = cmrNumber(doc, 14, 14, 229);
+    var after14 = cmrLabels(doc, CMR_LABELS.f14, lx14, 229 + CMR_PAD, 102 - lx14, 5.5, 2.2);
     var y14 = Math.max(after14 + 1, 236.5);
     cmrValue(doc, cmrVal("carriageinstructions"), 21, y14, 82, 239.5 - y14, 6.5, 4);
-    cmrLabelValue(doc, CMR_LABELS.paid.join(" "), cmrVal("carriagepaid"), 21, 242.3, 44, 5, 5);
-    cmrLabelValue(doc, CMR_LABELS.forward.join(" "), cmrVal("carriageforward"), 64, 242.3, 36, 5, 5);
+    var paidFit = cmrFit(doc, CMR_LABELS.paid.join(" "), 43, 4.6, 3, "normal", 1);
+    cmrDrawLines(doc, paidFit.lines, 21, 241, 2);
+    var paidW = paidFit.lines.reduce(function (w, l) { return Math.max(w, doc.getTextWidth(l)); }, 0);
+    cmrValue(doc, cmrVal("carriagepaid"), 21 + paidW + 1.5, 240.2, 43 - paidW, 2.7, 4.6, 3);
+    var fwdFit = cmrFit(doc, CMR_LABELS.forward.join(" "), 27, 4.2, 2.6, "normal", 1);
+    cmrDrawLines(doc, fwdFit.lines, 64, 241, 2);
+    var fwdW = fwdFit.lines.reduce(function (w, l) { return Math.max(w, doc.getTextWidth(l)); }, 0);
+    cmrValue(doc, cmrVal("carriageforward"), 64 + fwdW + 1.5, 240.2, 101 - 64 - fwdW - 1.5, 2.7, 4.6, 3);
 
     /* 21: established in / on */
     doc.rect(14, 243, 88, 9);
-    var lx21 = cmrNumber(doc, 21, 15, 246.6);
+    var lx21 = cmrNumber(doc, 21, 14, 243);
     var est = CMR_LABELS.f21.join(" / ");
-    var estFit = cmrFit(doc, est, 40, 5, 3.2, "normal", 2);
-    cmrDrawLines(doc, estFit.lines, lx21, 246.2, estFit.size * 1.6);
+    var estFit = cmrFit(doc, est, 40, 4.4, 2.8, "normal", 1);
+    cmrDrawLines(doc, estFit.lines, lx21, 247.3, estFit.size * 1.6);
     var estW = estFit.lines.reduce(function (w, l) { return Math.max(w, doc.getTextWidth(l)); }, 0);
-    cmrValue(doc, cmrVal("establishedin"), lx21 + estW + 1.5, 245.8, 62 - estW, 3.5, 6, 3.5);
+    cmrValue(doc, cmrVal("establishedin"), lx21 + estW + 1.5, 246.4, 62 - estW, 4.5, 6, 3.5);
     var onLbl = CMR_LABELS.on.join(" / ");
-    var onFit = cmrFit(doc, onLbl, 14, 5, 3.2, "normal", 2);
-    cmrDrawLines(doc, onFit.lines, 66, 246.2, onFit.size * 1.6);
+    var onFit = cmrFit(doc, onLbl, 14, 4.4, 2.8, "normal", 1);
+    cmrDrawLines(doc, onFit.lines, 66, 247.3, onFit.size * 1.6);
     var onW = onFit.lines.reduce(function (w, l) { return Math.max(w, doc.getTextWidth(l)); }, 0);
-    cmrValue(doc, cmrVal("datepicker2"), 66 + onW + 1.5, 245.8, 100 - 66 - onW - 1.5, 3.5, 6, 3.5);
+    cmrValue(doc, cmrVal("datepicker2"), 66 + onW + 1.5, 246.4, 100 - 66 - onW - 1.5, 4.5, 6, 3.5);
 
     /* 22 / 23: signature boxes */
     doc.rect(14, 252, 60, 35);
-    var lx22 = cmrNumber(doc, 22, 15.5, 255.6);
-    cmrLabelLines(doc, CMR_LABELS.f22, lx22, 253.2, 71.5 - lx22, 5, 3.2, 2.2);
+    var lx22 = cmrNumber(doc, 22, 14, 252);
+    cmrLabelLines(doc, CMR_LABELS.f22, lx22, 252 + CMR_PAD, 71.5 - lx22, 5, 3.2, 2.2);
     doc.rect(74, 252, 60, 35);
-    var lx23 = cmrNumber(doc, 23, 75.5, 255.6);
-    cmrLabelLines(doc, CMR_LABELS.f23, lx23, 253.2, 131.5 - lx23, 5, 3.2, 2.2);
+    var lx23 = cmrNumber(doc, 23, 74, 252);
+    cmrLabelLines(doc, CMR_LABELS.f23, lx23, 252 + CMR_PAD, 131.5 - lx23, 5, 3.2, 2.2);
 
     /* right column: 16, 17, 18 */
     doc.setLineWidth(fat);
@@ -363,65 +376,65 @@ function cmrDrawPage(doc, copyIndex) {
     doc.rect(105, 73, 91, 24);
     doc.rect(105, 97, 91, 30);
     doc.setLineWidth(thin);
-    var lx16 = cmrNumber(doc, 16, 105.5, 52.6);
-    var after16 = cmrLabels(doc, CMR_LABELS.f16, lx16, 50.2, 194 - lx16, 5.5, 2.2);
+    var lx16 = cmrNumber(doc, 16, 105, 49);
+    var after16 = cmrLabels(doc, CMR_LABELS.f16, lx16, 49 + CMR_PAD, 194 - lx16, 5.5, 2.2);
     cmrValue(doc, cmrVal("carrieraddress"), 112, Math.max(after16 + 1, 56), 80, 68.5 - Math.max(after16 + 1, 56), 8, 4);
     cmrLabelValue(doc, CMR_LABELS.regno[0], cmrVal("vehiclereg"), 112, 71.2, 80, 5.5, 6.5);
-    var lx17 = cmrNumber(doc, 17, 105.5, 76.6);
-    var after17 = cmrLabels(doc, CMR_LABELS.f17, lx17, 74.2, 194 - lx17, 5.5, 2.2);
+    var lx17 = cmrNumber(doc, 17, 105, 73);
+    var after17 = cmrLabels(doc, CMR_LABELS.f17, lx17, 73 + CMR_PAD, 194 - lx17, 5.5, 2.2);
     cmrValue(doc, cmrVal("nextcarriers"), 112, Math.max(after17 + 1, 80), 80, 95 - Math.max(after17 + 1, 80), 8, 4);
-    var lx18 = cmrNumber(doc, 18, 105.5, 100.6);
-    var after18 = cmrLabels(doc, CMR_LABELS.f18, lx18, 98.2, 194 - lx18, 5.5, 2.2);
+    var lx18 = cmrNumber(doc, 18, 105, 97);
+    var after18 = cmrLabels(doc, CMR_LABELS.f18, lx18, 97 + CMR_PAD, 194 - lx18, 5.5, 2.2);
     cmrValue(doc, cmrVal("carrierobservations"), 112, Math.max(after18 + 1, 104), 80, 125 - Math.max(after18 + 1, 104), 8, 4);
 
     /* 19: special agreements */
     doc.rect(102, 187, 94, 22);
-    var lx19 = cmrNumber(doc, 19, 103.5, 190.6);
-    var after19 = cmrLabels(doc, CMR_LABELS.f19, lx19, 188.2, 194 - lx19, 5.5, 2.2);
+    var lx19 = cmrNumber(doc, 19, 102, 187);
+    var after19 = cmrLabels(doc, CMR_LABELS.f19, lx19, 187 + CMR_PAD, 194 - lx19, 5.5, 2.2);
     cmrValue(doc, cmrVal("specialagreements"), 110, Math.max(after19 + 1, 195), 84, 207 - Math.max(after19 + 1, 195), 8, 4);
 
     /* 20: to be paid by */
     doc.setLineWidth(fat);
     doc.rect(102, 209, 94, 34);
     doc.setLineWidth(thin);
-    var lx20 = cmrNumber(doc, 20, 103.5, 212.6);
-    cmrLabels(doc, CMR_LABELS.f20, lx20, 210.2, 133 - lx20, 5.5, 2.2);
+    var lx20 = cmrNumber(doc, 20, 102, 209);
+    var payY = cmrLabels(doc, CMR_LABELS.f20, lx20, 209 + CMR_PAD, 133.3 - lx20, 5, 2.2);
     var subW = 94 / 3;
     for (var sc = 1; sc < 3; sc++) {
         doc.line(102 + sc * subW, 209, 102 + sc * subW, 243);
     }
     var pay20 = [
-        { labels: CMR_LABELS.bySender, x: 102 + 1, id: "20bysender" },
-        { labels: CMR_LABELS.currency, x: 102 + subW + 1, id: "20currency" },
-        { labels: CMR_LABELS.byConsignee, x: 102 + 2 * subW + 1, id: "20byconsignee" }
+        { labels: CMR_LABELS.bySender, x: 102, id: "20bysender" },
+        { labels: CMR_LABELS.currency, x: 102 + subW, id: "20currency" },
+        { labels: CMR_LABELS.byConsignee, x: 102 + 2 * subW, id: "20byconsignee" }
     ];
     for (var pc = 0; pc < pay20.length; pc++) {
         var p20 = pay20[pc];
-        var after20 = cmrLabels(doc, p20.labels, p20.x + 1, 216.2, subW - 3, 4.2, 1.65);
-        cmrValue(doc, cmrVal(p20.id), p20.x + 1, Math.max(after20 + 0.3, 222.4), subW - 3, 224.9 - Math.max(after20 + 0.3, 222.4), 4.6, 3);
+        var after20 = cmrLabels(doc, p20.labels, p20.x + CMR_PAD, 216.4, subW - 2 * CMR_PAD, 4.2, 1.6);
+        cmrValue(doc, cmrVal(p20.id), p20.x + CMR_PAD, Math.max(after20 + 0.3, 223), subW - 2 * CMR_PAD, 225.3 - Math.max(after20 + 0.3, 223), 4.4, 3);
     }
     var chargeIds = ["20carriage", "20deductions", "20balance", "20supplementary", "20misc", "20insurance", "20total"];
-    var rowY = 226;
+    var rowY = 227.2;
     for (var ch = 0; ch < CMR_LABELS.charges.length; ch++) {
-        var chFit = cmrFit(doc, CMR_LABELS.charges[ch], 60, 4.6, 3, "normal", 2);
-        cmrDrawLines(doc, chFit.lines, 103.5, rowY, 2.35);
-        cmrValue(doc, cmrVal(chargeIds[ch]), 165, rowY - 0.4, 29, 2.2, 4.6, 3);
-        rowY += chFit.lines.length * 2.35;
+        var chFit = cmrFit(doc, CMR_LABELS.charges[ch], 58, 4.4, 2.9, "normal", 2);
+        cmrDrawLines(doc, chFit.lines, 102 + CMR_PAD, rowY, 2.15);
+        cmrValue(doc, cmrVal(chargeIds[ch]), 165, rowY - 0.3, 28, 2.0, 4.4, 2.9);
+        rowY += chFit.lines.length * 2.15;
     }
 
     /* 15: cash on delivery / reimbursement */
     doc.rect(102, 243, 94, 9);
-    var lx15 = cmrNumber(doc, 15, 103.5, 248);
-    cmrLabelLines(doc, CMR_LABELS.f15, lx15, 244.4, 36, 4.4, 2.8, 1.75);
+    var lx15 = cmrNumber(doc, 15, 102, 243);
+    cmrLabelLines(doc, CMR_LABELS.f15, lx15, 243 + CMR_PAD, 36, 4.4, 2.8, 1.75);
     cmrValue(doc, cmrVal("cashondelivery"), lx15 + 38, 247.3, 194 - lx15 - 38, 3.5, 6.5, 3.5);
 
     /* 24: consignee receipt */
     doc.rect(134, 252, 62, 35);
-    var lx24 = cmrNumber(doc, 24, 135.5, 255.6);
-    cmrLabels(doc, CMR_LABELS.f24, lx24, 253.2, 194 - lx24, 5, 2.2);
-    cmrLabelValue(doc, CMR_LABELS.f24place[0], cmrVal("24place"), 136, 262.5, 30, 5, 6);
-    cmrLabelValue(doc, CMR_LABELS.f24on[0], cmrVal("24date"), 168, 262.5, 26, 5, 6);
-    cmrLabelLines(doc, CMR_LABELS.f24sign, 136, 282.2, 58, 5, 3, 2.2);
+    var lx24 = cmrNumber(doc, 24, 134, 252);
+    cmrLabels(doc, CMR_LABELS.f24, lx24, 252 + CMR_PAD, 196 - lx24, 5, 2.2);
+    cmrLabelValue(doc, CMR_LABELS.f24place[0], cmrVal("24place"), 135.5, 262.8, 32, 5, 6);
+    cmrLabelValue(doc, CMR_LABELS.f24on[0], cmrVal("24date"), 168, 262.8, 194.5 - 168, 5, 6);
+    cmrLabelLines(doc, CMR_LABELS.f24sign, 135.5, 279.4, 59, 4.4, 3, 1.9);
 
     /* vertical notes, left margin */
     doc.setFont("DejaVuSans", "normal");
