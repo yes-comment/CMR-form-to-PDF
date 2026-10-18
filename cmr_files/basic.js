@@ -236,24 +236,26 @@ function cmrDrawPage(doc, copyIndex) {
 
     /* header box */
     doc.rect(105, 25, 91, 24);
-    doc.setFont("DejaVuSans", "normal");
-    doc.setFontSize(5.5);
-    doc.setTextColor(CMR_COLOR[0], CMR_COLOR[1], CMR_COLOR[2]);
-    cmrDrawLines(doc, CMR_LABELS.header, 108, 26.6, 1.8);
+    /* titles: same CMR_PAD from the top line as labels in other cells */
+    cmrLabels(doc, CMR_LABELS.header, 108, 25 + CMR_PAD, 36, 5.5, 1.8);
+    /* CMR / No: row at the same top padding as section numbers (baseline 25 + CMR_PAD + 3.3) */
+    var hdrBase = 25 + CMR_PAD + 3.3;
     doc.setFont("DejaVuSans", "bold");
     doc.setFontSize(14);
     doc.setTextColor(CMR_COLOR[0], CMR_COLOR[1], CMR_COLOR[2]);
-    doc.text(145, 34.3, "CMR");
+    doc.text(145, hdrBase, "CMR");
     doc.setFont("DejaVuSans", "normal");
     doc.setFontSize(9);
     var noLbl = "No:";
     var noW = doc.getTextWidth(noLbl);
-    doc.text(160, 34.1, noLbl);
-    cmrValue(doc, cmrVal("cmrnumber"), 160 + noW + 1.5, 32.5, 194 - 160 - noW - 1.5, 4, 9, 5);
-    var convY = 31.8;
+    doc.text(160, hdrBase, noLbl);
+    /* the number flows freely under CMR No, no longer limited to one line */
+    cmrValue(doc, cmrVal("cmrnumber"), 160 + noW + 1.5, 31, 194 - 160 - noW - 1.5, 48.5 - 31, 9, 5);
+    /* convention paragraph: left part, below the titles, clear of the number column */
+    var convY = 34.6;
     doc.setFont("DejaVuSans", "normal");
     for (var ci = 0; ci < CMR_LABELS.convention.length; ci++) {
-        var conv = cmrFit(doc, CMR_LABELS.convention[ci], 34, 4, 2.6, "normal", 6);
+        var conv = cmrFit(doc, CMR_LABELS.convention[ci], 55, 4.2, 2.8, "normal", 4);
         cmrDrawLines(doc, conv.lines, 108, convY, 1.45);
         convY += conv.lines.length * 1.45;
     }
@@ -305,8 +307,8 @@ function cmrDrawPage(doc, copyIndex) {
         var lcx = cmrNumber(doc, col.n, col.x, 127);
         cmrLabels(doc, col.labels, lcx, 127 + CMR_PAD, col.x + col.w - lcx - 0.5, 5, 2.2);
         for (var r = 0; r < 4; r++) {
-            if (r > 0) doc.line(col.x, rowTop + r * 10.5 - 2.5, col.x + col.w, rowTop + r * 10.5 - 2.5);
-            cmrValue(doc, cmrVal(col.ids[r]), col.x + 2, rowTop + r * 10.5, col.w - 4, 9, 7, 4);
+            if (r > 0) doc.line(col.x, rowTop + r * 10.5, col.x + col.w, rowTop + r * 10.5);
+            cmrValue(doc, cmrVal(col.ids[r]), col.x + 2, rowTop + r * 10.5 + 0.5, col.w - 4, 8.5, 7, 4);
         }
     }
 
@@ -339,14 +341,31 @@ function cmrDrawPage(doc, copyIndex) {
     var after14 = cmrLabels(doc, CMR_LABELS.f14, lx14, 229 + CMR_PAD, 102 - lx14, 5, 1.8);
     var y14 = Math.max(after14 + 0.5, 236.2);
     cmrValue(doc, cmrVal("carriageinstructions"), 21, y14, 82, 239.7 - y14, 5, 3.2);
-    var paidFit = cmrFit(doc, CMR_LABELS.paid.join(" "), 43, 4.6, 3, "normal", 1);
-    cmrDrawLines(doc, paidFit.lines, 21, 241.7, 2);
-    var paidW = paidFit.lines.reduce(function (w, l) { return Math.max(w, doc.getTextWidth(l)); }, 0);
-    cmrValue(doc, cmrVal("carriagepaid"), 21 + paidW + 1.5, 241.7 - 3 * 0.86, 43 - paidW, 2.2, 4.6, 3);
-    var fwdFit = cmrFit(doc, CMR_LABELS.forward.join(" "), 27, 4.2, 2.6, "normal", 1);
-    cmrDrawLines(doc, fwdFit.lines, 64, 241.7, 2);
-    var fwdW = fwdFit.lines.reduce(function (w, l) { return Math.max(w, doc.getTextWidth(l)); }, 0);
-    cmrValue(doc, cmrVal("carriageforward"), 64 + fwdW + 1.5, 241.7 - 3 * 0.86, 101 - 64 - fwdW - 1.5, 2.2, 4.6, 3);
+    /* paid / forward labels drawn at one shared font size so both match the other text;
+       each label is sized so that label + its value fit the space up to the box edge */
+    var paidLbl = CMR_LABELS.paid.join(" ");
+    var fwdLbl = CMR_LABELS.forward.join(" ");
+    var paidVal = cmrVal("carriagepaid");
+    var fwdVal = cmrVal("carriageforward");
+    var pfSize = 4.6;
+    doc.setFont("DejaVuSans", "normal");
+    while (pfSize > 3) {
+        doc.setFontSize(pfSize);
+        var pw = doc.getTextWidth(paidLbl);
+        var fw = doc.getTextWidth(fwdLbl);
+        var pv = paidVal ? doc.getTextWidth(paidVal) * (4.6 / pfSize) : 0;
+        var fv = fwdVal ? doc.getTextWidth(fwdVal) * (4.6 / pfSize) : 0;
+        if (pw + 1.5 + Math.max(pv, 6) <= 42 && fw + 1.5 + Math.max(fv, 6) <= 36) break;
+        pfSize -= 0.1;
+    }
+    doc.setFontSize(pfSize);
+    doc.text(21, 241.7, paidLbl);
+    var paidW = doc.getTextWidth(paidLbl);
+    cmrValue(doc, cmrVal("carriagepaid"), 21 + paidW + 1.5, 241.7 - 3 * 0.86, 42 - paidW, 2.2, 4.6, 3);
+    doc.setFontSize(pfSize);
+    doc.text(64, 241.7, fwdLbl);
+    var fwdW = doc.getTextWidth(fwdLbl);
+    cmrValue(doc, cmrVal("carriageforward"), 64 + fwdW + 1.5, 241.7 - 3 * 0.86, 99.5 - 64 - fwdW, 2.2, 4.6, 3);
 
     /* 21: established in / on */
     doc.rect(14, 243, 88, 9);
@@ -397,29 +416,41 @@ function cmrDrawPage(doc, copyIndex) {
     doc.setLineWidth(fat);
     doc.rect(102, 209, 94, 34);
     doc.setLineWidth(thin);
+    /* 20: a 4-column x 7-row grid.
+       Column 1: section header + the seven charge labels.
+       Columns 2-4: Sender / Currency / Consignee payer columns, each with
+       seven empty cells to be filled in by hand when a charge is applicable. */
     var lx20 = cmrNumber(doc, 20, 102, 209);
-    var payY = cmrLabels(doc, CMR_LABELS.f20, lx20, 209 + CMR_PAD, 133.3 - lx20, 5, 2.2);
-    var subW = 94 / 3;
-    for (var sc = 1; sc < 3; sc++) {
-        doc.line(102 + sc * subW, 209, 102 + sc * subW, 243);
+    cmrLabels(doc, CMR_LABELS.f20, lx20, 209 + CMR_PAD, 140 - lx20, 5, 2);
+    var col20w = 38;                    /* column 1 width */
+    var pay20w = (94 - col20w) / 3;      /* three payer columns */
+    var gridTop = 220.5;                 /* header band bottom */
+    var gridBot = 243;
+    var rowH = (gridBot - gridTop) / 7;
+    /* vertical lines: after column 1 and between the payer columns */
+    for (var sc = 0; sc < 3; sc++) {
+        doc.line(102 + col20w + sc * pay20w, 209, 102 + col20w + sc * pay20w, gridBot);
     }
+    /* payer column headers in the header band */
     var pay20 = [
-        { labels: CMR_LABELS.bySender, x: 102, id: "20bysender" },
-        { labels: CMR_LABELS.currency, x: 102 + subW, id: "20currency" },
-        { labels: CMR_LABELS.byConsignee, x: 102 + 2 * subW, id: "20byconsignee" }
+        { labels: CMR_LABELS.bySender, x: 102 + col20w, id: "20bysender" },
+        { labels: CMR_LABELS.currency, x: 102 + col20w + pay20w, id: "20currency" },
+        { labels: CMR_LABELS.byConsignee, x: 102 + col20w + 2 * pay20w, id: "20byconsignee" }
     ];
     for (var pc = 0; pc < pay20.length; pc++) {
         var p20 = pay20[pc];
-        var after20 = cmrLabels(doc, p20.labels, p20.x + CMR_PAD, 216.4, subW - 2 * CMR_PAD, 4.2, 1.6);
-        cmrValue(doc, cmrVal(p20.id), p20.x + CMR_PAD, Math.max(after20 + 0.3, 223), subW - 2 * CMR_PAD, 225.3 - Math.max(after20 + 0.3, 223), 4.4, 3);
+        var after20 = cmrLabels(doc, p20.labels, p20.x + CMR_PAD, 213.6, pay20w - 2 * CMR_PAD, 4, 1.5);
+        cmrValue(doc, cmrVal(p20.id), p20.x + CMR_PAD, Math.max(after20 + 0.3, 219.2), pay20w - 2 * CMR_PAD, gridTop - Math.max(after20 + 0.3, 219.2) - 0.3, 4, 3);
     }
+    /* seven charge rows: label in column 1, empty cells in the payer columns;
+       a value from the form appears in its own row when filled in */
     var chargeIds = ["20carriage", "20deductions", "20balance", "20supplementary", "20misc", "20insurance", "20total"];
-    var rowY = 227.2;
     for (var ch = 0; ch < CMR_LABELS.charges.length; ch++) {
-        var chFit = cmrFit(doc, CMR_LABELS.charges[ch], 58, 4.4, 2.9, "normal", 2);
-        cmrDrawLines(doc, chFit.lines, 102 + CMR_PAD, rowY, 2.15);
-        cmrValue(doc, cmrVal(chargeIds[ch]), 165, rowY - 0.3, 28, 2.0, 4.4, 2.9);
-        rowY += chFit.lines.length * 2.15;
+        var rowY20 = gridTop + ch * rowH;
+        if (ch > 0) doc.line(102, rowY20, 196, rowY20);
+        var chFit = cmrFit(doc, CMR_LABELS.charges[ch], col20w - 2 * CMR_PAD, 4.4, 2.7, "normal", 1);
+        cmrDrawLines(doc, chFit.lines, 102 + CMR_PAD, rowY20 + (rowH - chFit.size * 0.72) / 2, rowH);
+        cmrValue(doc, cmrVal(chargeIds[ch]), 102 + col20w + CMR_PAD, rowY20 + 0.3, pay20w - 2 * CMR_PAD, rowH - 0.8, 4.4, 2.9);
     }
 
     /* 15: cash on delivery / reimbursement */
@@ -451,7 +482,7 @@ function cmrDrawPage(doc, copyIndex) {
     }
     doc.setFont("DejaVuSans", "bold");
     doc.setFontSize(13);
-    doc.text(12.2, 196, "1 - 15", null, 90);
+    doc.text(12.2, 203, "1 - 15", null, 90);
     doc.text(12.2, 166, "19 + 20 + 22", null, 90);
 
     /* vertical ADR note, right margin */
