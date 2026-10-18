@@ -11,20 +11,16 @@
 
 <link rel="stylesheet" href="cmr_files/normalize.css">
 <link href="cmr_files/bootstrap.min.css" rel="stylesheet">
-
-<!-- Bootstrap for form -->
-<link href="cmr_files/bootstrap.min2.css" rel="stylesheet" media="screen">
 <link href="cmr_files/bootstrap-responsive.css" rel="stylesheet">
-<link rel="stylesheet" href="cmr_files/jquery-ui.css">
+<link rel="stylesheet" href="cmr_files/jquery-ui.min.css">
+<link rel="stylesheet" href="cmr_files/jquery-ui.theme.min.css">
 
-<script type="text/javascript" src="cmr_files/basic.js"></script>
-<script type="text/javascript" src="cmr_files/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="cmr_files/jquery-ui-1.8.17.custom.min.js"></script>
-<script type="text/javascript" src="cmr_files/jspdf.debug.js"></script>
-<script src="cmr_files/jquery.js"></script>
-<script src="cmr_files/bootstrap.min.js"></script>
-<script src="cmr_files/jquery-1.9.1.js"></script>
-<script src="cmr_files/jquery-ui.js"></script>
+<script src="cmr_files/jquery.min.js"></script>
+<script src="cmr_files/jquery-ui.min.js"></script>
+<script src="cmr_files/jspdf.umd.min.js"></script>
+<script src="cmr_files/dejavu-font.js"></script>
+<script>window.jsPDF = window.jspdf.jsPDF;</script>
+<script src="cmr_files/basic.js"></script>
 
 <style type="text/css">
   body {
@@ -74,7 +70,7 @@
 <body>
 <section class="contact-area" id="contact">
     <div class="container">
-        <form class="form-signin" charset="windows-1252" onclick="usun_pl(this)">
+        <form class="form-signin">
 
 <div class="row-fluid">
   <div class="span6" style="position:relative; min-height:80px"><div style="position:absolute; bottom:0; left:0"> <font style="font-size:35px; color:#ED1748">1</font><font style="color:#ED1748">Copy for sender</font> </div>
@@ -374,69 +370,22 @@ $(document).ready(
 
 <br><p>A program négy példányt fog generálni (feladó, fuvarozó, címzett, plusz 1 példányt). </p><br>
 
-      <button class="btn btn-large btn-primary" type="button" onclick="usun_pl(this); setTimeout( generatePDF, 400 );">Nyomtatás -&gt; PDF fájlba!</button>
+      <button class="btn btn-large btn-primary" type="button" onclick="generatePDF()">Nyomtatás -&gt; PDF fájlba!</button>
 
       </form>
     </div>
 
 <script>
-// Input max length
-    numberId.oninput = function () {
-    if (this.value.length > 5)
-        this.value = this.value.slice(0,5);
-}
-// Allow only numbers to the input
-    function isNumberKey(evt) {
+function isNumberKey(evt) {
     var charCode = (evt.which) ? evt.which : event.keyCode;
-    if (charCode != 46 && charCode > 31
-    && (charCode < 48 || charCode > 57))
+    if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57))
         return false;
-
     return true;
 }
-
-    function usun_pl(formularz)
-{
-	for (i = 0; i < formularz.length; i++)
-	{
-		var pole = formularz.elements[i];
-		if (pole.type != "text" && pole.type != "textarea") continue;
-		var str = "";
-		for (j = 0; j < pole.value.length; j++)
-		{
-			switch (pole.value.charAt(j))
-			{
-				case "ą": str += "a"; break;
-				case "ć": str += "c"; break;
-				case "ę": str += "e"; break;
-				case "ł": str += "l"; break;
-				case "ń": str += "n"; break;
-				case "ó": str += "o"; break;
-				case "ś": str += "s"; break;
-				case "ź": str += "z"; break;
-				case "ż": str += "z"; break;
-				case "Ą": str += "a"; break;
-				case "Ć": str += "c"; break;
-				case "Ę": str += "e"; break;
-				case "Ł": str += "l"; break;
-				case "Ń": str += "n"; break;
-				case "Ó": str += "o"; break;
-				case "Ś": str += "s"; break;
-				case "Ź": str += "z"; break;
-				case "Ż": str += "z"; break;
-				default: str += pole.value.charAt(j); break;
-			}
-		}
-		pole.value = str;
-	}
-};
-
+jQuery(function () {
+    jQuery("#datepicker").datepicker({ changeMonth: true, changeYear: true, dateFormat: "dd/mm/yy" });
+    jQuery("#datepicker2").datepicker({ changeMonth: true, changeYear: true, dateFormat: "yy.mm.dd" });
+});
 </script>
-
-<br><br>
-
-<div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>
-    </section>
-
 </body>
 </html>
