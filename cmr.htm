@@ -27,12 +27,17 @@
     position: relative;
     width: 840px;  /* 210mm at 4px/mm */
     height: 1188px; /* 297mm at 4px/mm */
-    margin: 0 auto;
     background: #fff;
     border: 1px solid #ccc;
     box-shadow: 0 1px 4px rgba(0,0,0,.12);
     overflow: hidden;
+    transform-origin: top left;
   }
+  #cmrwrap { margin: 0 auto; overflow: visible; }
+  #cmrwrap.scaled .cmr-page { border: 0; }
+  .lbl20row { font-size: 5.5px; line-height: 1.05; white-space: normal; width: 140px; }
+  .inp20row { font-size: 7px; }
+  .cmr-fitbtn.active { background: #337ab7; color: #fff; }
   .box { position: absolute; border: 0.5px solid #ED1748; box-sizing: border-box; }
   .box.fat { border-width: 2.4px; }
   .lbl { position: absolute; color: #ED1748; font-size: 8px; line-height: 1.15; white-space: nowrap; overflow: visible; }
@@ -56,10 +61,12 @@
 <body>
 <div class="cmr-toolbox">
   <p>The form below mirrors the generated PDF. Fill in any field; the button produces a 4-copy PDF (sender, consignee, carrier, extra copy).</p>
+  <button class="btn cmr-fitbtn active" id="fitWidthBtn" type="button" onclick="cmrSetFit('width')">Fit to width</button>
+  <button class="btn cmr-fitbtn" id="fitHeightBtn" type="button" onclick="cmrSetFit('height')">Fit to height</button>
   <button class="btn btn-large btn-primary" type="button" onclick="generatePDF()">Nyomtatás -> PDF fájlba!</button>
 </div>
 
-<div class="cmr-page" id="cmrpage">
+<div id="cmrwrap"><div class="cmr-page" id="cmrpage">
   <div class="main-rect" style="left:56px; top:100px; width:728px; height:1048px;"></div>
 
   <!-- copy indicator -->
@@ -68,10 +75,10 @@
   <!-- header box -->
   <div class="box" style="left:420px; top:100px; width:364px; height:96px;"></div>
   <div class="lbl" style="left:432px; top:106px;">INTERNATIONAL CONSIGNMENT<br>INTERNATIONALER FRACHTBRIEF<br>NEMZETK&Ouml;ZI FUVARLEV&Eacute;L</div>
-  <div class="lbl" style="left:580px; top:128px; font-weight:bold; font-size:19px;">CMR</div>
-  <div class="lbl" style="left:632px; top:128px; font-size:13px;">No:</div>
-  <input class="inp" type="text" id="cmrnumber" style="left:664px; top:124px; width:110px; height:18px;">
-  <div class="lbl" style="left:432px; top:146px; font-size:6px; line-height:1.2; white-space:normal; width:336px;">
+  <div class="lbl" style="left:580px; top:112px; font-weight:bold; font-size:19px;">CMR</div>
+  <div class="lbl" style="left:640px; top:112px; font-size:13px;">No:</div>
+  <input class="inp" type="text" id="cmrnumber" style="left:668px; top:108px; width:110px; height:18px;">
+  <div class="lbl" style="left:432px; top:136px; font-size:6px; line-height:1.2; white-space:normal; width:220px;">
     This carriage is subject notwithstanding any clause to the contrary, to the Convention on the Contract for the international Carriage of goods by road (CMR)<br>
     Diese Bef&ouml;rderung unterliegt trotz einer gegen-teiligen Abmachung den Bestimmungen des &Uuml;bereinkommens &uuml;ber den Bef&ouml;rderungsvertrag im internationalen Strasseng&uuml;terverkehr (CMR)<br>
     A fuvaroz&aacute;sra elt&eacute;r&otilde; meg&aacute;llapod&aacute;s eset&eacute;n is a Nemzetk&ouml;zi &Aacute;rufuvaroz&aacute;si Egyezm&eacute;ny (CMR) rendelke-z&eacute;sei az ir&aacute;nyad&oacute;k.
@@ -237,34 +244,41 @@
   <div class="lbl" style="left:440px; top:754px;">Special agreements<br>Besondere Vereinbarungen<br>K&uuml;l&ouml;nleges meg&aacute;llapod&aacute;sok</div>
   <textarea id="specialagreements" rows="2" style="left:440px; top:780px; width:336px; height:48px;"></textarea>
 
-  <!-- 20. To be paid by -->
-  <div class="box fat" style="left:408px; top:836px; width:376px; height:136px;"></div>
-  <div class="num" style="left:414px; top:842px;">20</div>
-  <div class="lbl" style="left:440px; top:842px;">To be paid by<br>Zu zahlen vom<br>Fizetend&otilde;</div>
-  <div class="box" style="left:532px; top:836px; height:136px; width:0; border-width:0 0 0 0.5px;"></div>
-  <div class="box" style="left:656px; top:836px; height:136px; width:0; border-width:0 0 0 0.5px;"></div>
-  <div class="lbl" style="left:410px; top:866px; font-size:7px;">Sender<br>Absender<br>Felad&oacute;</div>
-  <input class="inp" id="20bysender" style="left:412px; top:892px; width:112px; height:16px;">
-  <div class="lbl" style="left:534px; top:866px; font-size:7px;">Currency<br>W&auml;hrung<br>P&eacute;nznem</div>
-  <input class="inp" id="20currency" style="left:536px; top:892px; width:112px; height:16px;">
-  <div class="lbl" style="left:658px; top:866px; font-size:7px;">Consignee<br>Empf&auml;nger<br>&Aacute;tvev&otilde;</div>
-  <input class="inp" id="20byconsignee" style="left:660px; top:892px; width:112px; height:16px;">
-  <div class="lbl" style="left:414px; top:912px; font-size:6px; width:178px;">Carriage charges / Fracht / Fuvaroz&aacute;si d&iacute;j</div>
-  <input class="inp" id="20carriage" style="left:600px; top:910px; width:176px; height:14px;">
-  <div class="lbl" style="left:414px; top:922px; font-size:6px; width:178px;">Deductions / Erm&auml;&szlig;igungen / Kedvezm&eacute;nyek</div>
-  <input class="inp" id="20deductions" style="left:600px; top:920px; width:176px; height:14px;">
-  <div class="lbl" style="left:414px; top:932px; font-size:6px; width:178px;">Balance / Zuschl&auml;ge / Egyenleg</div>
-  <input class="inp" id="20balance" style="left:600px; top:930px; width:176px; height:14px;">
-  <div class="lbl" style="left:414px; top:942px; font-size:6px; width:178px;">Supplementary charges / Nebengeb&uuml;hren</div>
-  <input class="inp" id="20supplementary" style="left:600px; top:940px; width:176px; height:14px;">
-  <div class="lbl" style="left:414px; top:952px; font-size:6px; width:178px;">Miscellaneous / Sonstiges / Egy&eacute;b</div>
-  <input class="inp" id="20misc" style="left:600px; top:950px; width:176px; height:14px;">
-  <div class="lbl" style="left:414px; top:962px; font-size:6px; width:178px;">Insurance / Versicherung / Biztos&iacute;t&aacute;s</div>
-  <input class="inp" id="20insurance" style="left:600px; top:960px; width:176px; height:14px;">
-  <div class="lbl" style="left:414px; top:971px; font-weight:bold; font-size:6px; width:178px;">Total to be paid / Gesamtsumme / V&eacute;g&ouml;sszeg</div>
-  <input class="inp" id="20total" style="left:600px; top:969px; width:176px; height:14px;">
-
-  <!-- 15. Cash on delivery -->
+  <!-- 20. To be paid by: 4-column x 7-row grid as in the PDF -->
+<div class="box fat" style="left:408px; top:836px; width:376px; height:136px;"></div>
+<div class="num" style="left:414px; top:842px;">20</div>
+<div class="lbl" style="left:445px; top:842px;">To be paid by<br>Zu zahlen vom<br>Fizetend&otilde;</div>
+<div class="box" style="left:560px; top:836px; width:0; height:136px; border-width:0 0 0 0.5px;"></div>
+<div class="box" style="left:635px; top:836px; width:0; height:136px; border-width:0 0 0 0.5px;"></div>
+<div class="box" style="left:709px; top:836px; width:0; height:136px; border-width:0 0 0 0.5px;"></div>
+<div class="box" style="left:408px; top:880px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+<div class="lbl" style="left:566px; top:842px;">Sender<br>Absender<br>Felad&oacute;</div>
+<div class="lbl" style="left:641px; top:842px;">Currency<br>W&auml;hrung<br>P&eacute;nznem</div>
+<div class="lbl" style="left:715px; top:842px;">Consignee<br>Empf&auml;nger<br>&Aacute;tvev&otilde;</div>
+<input class="inp" id="20bysender" style="left:566px; top:866px; width:62px; height:13px;">
+<input class="inp" id="20currency" style="left:641px; top:866px; width:62px; height:13px;">
+<input class="inp" id="20byconsignee" style="left:715px; top:866px; width:62px; height:13px;">
+  <div class="lbl lbl20row" style="left:414px; top:882px;">Carriage charges / Fracht / Fuvaroz&aacute;si d&iacute;j</div>
+  <input class="inp inp20row" id="20carriage" style="left:566px; top:881px; width:62px; height:11px;">
+  <div class="box" style="left:408px; top:893px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:895px;">Deductions / Erm&auml;&szlig;igungen / Kedvezm&eacute;nyek</div>
+  <input class="inp inp20row" id="20deductions" style="left:566px; top:894px; width:62px; height:11px;">
+  <div class="box" style="left:408px; top:906px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:908px;">Balance / Zuschl&auml;ge / Egyenleg</div>
+  <input class="inp inp20row" id="20balance" style="left:566px; top:907px; width:62px; height:11px;">
+  <div class="box" style="left:408px; top:919px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:921px;">Supplementary charges / Nebengeb&uuml;hren / Egy&eacute;b k&ouml;lt.</div>
+  <input class="inp inp20row" id="20supplementary" style="left:566px; top:920px; width:62px; height:11px;">
+  <div class="box" style="left:408px; top:933px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:935px;">Miscellaneous / Sonstiges / Egy&eacute;b</div>
+  <input class="inp inp20row" id="20misc" style="left:566px; top:934px; width:62px; height:11px;">
+  <div class="box" style="left:408px; top:946px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:948px;">Insurance / Versicherung / Biztos&iacute;t&aacute;s</div>
+  <input class="inp inp20row" id="20insurance" style="left:566px; top:947px; width:62px; height:11px;">
+  <div class="box" style="left:408px; top:959px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:961px;">Total to be paid / Gesamtsumme / V&eacute;g&ouml;sszeg</div>
+  <input class="inp inp20row" id="20total" style="left:566px; top:960px; width:62px; height:11px;">
+<!-- 15. Cash on delivery -->
   <div class="box" style="left:408px; top:972px; width:376px; height:36px;"></div>
   <div class="num" style="left:414px; top:978px;">15</div>
   <div class="lbl" style="left:440px; top:978px; font-size:7px;">Reimbursement / R&uuml;ckerstattung / Visszat&eacute;r&iacute;t&eacute;s</div>
@@ -286,7 +300,7 @@
   <div class="vnote" style="left:42px; top:940px; transform: rotate(-90deg) translateY(-100%); transform-origin: left bottom;">19 + 20 + 22</div>
 
   <div class="lbl" style="left:56px; top:1160px; font-size:9px;">Sic itur ad astra!</div>
-</div>
+</div></div>
 
 <div class="cmr-toolbox">
   <button class="btn btn-large btn-primary" type="button" onclick="generatePDF()">Nyomtatás -> PDF fájlba!</button>
@@ -299,6 +313,33 @@ function isNumberKey(evt) {
         return false;
     return true;
 }
+var cmrFitMode = "width";
+function cmrApplyFit() {
+    var page = document.getElementById("cmrpage");
+    var wrap = document.getElementById("cmrwrap");
+    var s;
+    if (cmrFitMode === "width") {
+        s = (window.innerWidth - 40) / 840;
+    } else {
+        s = (window.innerHeight - 170) / 1188;
+    }
+    s = Math.max(s, 0.25);
+    page.style.transform = "scale(" + s + ")";
+    wrap.style.width = (840 * s) + "px";
+    wrap.style.height = (1188 * s) + "px";
+}
+function cmrSetFit(mode) {
+    cmrFitMode = mode;
+    var w = document.getElementById("fitWidthBtn");
+    var h = document.getElementById("fitHeightBtn");
+    w.className = "btn cmr-fitbtn" + (mode === "width" ? " active" : "");
+    h.className = "btn cmr-fitbtn" + (mode === "height" ? " active" : "");
+    cmrApplyFit();
+}
+jQuery(function () {
+    cmrApplyFit();
+});
+jQuery(window).on("resize", cmrApplyFit);
 jQuery(function () {
     jQuery("#datepicker").datepicker({ changeMonth: true, changeYear: true, dateFormat: "dd/mm/yy" });
     jQuery("#datepicker2").datepicker({ changeMonth: true, changeYear: true, dateFormat: "yy.mm.dd" });
