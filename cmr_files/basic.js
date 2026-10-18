@@ -239,23 +239,23 @@ function cmrDrawPage(doc, copyIndex) {
     doc.setFont("DejaVuSans", "normal");
     doc.setFontSize(5.5);
     doc.setTextColor(CMR_COLOR[0], CMR_COLOR[1], CMR_COLOR[2]);
-    cmrDrawLines(doc, CMR_LABELS.header, 108, 26.8, 1.8);
+    cmrDrawLines(doc, CMR_LABELS.header, 108, 26.6, 1.8);
     doc.setFont("DejaVuSans", "bold");
     doc.setFontSize(14);
     doc.setTextColor(CMR_COLOR[0], CMR_COLOR[1], CMR_COLOR[2]);
-    doc.text(145, 33.5, "CMR");
+    doc.text(145, 34.3, "CMR");
     doc.setFont("DejaVuSans", "normal");
     doc.setFontSize(9);
     var noLbl = "No:";
     var noW = doc.getTextWidth(noLbl);
-    doc.text(160, 33, noLbl);
-    cmrValue(doc, cmrVal("cmrnumber"), 160 + noW + 1.5, 32.2, 194 - 160 - noW - 1.5, 4, 9, 5);
-    var convY = 35.8;
+    doc.text(160, 34.1, noLbl);
+    cmrValue(doc, cmrVal("cmrnumber"), 160 + noW + 1.5, 32.5, 194 - 160 - noW - 1.5, 4, 9, 5);
+    var convY = 31.8;
     doc.setFont("DejaVuSans", "normal");
     for (var ci = 0; ci < CMR_LABELS.convention.length; ci++) {
-        var conv = cmrFit(doc, CMR_LABELS.convention[ci], 84, 4.6, 3.2, "normal", 4);
-        cmrDrawLines(doc, conv.lines, 108, convY, 1.55);
-        convY += conv.lines.length * 1.55;
+        var conv = cmrFit(doc, CMR_LABELS.convention[ci], 34, 4, 2.6, "normal", 6);
+        cmrDrawLines(doc, conv.lines, 108, convY, 1.45);
+        convY += conv.lines.length * 1.45;
     }
 
     /* left column boxes 1-3 */
@@ -336,17 +336,17 @@ function cmrDrawPage(doc, copyIndex) {
     /* 14: payment for carriage */
     doc.rect(14, 229, 88, 14);
     var lx14 = cmrNumber(doc, 14, 14, 229);
-    var after14 = cmrLabels(doc, CMR_LABELS.f14, lx14, 229 + CMR_PAD, 102 - lx14, 5.5, 2.2);
-    var y14 = Math.max(after14 + 1, 236.5);
-    cmrValue(doc, cmrVal("carriageinstructions"), 21, y14, 82, 239.5 - y14, 6.5, 4);
+    var after14 = cmrLabels(doc, CMR_LABELS.f14, lx14, 229 + CMR_PAD, 102 - lx14, 5, 1.8);
+    var y14 = Math.max(after14 + 0.5, 236.2);
+    cmrValue(doc, cmrVal("carriageinstructions"), 21, y14, 82, 239.7 - y14, 5, 3.2);
     var paidFit = cmrFit(doc, CMR_LABELS.paid.join(" "), 43, 4.6, 3, "normal", 1);
-    cmrDrawLines(doc, paidFit.lines, 21, 241, 2);
+    cmrDrawLines(doc, paidFit.lines, 21, 241.7, 2);
     var paidW = paidFit.lines.reduce(function (w, l) { return Math.max(w, doc.getTextWidth(l)); }, 0);
-    cmrValue(doc, cmrVal("carriagepaid"), 21 + paidW + 1.5, 240.2, 43 - paidW, 2.7, 4.6, 3);
+    cmrValue(doc, cmrVal("carriagepaid"), 21 + paidW + 1.5, 241.7 - 3 * 0.86, 43 - paidW, 2.2, 4.6, 3);
     var fwdFit = cmrFit(doc, CMR_LABELS.forward.join(" "), 27, 4.2, 2.6, "normal", 1);
-    cmrDrawLines(doc, fwdFit.lines, 64, 241, 2);
+    cmrDrawLines(doc, fwdFit.lines, 64, 241.7, 2);
     var fwdW = fwdFit.lines.reduce(function (w, l) { return Math.max(w, doc.getTextWidth(l)); }, 0);
-    cmrValue(doc, cmrVal("carriageforward"), 64 + fwdW + 1.5, 240.2, 101 - 64 - fwdW - 1.5, 2.7, 4.6, 3);
+    cmrValue(doc, cmrVal("carriageforward"), 64 + fwdW + 1.5, 241.7 - 3 * 0.86, 101 - 64 - fwdW - 1.5, 2.2, 4.6, 3);
 
     /* 21: established in / on */
     doc.rect(14, 243, 88, 9);
