@@ -249,8 +249,10 @@ function cmrDrawPage(doc, copyIndex) {
     var noLbl = "No:";
     var noW = doc.getTextWidth(noLbl);
     doc.text(160, hdrBase, noLbl);
-    /* the number flows freely under CMR No, no longer limited to one line */
-    cmrValue(doc, cmrVal("cmrnumber"), 160 + noW + 1.5, 31, 194 - 160 - noW - 1.5, 48.5 - 31, 9, 5);
+    /* the number flows freely under CMR No, all the way to the right edge;
+       right padding equals the left padding (CMR_PAD) for consistency */
+    var noX = 160 + noW + 1.5;
+    cmrValue(doc, cmrVal("cmrnumber"), noX, 31, 196 - CMR_PAD - noX, 48.5 - 31, 9, 5);
     /* convention paragraph: left part, below the titles, clear of the number column */
     var convY = 34.6;
     doc.setFont("DejaVuSans", "normal");
@@ -421,17 +423,20 @@ function cmrDrawPage(doc, copyIndex) {
        Columns 2-4: Sender / Currency / Consignee payer columns, each with
        seven empty cells to be filled in by hand when a charge is applicable. */
     var lx20 = cmrNumber(doc, 20, 102, 209);
-    cmrLabels(doc, CMR_LABELS.f20, lx20, 209 + CMR_PAD, 140 - lx20, 5, 2);
+    cmrLabels(doc, CMR_LABELS.f20, lx20, 209 + CMR_PAD, 140 - lx20, 5.5, 2.2);
     var col20w = 38;                    /* column 1 width */
     var pay20w = (94 - col20w) / 3;      /* three payer columns */
-    var gridTop = 220.5;                 /* header band bottom */
+    /* compact header band: three label lines, like other cells */
+    var gridTop = 209 + CMR_PAD + 3 * 2.2;
     var gridBot = 243;
     var rowH = (gridBot - gridTop) / 7;
     /* vertical lines: after column 1 and between the payer columns */
     for (var sc = 0; sc < 3; sc++) {
         doc.line(102 + col20w + sc * pay20w, 209, 102 + col20w + sc * pay20w, gridBot);
     }
-    /* payer column headers in the header band */
+    /* header band row line */
+    doc.line(102, gridTop, 196, gridTop);
+    /* payer column headers: same size as all other labels (5.5), top-aligned like other cells */
     var pay20 = [
         { labels: CMR_LABELS.bySender, x: 102 + col20w, id: "20bysender" },
         { labels: CMR_LABELS.currency, x: 102 + col20w + pay20w, id: "20currency" },
@@ -439,18 +444,44 @@ function cmrDrawPage(doc, copyIndex) {
     ];
     for (var pc = 0; pc < pay20.length; pc++) {
         var p20 = pay20[pc];
-        var after20 = cmrLabels(doc, p20.labels, p20.x + CMR_PAD, 213.6, pay20w - 2 * CMR_PAD, 4, 1.5);
-        cmrValue(doc, cmrVal(p20.id), p20.x + CMR_PAD, Math.max(after20 + 0.3, 219.2), pay20w - 2 * CMR_PAD, gridTop - Math.max(after20 + 0.3, 219.2) - 0.3, 4, 3);
+        cmrLabels(doc, p20.labels, p20.x + CMR_PAD, 209 + CMR_PAD, pay20w - 2 * CMR_PAD, 5.5, 2.2);
+        var vY20 = 209 + CMR_PAD + 3 * 2.2;
+        var vH20 = gridTop - vY20 - 0.2;
+        if (vH20 < 1.6) vH20 = 1.6;
+        cmrValue(doc, cmrVal(p20.id), p20.x + CMR_PAD, vY20, pay20w - 2 * CMR_PAD, vH20, 4.4, 3);
     }
-    /* seven charge rows: label in column 1, empty cells in the payer columns;
-       a value from the form appears in its own row when filled in */
+    /* seven charge rows. One shared font size for all seven labels (wrapping to
+       two lines allowed) so the text size is consistent across the rows; each
+       label block and value is vertically centered in its row. Payer cells are
+       left empty to be filled in by hand. */
     var chargeIds = ["20carriage", "20deductions", "20balance", "20supplementary", "20misc", "20insurance", "20total"];
+    var chW = col20w - 2 * CMR_PAD;
+    /* find the largest shared size at which every label fits in <= 2 lines */
+    var chSize = 5;
+    doc.setFont("DejaVuSans", "normal");
+    for (var cs = 5; cs >= 3.2; cs -= 0.1) {
+        var allFit = true;
+        doc.setFontSize(cs);
+        for (var ct = 0; ct < CMR_LABELS.charges.length; ct++) {
+            var lns = cmrWrap(doc, CMR_LABELS.charges[ct], chW);
+            if (lns.length > 2) { allFit = false; break; }
+        }
+        if (allFit) { chSize = cs; break; }
+        chSize = cs;
+    }
+    doc.setFontSize(chSize);
+    var chGap = chSize * 0.42;          /* line gap in mm for the shared size */
+    var chH = chSize * 0.3528;          /* glyph height in mm */
     for (var ch = 0; ch < CMR_LABELS.charges.length; ch++) {
         var rowY20 = gridTop + ch * rowH;
         if (ch > 0) doc.line(102, rowY20, 196, rowY20);
-        var chFit = cmrFit(doc, CMR_LABELS.charges[ch], col20w - 2 * CMR_PAD, 4.4, 2.7, "normal", 1);
-        cmrDrawLines(doc, chFit.lines, 102 + CMR_PAD, rowY20 + (rowH - chFit.size * 0.72) / 2, rowH);
-        cmrValue(doc, cmrVal(chargeIds[ch]), 102 + col20w + CMR_PAD, rowY20 + 0.3, pay20w - 2 * CMR_PAD, rowH - 0.8, 4.4, 2.9);
+        doc.setFont("DejaVuSans", "normal");
+        doc.setFontSize(chSize);
+        var chLines = cmrWrap(doc, CMR_LABELS.charges[ch], chW);
+        var chBlock = chLines.length * chGap;
+        var chY = rowY20 + (rowH - chBlock) / 2;
+        cmrDrawLines(doc, chLines, 102 + CMR_PAD, chY + chH * 0.8, chGap);
+        cmrValue(doc, cmrVal(chargeIds[ch]), 102 + col20w + CMR_PAD, rowY20 + (rowH - 4 * 0.3528) / 2, pay20w - 2 * CMR_PAD, 4 * 0.3528 * 1.4, 4, 3);
     }
 
     /* 15: cash on delivery / reimbursement */
