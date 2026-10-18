@@ -379,13 +379,22 @@ function cmrDrawPage(doc, copyIndex) {
     for (var sc = 1; sc < 3; sc++) {
         doc.line(102 + sc * subW, 209, 102 + sc * subW, 243);
     }
-    cmrLabels(doc, CMR_LABELS.bySender, 102 + 1, 216.5, subW - 2, 5, 1.3);
-    cmrLabels(doc, CMR_LABELS.currency, 102 + subW + 1, 216.5, subW - 2, 5, 1.3);
-    cmrLabels(doc, CMR_LABELS.byConsignee, 102 + 2 * subW + 1, 216.5, subW - 2, 5, 1.3);
+    var pay20 = [
+        { labels: CMR_LABELS.bySender, x: 102 + 1, id: "20bysender" },
+        { labels: CMR_LABELS.currency, x: 102 + subW + 1, id: "20currency" },
+        { labels: CMR_LABELS.byConsignee, x: 102 + 2 * subW + 1, id: "20byconsignee" }
+    ];
+    for (var pc = 0; pc < pay20.length; pc++) {
+        var p20 = pay20[pc];
+        var after20 = cmrLabels(doc, p20.labels, p20.x, 216.5, subW - 2, 5, 1.3);
+        cmrValue(doc, cmrVal(p20.id), p20.x + 1, after20 + 0.3, subW - 3, 242.5 - after20 - 0.3, 7, 4);
+    }
+    var chargeIds = ["20carriage", "20deductions", "20balance", "20supplementary", "20misc", "20insurance", "20total"];
     var rowY = 224;
     for (var ch = 0; ch < CMR_LABELS.charges.length; ch++) {
-        var chFit = cmrFit(doc, CMR_LABELS.charges[ch], 90, 5, 3.2, "normal", 2);
+        var chFit = cmrFit(doc, CMR_LABELS.charges[ch], 60, 5, 3.2, "normal", 2);
         cmrDrawLines(doc, chFit.lines, 103.5, rowY, chFit.size * 1.3);
+        cmrValue(doc, cmrVal(chargeIds[ch]), 165, rowY - chFit.size * 0.86, 29, chFit.size * 1.4, chFit.size, chFit.size * 0.7);
         rowY += chFit.lines.length * chFit.size * 1.3 + 0.4;
     }
 
@@ -398,8 +407,8 @@ function cmrDrawPage(doc, copyIndex) {
     doc.rect(134, 252, 62, 35);
     cmrNumber(doc, 24, 136, 257);
     cmrLabels(doc, CMR_LABELS.f24, 136, 254.8, 58, 5, 1.3);
-    cmrLabelValue(doc, CMR_LABELS.f24place[0], cmrVal("deliveryplace"), 136, 261.5, 30, 5, 6);
-    cmrLabelValue(doc, CMR_LABELS.f24on[0], cmrVal("datepicker2"), 168, 261.5, 26, 5, 6);
+    cmrLabelValue(doc, CMR_LABELS.f24place[0], cmrVal("24place"), 136, 261.5, 30, 5, 6);
+    cmrLabelValue(doc, CMR_LABELS.f24on[0], cmrVal("24date"), 168, 261.5, 26, 5, 6);
     cmrLabelLines(doc, CMR_LABELS.f24sign, 136, 281.6, 58, 5, 3, 1.8);
 
     /* vertical notes, left margin */

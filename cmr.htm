@@ -1,17 +1,14 @@
 <!DOCTYPE html>
-<html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers no-applicationcache svg inlinesvg smil svgclippaths" lang="en" style=""><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="CMR Form">
-<meta name="keywords" content="CMR, Form, PDF">
-
 <title>CMR Form</title>
 
 <link rel="stylesheet" href="cmr_files/normalize.css">
 <link href="cmr_files/bootstrap.min.css" rel="stylesheet">
-<link href="cmr_files/bootstrap-responsive.css" rel="stylesheet">
 <link rel="stylesheet" href="cmr_files/jquery-ui.min.css">
 <link rel="stylesheet" href="cmr_files/jquery-ui.theme.min.css">
 
@@ -23,357 +20,277 @@
 <script src="cmr_files/basic.js"></script>
 
 <style type="text/css">
-  body {
-    padding-top: 40px;
-    padding-bottom: 40px;
-    background-color: #fcfcfc;
+  body { background-color: #fcfcfc; font-family: Arial, Helvetica, sans-serif; margin: 20px; }
+  .cmr-toolbox { max-width: 860px; margin: 0 auto 15px; text-align: center; }
+  .cmr-toolbox p { color: #555; font-size: 13px; margin: 6px 0; }
+  .cmr-page {
+    position: relative;
+    width: 840px;  /* 210mm at 4px/mm */
+    height: 1188px; /* 297mm at 4px/mm */
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 4px rgba(0,0,0,.12);
+    overflow: hidden;
   }
-  @font-face {
-    font-family: NHaasLt;
-    src: url(font/NHaasLt.ttf);
+  .box { position: absolute; border: 0.5px solid #ED1748; box-sizing: border-box; }
+  .box.fat { border-width: 2.4px; }
+  .lbl { position: absolute; color: #ED1748; font-size: 8px; line-height: 1.15; white-space: nowrap; overflow: visible; }
+  .lbl b { font-size: 8px; }
+  .num { position: absolute; color: #ED1748; font-weight: bold; font-size: 18px; line-height: 1; }
+  .inp, .cmr-page textarea {
+    position: absolute;
+    border: 0; background: transparent;
+    font-size: 11px; color: #000;
+    padding: 0 2px; margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
   }
-  @font-face {
-    font-family: NHaasBd;
-    src: url(font/NHaasBd.ttf);
-  }
-  p.small { padding: 1px; font-size: 0.75em; margin:0px;}
-  h1.typein { text-align: center; font-family: NHaasBd; color:#002453; }
-  h3.typein { text-align: center; font-family: NHaasBd; color:#002453; }
-  h4.align-right { text-align: right; }
-  .form-signin {
-    max-width: 1000px;
-    padding: 19px 29px 29px;
-    margin: 0 auto 0px;
-    background-color: #fff;
-    border: 1px solid #e5e5e5;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-    box-shadow: 0 1px 2px rgba(0,0,0,.05);
-  }
-  .form-signin .form-signin-heading,
-  .form-signin .checkbox {
-    margin-bottom: 10px;
-  }
-  .form-signin input[type="text"],
-  .form-signin input[type="password"] {
-    font-size: 16px;
-    height: auto;
-    margin-bottom: 15px;
-    padding: 7px 9px;
-  }
+  .inp:focus, .cmr-page textarea:focus { outline: 1px solid #4a90d9; background: #f2f8ff; }
+  .cmr-page textarea { resize: none; overflow: hidden; }
+  .vnote { position: absolute; color: #ED1748; font-size: 6px; transform-origin: left top; white-space: nowrap; }
+  .main-rect { position: absolute; border: 0.5px solid #ED1748; box-sizing: border-box; }
 </style>
 </head>
 
 <body>
-<section class="contact-area" id="contact">
-    <div class="container">
-        <form class="form-signin">
-
-<div class="row-fluid">
-  <div class="span6" style="position:relative; min-height:80px"><div style="position:absolute; bottom:0; left:0"> <font style="font-size:35px; color:#ED1748">1</font><font style="color:#ED1748">Copy for sender</font> </div>
-</div>
-  <div class="span6" style="position:relative; min-height:80px"><div style="position:absolute; bottom:25px; right:10px"><!--<img src="img/logo.png">--></div></div>
+<div class="cmr-toolbox">
+  <p>The form below mirrors the generated PDF. Fill in any field; the button produces a 4-copy PDF (sender, consignee, carrier, extra copy).</p>
+  <button class="btn btn-large btn-primary" type="button" onclick="generatePDF()">Nyomtatás -> PDF fájlba!</button>
 </div>
 
-<div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span6" style="border:1px; border-style:solid; color:#ED1748; padding:6px; min-height:135px">
-          <b>&nbsp;&nbsp; 1. Sender (name, address, country)</b>
-	  <textarea class="input-block-level" id="senderaddress" style="resize:none; border:0px; margin-left:12px; width:95%" rows="4" cols="60" placeholder="Írja be Feladó adatait"></textarea>
-        <div class="row-fluid">
-        </div>
-      </div>
-      <div class="span6" style="border:1px; border-bottom:0px; border-left:0px; border-style:solid; color:#ED1748; padding:6px; min-height:135px; margin-left:0px">
-          INTERNATIONAL CONSIGNMENT
-<div class="row-fluid">
-          <div class="span6"><h4 class="align-right">CMR no.</h4></div>
-          <div class="span5"><input type="number" class="input-block-level" id="cmrnumber" placeholder="Írja be a  számát" style="border:0px" min="1" max="99999" onkeypress="return isNumberKey(event)"></div>
-		<div class="span10"><p class="small">This carriage is subject 
-notwithstanding any clause to the contrary, to the Convention on the 
-Contract for the International Carriage of goods by road</p></div>
-        </div>
-      </div>
-    </div>
+<div class="cmr-page" id="cmrpage">
+  <div class="main-rect" style="left:56px; top:100px; width:728px; height:1048px;"></div>
+
+  <!-- copy indicator -->
+  <div class="lbl" style="left:56px; top:68px; font-size:9px;">1&nbsp;Copy for sender / Exemplar f&uuml;r den Absender / Felad&oacute; p&eacute;ld&aacute;nya</div>
+
+  <!-- header box -->
+  <div class="box" style="left:420px; top:100px; width:364px; height:96px;"></div>
+  <div class="lbl" style="left:432px; top:106px;">INTERNATIONAL CONSIGNMENT<br>INTERNATIONALER FRACHTBRIEF<br>NEMZETK&Ouml;ZI FUVARLEV&Eacute;L</div>
+  <div class="lbl" style="left:580px; top:128px; font-weight:bold; font-size:19px;">CMR</div>
+  <div class="lbl" style="left:632px; top:128px; font-size:13px;">No:</div>
+  <input class="inp" type="number" id="cmrnumber" min="1" max="99999" style="left:664px; top:124px; width:110px; height:18px;">
+  <div class="lbl" style="left:432px; top:146px; font-size:7px; line-height:1.25; white-space:normal; width:330px;">
+    This carriage is subject notwithstanding any clause to the contrary, to the Convention on the Contract for the international Carriage of goods by road (CMR)<br>
+    Diese Bef&ouml;rderung unterliegt trotz einer gegen-teiligen Abmachung den Bestimmungen des &Uuml;bereinkommens &uuml;ber den Bef&ouml;rderungsvertrag im internationalen Strasseng&uuml;terverkehr (CMR)<br>
+    A fuvaroz&aacute;sra elt&eacute;r&otilde; meg&aacute;llapod&aacute;s eset&eacute;n is a Nemzetk&ouml;zi &Aacute;rufuvaroz&aacute;si Egyezm&eacute;ny (CMR) rendelke-z&eacute;sei az ir&aacute;nyad&oacute;k.
   </div>
 
-<div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:165px">
-          <b>&nbsp;&nbsp; 2. Consignee (name, address, country)</b>
-	  <textarea class="input-block-level" id="consigneename" style="resize:none; border:0px; margin-left:12px; width:95%" rows="4" placeholder="Írja be a Feladó adatait"></textarea>
-        <div class="row-fluid">
-        </div>
-      </div>
-      <div class="span6" style="border:3px; border-bottom:1px; border-left:2px; border-style:solid; color:#ED1748; padding:6px; min-height:165px; margin-left:0px"><b>&nbsp;&nbsp; 16. Carrier (name, address, country)</b>
-	  <textarea class="input-block-level" id="carrieraddress" style="resize:none; border:0px; margin-left:12px; width:95%" rows="3" placeholder="Írja be a Fuvarozó adatait"></textarea>
-          <div class="span6">Vehicle Reg. no.</div>
-          <div class="span5"><input type="text" id="vehiclereg" class="input-block-level" placeholder="Jármű Rendszáma
-			  " style="border:0px"></div>
+  <!-- 1. Sender -->
+  <div class="box" style="left:56px; top:100px; width:364px; height:96px;"></div>
+  <div class="num" style="left:64px; top:104px;">1</div>
+  <div class="lbl" style="left:84px; top:104px;">Sender (name, address, country)<br>Absender (Name, Anschrift, Land)<br>Felad&oacute; (n&eacute;v, c&iacute;m, orsz&aacute;g)</div>
+  <textarea id="senderaddress" rows="3" style="left:84px; top:128px; width:330px; height:64px;"></textarea>
 
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- 2. Consignee -->
+  <div class="box" style="left:56px; top:196px; width:364px; height:96px;"></div>
+  <div class="num" style="left:64px; top:200px;">2</div>
+  <div class="lbl" style="left:84px; top:200px;">Consignee (name, address, country)<br>Empf&auml;nger (Name, Anschrift, Land)<br>&Aacute;tvev&otilde; (n&eacute;v, c&iacute;m, orsz&aacute;g)</div>
+  <textarea id="consigneename" rows="3" style="left:84px; top:224px; width:330px; height:64px;"></textarea>
 
-<div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:135px">
-          <b>&nbsp;&nbsp; 3. Place of delivery of the goods (place, country)</b>
-	  <textarea class="input-block-level" id="deliveryplace" style="resize:none; border:0px; margin-left:12px; width:95%" rows="4" placeholder="Írja be a Lerakóhely adatait"></textarea>
-        <div class="row-fluid">
-        </div>
-      </div>
-      <div class="span6" style="border:3px; border-bottom:1px; border-top:0px; border-left:2px; border-style:solid; color:#ED1748; padding:6px; min-height:135px; margin-left:0px"><b>&nbsp;&nbsp; 17. Successive carriers (name, address, country)</b>
-	  <textarea class="input-block-level" id="nextcarriers" style="resize:none; border:0px; margin-left:12px; width:95%" rows="4" placeholder="További Fuvarozók adatai"></textarea>
+  <!-- 3. Place of delivery -->
+  <div class="box" style="left:56px; top:292px; width:364px; height:96px;"></div>
+  <div class="num" style="left:64px; top:296px;">3</div>
+  <div class="lbl" style="left:84px; top:296px;">Place of delivery of the goods (place, country)<br>Auslieferungsort des Gutes (Ort, Land)<br>Az &aacute;ru kiszolg&aacute;ltat&aacute;si helye (hely, orsz&aacute;g)</div>
+  <textarea id="deliveryplace" rows="3" style="left:84px; top:320px; width:330px; height:64px;"></textarea>
 
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- 4. Place and date taking over -->
+  <div class="box" style="left:56px; top:388px; width:364px; height:60px;"></div>
+  <div class="num" style="left:64px; top:392px;">4</div>
+  <div class="lbl" style="left:84px; top:392px;">Place and date taking over the goods<br>Ort und Tag der &Uuml;bernahme des Gutes<br>&Aacute;ru &aacute;tv&eacute;tel&eacute;nek helye &eacute;s id&otilde;pontja</div>
+  <textarea id="takingoverplace" rows="1" style="left:84px; top:414px; width:180px; height:28px;"></textarea>
+  <input class="inp hasDatepicker" type="text" id="datepicker" style="left:280px; top:414px; width:130px; height:20px;">
 
-<script>
-$(document).ready(
+  <!-- 5. Documents attached -->
+  <div class="box" style="left:56px; top:448px; width:364px; height:60px;"></div>
+  <div class="num" style="left:64px; top:452px;">5</div>
+  <div class="lbl" style="left:84px; top:452px;">Documents attached<br>Beigef&uuml;gte Dokumente<br>Mell&eacute;kelt okm&aacute;nyok</div>
+  <textarea id="documents" rows="1" style="left:84px; top:474px; width:330px; height:28px;"></textarea>
 
-  /* This is the function that will get executed after the DOM is fully loaded */
-  function () { $( "#datepicker" ).datepicker({
-      changeMonth: true,//this option for allowing user to select month
-      changeYear: true, //this option for allowing user to select from year range
-      dateFormat: "dd/mm/yy"
-    });
-  }
-);
-</script>
+  <!-- goods table 6-12 -->
+  <div class="box" style="left:56px; top:508px; width:728px; height:212px;"></div>
+  <div class="num" style="left:68px; top:512px;">6</div>
+  <div class="lbl" style="left:88px; top:512px;">Marks and Nos<br>Kennzeichen und Nummern<br>Jelz&eacute;s &eacute;s sz&aacute;mok</div>
+  <div class="num" style="left:188px; top:512px;">7</div>
+  <div class="lbl" style="left:208px; top:512px;">Number of packages<br>Anzahl der Packst&uuml;cke<br>Csomagok sz&aacute;ma</div>
+  <div class="num" style="left:304px; top:512px;">8</div>
+  <div class="lbl" style="left:324px; top:512px;">Method of packing<br>Art der Verpackung<br>Csomagol&aacute;s m&oacute;dja</div>
+  <div class="num" style="left:408px; top:512px;">9</div>
+  <div class="lbl" style="left:428px; top:512px;">Nature of the goods<br>Bezeichnung des Gutes<br>&Aacute;ru megnevez&eacute;se</div>
+  <div class="num" style="left:512px; top:512px;">10</div>
+  <div class="lbl" style="left:532px; top:512px;">Statistical number<br>Statistiknummer<br>Statisztikai sz&aacute;m</div>
+  <div class="num" style="left:604px; top:512px;">11</div>
+  <div class="lbl" style="left:624px; top:512px;">Gross weight in kg<br>Bruttogewicht in kg<br>Brutt&oacute; s&uacute;ly (kg)</div>
+  <div class="num" style="left:696px; top:512px;">12</div>
+  <div class="lbl" style="left:716px; top:512px; white-space:normal; width:60px;">Volume in m3<br>Umfang m3<br>T&eacute;rfogat (m3)</div>
+  <div class="box" style="left:184px; top:508px; width:0; height:212px; border-width:0; border-right-width:0.5px;"></div>
+  <!-- column separators -->
+  <div class="box" style="left:300px; top:508px; height:212px; width:0; border-width:0 0 0 0.5px;"></div>
+  <div class="box" style="left:404px; top:508px; height:212px; width:0; border-width:0 0 0 0.5px;"></div>
+  <div class="box" style="left:508px; top:508px; height:212px; width:0; border-width:0 0 0 0.5px;"></div>
+  <div class="box" style="left:600px; top:508px; height:212px; width:0; border-width:0 0 0 0.5px;"></div>
+  <div class="box" style="left:692px; top:508px; height:212px; width:0; border-width:0 0 0 0.5px;"></div>
+  <!-- 4 value rows, row height 10.5mm = 42px, first at 552px -->
+  <input class="inp" id="6marks1" style="left:60px; top:556px; width:120px; height:20px;" maxlength="16">
+  <input class="inp" id="6marks2" style="left:60px; top:598px; width:120px; height:20px;" maxlength="16">
+  <input class="inp" id="6marks3" style="left:60px; top:640px; width:120px; height:20px;" maxlength="16">
+  <input class="inp" id="6marks4" style="left:60px; top:682px; width:120px; height:20px;" maxlength="16">
+  <input class="inp" type="number" id="7number1" min="1" max="99999" style="left:188px; top:556px; width:105px; height:20px;">
+  <input class="inp" type="number" id="7number2" min="1" max="99999" style="left:188px; top:598px; width:105px; height:20px;">
+  <input class="inp" type="number" id="7number3" min="1" max="99999" style="left:188px; top:640px; width:105px; height:20px;">
+  <input class="inp" type="number" id="7number4" min="1" max="99999" style="left:188px; top:682px; width:105px; height:20px;">
+  <input class="inp" id="8method1" style="left:304px; top:556px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="8method2" style="left:304px; top:598px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="8method3" style="left:304px; top:640px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="8method4" style="left:304px; top:682px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="9nature1" style="left:408px; top:556px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="9nature2" style="left:408px; top:598px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="9nature3" style="left:408px; top:640px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="9nature4" style="left:408px; top:682px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="10number1" style="left:512px; top:556px; width:82px; height:20px;">
+  <input class="inp" id="10number2" style="left:512px; top:598px; width:82px; height:20px;">
+  <input class="inp" id="10number3" style="left:512px; top:640px; width:82px; height:20px;">
+  <input class="inp" id="10number4" style="left:512px; top:682px; width:82px; height:20px;">
+  <input class="inp" type="number" id="11kg1" min="1" max="28000" style="left:604px; top:556px; width:82px; height:20px;">
+  <input class="inp" type="number" id="11kg2" min="1" max="28000" style="left:604px; top:598px; width:82px; height:20px;">
+  <input class="inp" type="number" id="11kg3" min="1" max="28000" style="left:604px; top:640px; width:82px; height:20px;">
+  <input class="inp" type="number" id="11kg4" min="1" max="28000" style="left:604px; top:682px; width:82px; height:20px;">
+  <input class="inp" type="number" id="12volume1" min="1" max="28000" style="left:696px; top:556px; width:84px; height:20px;">
+  <input class="inp" type="number" id="12volume2" min="1" max="28000" style="left:696px; top:598px; width:84px; height:20px;">
+  <input class="inp" type="number" id="12volume3" min="1" max="28000" style="left:696px; top:640px; width:84px; height:20px;">
+  <input class="inp" type="number" id="12volume4" min="1" max="28000" style="left:696px; top:682px; width:84px; height:20px;">
+  <!-- row separators -->
+  <div class="box" style="left:56px; top:546px; width:728px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="box" style="left:56px; top:588px; width:728px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="box" style="left:56px; top:630px; width:728px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="box" style="left:56px; top:672px; width:728px; height:0; border-width:0.5px 0 0 0;"></div>
 
-<div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:80px">
-          <b>&nbsp;&nbsp; 4. Place and date taking over the goods (place, country, date)</b>
-	  <div class="span7"><textarea class="input-block-level" id="takingoverplace" style="resize:none; border:0px; margin-left:12px; width:95%" rows="1" placeholder="Indulás helye"></textarea></div>
-	  <div class="span3"><input class="input-block-level hasDatepicker" id="datepicker" style="resize:none; border:0px; margin-left:12px; width:95%" rows="1" placeholder="dátuma"></div>
-        <div class="row-fluid">
-        </div>
-      </div>
-      <div class="span6" style="border:3px; border-bottom:0px; border-left:2px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:80px; margin-left:0px"><b>&nbsp;&nbsp; 18. Carriers reservations and observations</b>
-          <textarea class="input-block-level" id="carrierobservations" style="resize:none; border:0px; margin-left:12px; width:95%;" rows="1" placeholder="Írja be a Fuvarozó esetleges fenntartásait, megjegyzéseit"></textarea>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- ADR row -->
+  <div class="box" style="left:56px; top:720px; width:728px; height:28px;"></div>
+  <div class="lbl" style="left:68px; top:726px;">Class</div>
+  <input class="inp" id="6class" style="left:80px; top:726px; width:96px; height:16px;">
+  <div class="lbl" style="left:192px; top:726px;">Number</div>
+  <input class="inp" id="7number" style="left:216px; top:726px; width:96px; height:16px;">
+  <div class="lbl" style="left:308px; top:726px;">Letter</div>
+  <input class="inp" id="8letter" style="left:328px; top:726px; width:80px; height:16px;">
+  <div class="lbl" style="left:408px; top:726px;">(ADR*)</div>
+  <input class="inp" id="9adr" style="left:424px; top:726px; width:352px; height:16px;">
 
-<div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:80px">
-          <b>&nbsp;&nbsp; 5. Documents attached</b>
-	  <textarea class="input-block-level" id="documents" style="resize:none; border:0px; margin-left:12px; width:95%" rows="1" placeholder="Csatolt okmányok"></textarea>
-        <div class="row-fluid">
-        </div>
-      </div>
-      <div class="span6" style="border:3px; border-top:0px; border-left:2px; border-style:solid; color:#ED1748; padding:6px; min-height:80px; margin-left:0px">
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- 13. Sender's instructions -->
+  <div class="box fat" style="left:56px; top:748px; width:352px; height:168px;"></div>
+  <div class="num" style="left:62px; top:754px;">13</div>
+  <div class="lbl" style="left:84px; top:754px;">Sender's instructions<br>Anweisungen des Absenders<br>A felad&oacute; rendelkez&eacute;sei</div>
+  <textarea id="sendersinstructions" rows="4" style="left:84px; top:780px; width:316px; height:130px;"></textarea>
 
-    <div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
+  <!-- 14. Payment for carriage -->
+  <div class="box" style="left:56px; top:916px; width:352px; height:56px;"></div>
+  <div class="num" style="left:62px; top:922px;">14</div>
+  <div class="lbl" style="left:84px; top:922px;">Instruction as to payment for carriage<br>Frachtzahlungsanweisungen<br>Fuvard&iacute;jfizet&eacute;si rendelkez&eacute;sek</div>
+  <textarea id="carriageinstructions" rows="1" style="left:84px; top:944px; width:316px; height:16px;"></textarea>
+  <div class="lbl" style="left:84px; top:964px; font-size:7px;">Carriage paid / Frei / B&eacute;rmentve</div>
+  <input class="inp" id="carriagepaid" style="left:200px; top:962px; width:60px; height:14px;">
+  <div class="lbl" style="left:268px; top:964px; font-size:7px;">Carriage forward /</div>
+  <input class="inp" id="carriageforward" style="left:340px; top:962px; width:64px; height:14px;">
 
-      <div class="span2" style="border:1px; border-top:0px; border-right:0px; border-style:solid; color:#ED1748; padding:2px; margin-right:0px; min-height:220px">
-          <b>&nbsp;&nbsp; 6. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Jelek, és számok</font></b>
-	  <input class="input-block-level" id="6marks1" style="border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Jelek, és számok" maxlength="16">
-      <input class="input-block-level" id="6marks2" style="border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Jelek, és számok" maxlength="16">
-      <input class="input-block-level" id="6marks3" style="border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Jelek, és számok" maxlength="16">
-      <input class="input-block-level" id="6marks4" style="border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Jelek, és számok" maxlength="16">
-      </div>
+  <!-- 21. Established in / on -->
+  <div class="box" style="left:56px; top:972px; width:352px; height:36px;"></div>
+  <div class="num" style="left:62px; top:978px;">21</div>
+  <div class="lbl" style="left:84px; top:978px; font-size:7px;">Established in / Ausgefertigt in / Ki&aacute;ll&iacute;t&aacute;s helye</div>
+  <input class="inp" id="establishedin" style="left:84px; top:990px; width:120px; height:16px;">
+  <div class="lbl" style="left:212px; top:978px; font-size:7px;">on / am / id&otilde;pontja</div>
+  <input class="inp hasDatepicker" type="text" id="datepicker2" style="left:248px; top:990px; width:150px; height:16px;">
 
-      <div class="span2" style="width:125px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px"><b>&nbsp;&nbsp; 7. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Csomag darabszám</font></b>
-            <input type="number" class="input-block-level" id="7number1" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Csomag darabszám" min="1" max="99999" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="7number2" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Csomag darabszám" min="1" max="99999" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="7number3" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Csomag darabszám" min="1" max="99999" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="7number4" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Csomag darabszám" min="1" max="99999" onkeypress="return isNumberKey(event)">
-        </div>
+  <!-- 22. Signature sender -->
+  <div class="box" style="left:56px; top:1008px; width:240px; height:140px;"></div>
+  <div class="num" style="left:62px; top:1014px;">22</div>
+  <div class="lbl" style="left:62px; top:1126px; font-size:7px;">Signature and stamp of the sender<br>Unterschrift und Stempel des Absenders<br>Felad&oacute; al&aacute;&iacute;r&aacute;sa &eacute;s b&eacute;lyegz&otilde;je</div>
 
-        <div class="span2" style="width:115px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px"><b>&nbsp;&nbsp; 8. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Csomagolás fajtája</font></b>
-	  <input class="input-block-level" id="8method1" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Csomagolás fajtája" maxlength="16">
-      <input class="input-block-level" id="8method2" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Csomagolás fajtája" maxlength="16">
-      <input class="input-block-level" id="8method3" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Csomagolás fajtája" maxlength="16">
-      <input class="input-block-level" id="8method4" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Csomagolás fajtája" maxlength="16">
-        </div>
+  <!-- 23. Signature carrier -->
+  <div class="box" style="left:296px; top:1008px; width:240px; height:140px;"></div>
+  <div class="num" style="left:302px; top:1014px;">23</div>
+  <div class="lbl" style="left:302px; top:1126px; font-size:7px;">Signature and stamp of the carrier<br>Unterschrift und Stempel des Frachtf&uuml;hrers<br>Fuvaroz&oacute; al&aacute;&iacute;r&aacute;sa &eacute;s b&eacute;lyegz&otilde;je</div>
 
-        <div class="span2" style="width:165px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px"><b>&nbsp;&nbsp; 9. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Árumegnevezés</font></b>
-	  <input class="input-block-level" id="9nature1" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Árumegnevezés" maxlength="16">
-      <input class="input-block-level" id="9nature2" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Árumegnevezés" maxlength="16">
-      <input class="input-block-level" id="9nature3" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Árumegnevezés">
-      <input class="input-block-level" id="9nature4" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Árumegnevezés">
-        </div>
+  <!-- 16. Carrier -->
+  <div class="box fat" style="left:420px; top:196px; width:364px; height:96px;"></div>
+  <div class="num" style="left:428px; top:200px;">16</div>
+  <div class="lbl" style="left:448px; top:200px;">Carrier (name, address, country)<br>Frachtf&uuml;hrer (Name, Anschrift, Land)<br>Fuvaroz&oacute; (n&eacute;v, c&iacute;m, orsz&aacute;g)</div>
+  <textarea id="carrieraddress" rows="2" style="left:448px; top:224px; width:324px; height:44px;"></textarea>
+  <div class="lbl" style="left:448px; top:280px; font-size:7px;">REG. NO. / Kennzeichen / Rendsz&aacute;m:</div>
+  <input class="inp" id="vehiclereg" style="left:608px; top:278px; width:164px; height:16px;">
 
-        <div class="span2" style="width:120px; border:0px; border-bottom:0px; border-left:1px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px"><b>&nbsp;&nbsp; 10. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Vámtarifaszám</font></b>
-	  <input class="input-block-level" id="10number1" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Vámtarifaszám">
-      <input class="input-block-level" id="10number2" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Vámtarifaszám">
-      <input class="input-block-level" id="10number3" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Vámtarifaszám">
-      <input class="input-block-level" id="10number4" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Vámtarifaszám">
-        </div>
+  <!-- 17. Successive carriers -->
+  <div class="box fat" style="left:420px; top:292px; width:364px; height:96px;"></div>
+  <div class="num" style="left:428px; top:298px;">17</div>
+  <div class="lbl" style="left:448px; top:298px;">Successive carriers (name, address, country)<br>Nachfolgende Frachtf&uuml;hrer (Name, Anschrift, Land)<br>Tov&aacute;bbi fuvaroz&oacute;k (n&eacute;v, c&iacute;m, orsz&aacute;g)</div>
+  <textarea id="nextcarriers" rows="2" style="left:448px; top:324px; width:324px; height:56px;"></textarea>
 
-        <div class="span2" style="width:129px; border:0px; border-bottom:0px; border-left:1px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px"><b>&nbsp;&nbsp; 11. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Bruttó súly [kg]</font></b>
-	       <input type="number" class="input-block-level" id="11kg1" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Bruttó súly [kg]" min="1" max="28000" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="11kg2" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Bruttó súly [kg]" min="1" max="28000" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="11kg3" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Bruttó súly [kg]" min="1" max="28000" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="11kg4" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Bruttó súly [kg]" min="1" max="28000" onkeypress="return isNumberKey(event)">
-        </div>
-        <div class="span2" style="width:125px; border:1px; border-bottom:0px; border-top:0px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px; margin-right:0px"><b>&nbsp;&nbsp; 12. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Térfogat [m3]</font></b>
-	       <input type="number" class="input-block-level" id="12volume1" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Térfogat [m3]" min="1" max="28000" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="12volume2" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Térfogat [m3]" min="1" max="28000" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="12volume3" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Térfogat [m3]" min="1" max="28000" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="12volume4" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Térfogat [m3]" min="1" max="28000" onkeypress="return isNumberKey(event)">
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- 18. Carrier's reservations -->
+  <div class="box fat" style="left:420px; top:388px; width:364px; height:120px;"></div>
+  <div class="num" style="left:428px; top:394px;">18</div>
+  <div class="lbl" style="left:448px; top:394px;">Carrier's reservations and observations<br>Vorbehalte und Bemerkungen des Frachtf&uuml;hrers<br>Fuvaroz&oacute; megjegyz&eacute;sei &eacute;s fenntart&aacute;sai</div>
+  <textarea id="carrierobservations" rows="2" style="left:448px; top:420px; width:324px; height:76px;"></textarea>
 
-    <div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
+  <!-- 19. Special agreements -->
+  <div class="box" style="left:408px; top:748px; width:376px; height:88px;"></div>
+  <div class="num" style="left:414px; top:754px;">19</div>
+  <div class="lbl" style="left:440px; top:754px;">Special agreements<br>Besondere Vereinbarungen<br>K&uuml;l&ouml;nleges meg&aacute;llapod&aacute;sok</div>
+  <textarea id="specialagreements" rows="2" style="left:440px; top:780px; width:336px; height:48px;"></textarea>
 
-      <div class="span2" style="width:100px; border:1px; border-top:0px; border-right:0px; border-style:solid; color:#ED1748; padding:2px; margin-right:0px; min-height:66px">
-          <b><font style="font-size:11px">&nbsp;&nbsp;&nbsp; Class</font></b>
-	  <input class="input-block-level" id="6class" style="border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Osztály">
-      </div>
+  <!-- 20. To be paid by -->
+  <div class="box fat" style="left:408px; top:836px; width:376px; height:136px;"></div>
+  <div class="num" style="left:414px; top:842px;">20</div>
+  <div class="lbl" style="left:440px; top:842px;">To be paid by<br>Zu zahlen vom<br>Fizetend&otilde;</div>
+  <div class="box" style="left:532px; top:836px; height:136px; width:0; border-width:0 0 0 0.5px;"></div>
+  <div class="box" style="left:656px; top:836px; height:136px; width:0; border-width:0 0 0 0.5px;"></div>
+  <div class="lbl" style="left:410px; top:866px; font-size:7px;">Sender<br>Absender<br>Felad&oacute;</div>
+  <input class="inp" id="20bysender" style="left:412px; top:892px; width:112px; height:16px;">
+  <div class="lbl" style="left:534px; top:866px; font-size:7px;">Currency<br>W&auml;hrung<br>P&eacute;nznem</div>
+  <input class="inp" id="20currency" style="left:536px; top:892px; width:112px; height:16px;">
+  <div class="lbl" style="left:658px; top:866px; font-size:7px;">Consignee<br>Empf&auml;nger<br>&Aacute;tvev&otilde;</div>
+  <input class="inp" id="20byconsignee" style="left:660px; top:892px; width:112px; height:16px;">
+  <div class="lbl" style="left:414px; top:912px; font-size:7px;">Carriage charges / Fracht / Fuvaroz&aacute;si d&iacute;j</div>
+  <input class="inp" id="20carriage" style="left:600px; top:910px; width:176px; height:14px;">
+  <div class="lbl" style="left:414px; top:922px; font-size:7px;">Deductions / Erm&auml;&szlig;igungen / Kedvezm&eacute;nyek</div>
+  <input class="inp" id="20deductions" style="left:600px; top:920px; width:176px; height:14px;">
+  <div class="lbl" style="left:414px; top:932px; font-size:7px;">Balance / Zuschl&auml;ge / Egyenleg</div>
+  <input class="inp" id="20balance" style="left:600px; top:930px; width:176px; height:14px;">
+  <div class="lbl" style="left:414px; top:942px; font-size:7px;">Supplementary charges / Nebengeb&uuml;hren</div>
+  <input class="inp" id="20supplementary" style="left:600px; top:940px; width:176px; height:14px;">
+  <div class="lbl" style="left:414px; top:952px; font-size:7px;">Miscellaneous / Sonstiges / Egy&eacute;b</div>
+  <input class="inp" id="20misc" style="left:600px; top:950px; width:176px; height:14px;">
+  <div class="lbl" style="left:414px; top:962px; font-size:7px;">Insurance / Versicherung / Biztos&iacute;t&aacute;s</div>
+  <input class="inp" id="20insurance" style="left:600px; top:960px; width:176px; height:14px;">
+  <div class="lbl" style="left:414px; top:971px; font-weight:bold; font-size:7px;">Total to be paid / Gesamtsumme / V&eacute;g&ouml;sszeg</div>
+  <input class="inp" id="20total" style="left:600px; top:969px; width:176px; height:14px;">
 
-      <div class="span2" style="width:70px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:69px; margin-left:0px"><b><font style="font-size:11px">&nbsp;&nbsp;&nbsp; Number</font></b>
-            <input type="number" class="input-block-level" id="7number" style="resize:none; border:0px; margin-left:12px; width:95%" placeholder="Szám" min="1" max="99999" onkeypress="return isNumberKey(event)">
-        </div>
+  <!-- 15. Cash on delivery -->
+  <div class="box" style="left:408px; top:972px; width:376px; height:36px;"></div>
+  <div class="num" style="left:414px; top:978px;">15</div>
+  <div class="lbl" style="left:440px; top:978px; font-size:7px;">Reimbursement / R&uuml;ckerstattung / Visszat&eacute;r&iacute;t&eacute;s</div>
+  <input class="inp" id="cashondelivery" style="left:440px; top:992px; width:200px; height:14px;">
 
-        <div class="span2" style="width:90px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:66px; margin-left:0px"><b><font style="font-size:11px">&nbsp;&nbsp;&nbsp; Letter</font></b>
-	  <input class="input-block-level" id="8letter" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Csom.csoport">
-        </div>
+  <!-- 24. Consignee receipt -->
+  <div class="box" style="left:536px; top:1008px; width:248px; height:140px;"></div>
+  <div class="num" style="left:542px; top:1014px;">24</div>
+  <div class="lbl" style="left:544px; top:1018px; font-size:7px;">Goods received / Gut empfangen / &Aacute;ru &aacute;tv&eacute;tele</div>
+  <div class="lbl" style="left:544px; top:1046px; font-size:7px;">Place / Ort / Hely</div>
+  <input class="inp" id="24place" style="left:604px; top:1044px; width:80px; height:14px;">
+  <div class="lbl" style="left:692px; top:1046px; font-size:7px;">on / am / id&otilde;pont</div>
+  <input class="inp hasDatepicker" type="text" id="24date" style="left:716px; top:1044px; width:60px; height:14px;">
+  <div class="lbl" style="left:544px; top:1126px; font-size:7px;">Signature and stamp of the consignee<br>Unterschrift und Stempel des Empf&auml;ngers<br>&Aacute;tvev&otilde; al&aacute;&iacute;r&aacute;sa &eacute;s b&eacute;lyegz&otilde;je</div>
 
-        <div class="span2" style="width:282px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:66px; margin-left:0px"><b><font style="font-size:11px">&nbsp;&nbsp;&nbsp; (ADR*)</font></b>
-	  <input class="input-block-level" id="9adr" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="UN szám, ADR szállítási megnevezés">
-        </div>
+  <!-- vertical margin notes -->
+  <div class="vnote" style="left:30px; top:940px; transform: rotate(-90deg) translateY(-100%); transform-origin: left bottom;">To be completed on the sender's responsibility / Auszuf&uuml;llen unter der Verantwortung des Absenders / A felad&oacute; felel&otilde;ss&eacute;g&eacute;re kit&ouml;ltend&otilde;</div>
+  <div class="vnote" style="left:34px; top:940px; transform: rotate(-90deg) translateY(-100%); transform-origin: left bottom;">1 - 15</div>
+  <div class="vnote" style="left:42px; top:940px; transform: rotate(-90deg) translateY(-100%); transform-origin: left bottom;">19 + 20 + 22</div>
 
-        <div class="span2" style="width:119px; border:0px; border-bottom:1px; border-left:1px; border-style:solid; color:#ED1748; padding:2px; min-height:69px; margin-left:0px">
-        </div>
+  <div class="lbl" style="left:56px; top:1160px; font-size:9px;">Sic itur ad astra!</div>
+</div>
 
-        <div class="span2" style="width:129px; border:0px; border-bottom:1px; border-left:1px; border-style:solid; color:#ED1748; padding:2px; min-height:69px; margin-left:0px">
-        </div>
-
-        <div class="span2" style="width:125px; border:1px; border-bottom:1px; border-top:0px; border-style:solid; color:#ED1748; padding:2px; min-height:69px; margin-left:0px; margin-right:0px">
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:120px">
-          <b>&nbsp;&nbsp; 13. Sender's instructions</b>
-	  <textarea class="input-block-level" id="sendersinstructions" style="resize:none; border:0px; margin-left:12px; width:90%" rows="3" placeholder="Írja be a feladó utasításai"></textarea>
-        <div class="row-fluid">
-        </div>
-      </div>
-      <div class="span6" style="border:1px; border-top:0px; border-left:0px; border-style:solid; color:#ED1748; padding:6px; min-height:120px; margin-left:0px">
-        <b>&nbsp;&nbsp; 19. Special agreements</b>
-        <textarea class="input-block-level" id="specialagreements" style="resize:none; border:0px; margin-left:12px; width:90%" rows="3" placeholder="Irja be a külön utasításokat"></textarea>
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:120px">
-          <b>&nbsp;&nbsp; 14. Instruction as to payment for carriage</b>
-	  <textarea class="input-block-level" id="carriageinstructions" style="resize:none; border:0px; margin-left:12px; width:90%" rows="1" placeholder="Írja be a fuvardíj fizetésére vonatkozó utasításokat"></textarea>
-        <div class="row-fluid">
-        <div class="span3" style="width:105px; margin:-4px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
-            Carriage paid:
-            </div>
-            <div class="span3" style="margin-top:-4px; margin-left:3px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
-
-            <input class="input-block-level" id="carriagepaid" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Fizetve">
-            </div>
-            <div class="span3" style="width:125px; margin:-4px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
-            Carriage forward:
-            </div>
-            <div class="span3" style="margin-top:-4px; margin-left:3px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
-
-            <input class="input-block-level" id="carriageforward" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Fizetendő">
-            </div>
-          </div>
-      </div>
-      <div class="span6" style="border:3px;  border-style:solid; color:#ED1748; padding:6px; min-height:120px; margin-left:0px">
-        <b>&nbsp;&nbsp; 20. To be paid by</b>
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:83px">
-          <b>&nbsp;&nbsp; 21. Established in:</b>
-        <div class="row-fluid">
-            <div class="span6" style="margin-top:-4px; margin-left:3px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
-            <input class="input-block-level" id="establishedin" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Kiállítva">
-            </div>
-            <div class="span6" style="margin-top:-4px; margin-left:3px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
-            <input class="input-block-level hasDatepicker" style="resize:none; border:0px; margin-left:12px; width:95%" rows="1" placeholder="Dátum" id="datepicker2">
-            </div>
-          </div>
-      </div>
-      <div class="span6" style="border:1px; border-top:0px; border-left:0px; border-style:solid; color:#ED1748; padding:6px; min-height:85px; margin-left:0px">
-        <b>&nbsp;&nbsp; 15. Cash on delivery</b>
-        <input class="input-block-level" id="cashondelivery" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Átvételkor készpénzben fizetendő">
-        </div>
-      </div>
-    </div>
-  </div>
-<script>
-$(document).ready(
-
-  /* This is the function that will get executed after the DOM is fully loaded */
-  function () { $( "#datepicker2" ).datepicker({
-      changeMonth: true,//this option for allowing user to select month
-      changeYear: true, //this option for allowing user to select from year range
-      dateFormat: "yyyy.mm.dd"
-    });
-  }
-);
-</script>
-
- <div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span4" style="width:306px; border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:83px">
-          <b>&nbsp;&nbsp; 22. Signature and stamp of the sender</b>
-      </div>
-      <div class="span4" style="width:300px; border:1px; border-top:0px; border-left:0px; border-style:solid; color:#ED1748; padding:6px; min-height:83px; margin-left:0px">
-        <b>&nbsp;&nbsp; 23. Signature and stamp of the carrier</b>
-        </div>
-      <div class="span4" style="width:310px; border:1px; border-top:0px; border-left:0px; border-style:solid; color:#ED1748; padding:6px; min-height:83px; margin-left:0px">
-        <b>&nbsp;&nbsp; 24. Signature and stamp of the consignee</b>
-        </div>
-      </div>
-    </div>
-  </div>
-
-<br><p>A program négy példányt fog generálni (feladó, fuvarozó, címzett, plusz 1 példányt). </p><br>
-
-      <button class="btn btn-large btn-primary" type="button" onclick="generatePDF()">Nyomtatás -&gt; PDF fájlba!</button>
-
-      </form>
-    </div>
+<div class="cmr-toolbox">
+  <button class="btn btn-large btn-primary" type="button" onclick="generatePDF()">Nyomtatás -> PDF fájlba!</button>
+</div>
 
 <script>
 function isNumberKey(evt) {
@@ -385,6 +302,7 @@ function isNumberKey(evt) {
 jQuery(function () {
     jQuery("#datepicker").datepicker({ changeMonth: true, changeYear: true, dateFormat: "dd/mm/yy" });
     jQuery("#datepicker2").datepicker({ changeMonth: true, changeYear: true, dateFormat: "yy.mm.dd" });
+    jQuery("#24date").datepicker({ changeMonth: true, changeYear: true, dateFormat: "yy.mm.dd" });
 });
 </script>
 </body>
