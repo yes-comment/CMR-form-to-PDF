@@ -13,8 +13,8 @@ var CMR_LABELS = {
     header: ["INTERNATIONAL CONSIGNMENT", "INTERNATIONALER FRACHTBRIEF", "NEMZETK\u00d6ZI FUVARLEV\u00c9L"],
     convention: [
         "This carriage is subject notwithstanding any clause to the contrary, to the Convention on the Contract for the international Carriage of goods by road (CMR)",
-        "Diese Bef\u00f6rderung unterliegt trotz einer gegen-teiligen Abmachung den Bestimmungen des \u00dcbereinkommens \u00fcber den Bef\u00f6rderungsvertrag im internationalen Strasseng\u00fcterverkehr (CMR)",
-        "A fuvaroz\u00e1sra elt\u00e9r\u0151 meg\u00e1llapod\u00e1s eset\u00e9n is a Nemzetk\u00f6zi \u00c1rufuvaroz\u00e1si Egyezm\u00e9ny (CMR) rendelke-z\u00e9sei az ir\u00e1nyad\u00f3k."
+        "Diese Bef\u00f6rderung unterliegt trotz einer gegenteiligen Abmachung den Bestimmungen des \u00dcbereinkommens \u00fcber den Bef\u00f6rderungsvertrag im internationalen Strasseng\u00fcterverkehr (CMR)",
+        "A fuvaroz\u00e1sra elt\u00e9r\u0151 meg\u00e1llapod\u00e1s eset\u00e9n is a Nemzetk\u00f6zi \u00c1rufuvaroz\u00e1si Egyezm\u00e9ny (CMR) rendelkez\u00e9sei az ir\u00e1nyad\u00f3k."
     ],
     f1: ["Sender (name, address, country)", "Absender (Name, Anschrift, Land)", "Felad\u00f3 (n\u00e9v, c\u00edm, orsz\u00e1g)"],
     f2: ["Consignee (name, address, country)", "Empf\u00e4nger (Name, Anschrift, Land)", "\u00c1tvev\u0151 (n\u00e9v, c\u00edm, orsz\u00e1g)"],
