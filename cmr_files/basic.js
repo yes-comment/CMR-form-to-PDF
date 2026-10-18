@@ -3,10 +3,10 @@
    wrapped to its box and auto-shrunk, so any language and any input length fit. */
 
 var CMR_COPIES = [
-    ["Copy for sender", "Exemplar f\u00fcr den Absender", "Felad\u00f3 p\u00e9ld\u00e1nya"],
-    ["Copy for consignee", "Exemplar f\u00fcr den Empf\u00e4nger", "C\u00edmzett p\u00e9ld\u00e1nya"],
-    ["Copy for carrier", "Exemplar f\u00fcr den Frachtf\u00fchrer", "Fuvaroz\u00f3 p\u00e9ld\u00e1nya"],
-    ["Extra copy", "Zus\u00e4tzliches Exemplar", "Plusz egy p\u00e9ld\u00e1ny"]
+    { labels: ["Copy for sender", "Exemplar f\u00fcr den Absender", "Felad\u00f3 p\u00e9ld\u00e1nya"], color: [237, 23, 72] },
+    { labels: ["Copy for consignee", "Exemplar f\u00fcr den Empf\u00e4nger", "C\u00edmzett p\u00e9ld\u00e1nya"], color: [0, 130, 200] },
+    { labels: ["Copy for carrier", "Exemplar f\u00fcr den Frachtf\u00fchrer", "Fuvaroz\u00f3 p\u00e9ld\u00e1nya"], color: [0, 169, 79] },
+    { labels: ["Extra copy", "Zus\u00e4tzliches Exemplar", "Plusz egy p\u00e9ld\u00e1ny"], color: [34, 30, 31] }
 ];
 
 var CMR_LABELS = {
@@ -69,7 +69,7 @@ var CMR_LABELS = {
     ]
 };
 
-var RED = [237, 23, 72];
+var CMR_COLOR = [237, 23, 72];
 
 function cmrVal(id) {
     var el = document.getElementById(id);
@@ -120,22 +120,24 @@ function cmrDrawLines(doc, lines, x, yTop, lineHeight) {
 }
 
 /* Draw a multi-language label block at (x, yTop); each language wrapped and shrunk to fit.
+   lineGap is a fixed baseline gap in mm (as in the original form).
    Returns the y coordinate below the last drawn line. */
 function cmrLabels(doc, labels, x, yTop, maxWidth, size, lineGap) {
-    doc.setTextColor(RED[0], RED[1], RED[2]);
-    var y = yTop;
+    doc.setTextColor(CMR_COLOR[0], CMR_COLOR[1], CMR_COLOR[2]);
+    var gap = lineGap || 1.8;
+    var y = yTop + 0.8;
     for (var i = 0; i < labels.length; i++) {
         if (!labels[i]) continue;
         var fit = cmrFit(doc, labels[i], maxWidth, size, 3.5, "normal", 3);
-        cmrDrawLines(doc, fit.lines, x, y + fit.size * 0.86, fit.size * lineGap);
-        y += fit.lines.length * fit.size * lineGap;
+        cmrDrawLines(doc, fit.lines, x, y + fit.size * 0.86, gap);
+        y += fit.lines.length * gap;
     }
     return y;
 }
 
 /* One line per language, shrunk to fit maxWidth; fixed line gap. Returns bottom y used. */
 function cmrLabelLines(doc, labels, x, yTop, maxWidth, startSize, minSize, gap) {
-    doc.setTextColor(RED[0], RED[1], RED[2]);
+    doc.setTextColor(CMR_COLOR[0], CMR_COLOR[1], CMR_COLOR[2]);
     var g = gap || 1.8;
     for (var i = 0; i < labels.length; i++) {
         var size = startSize;
@@ -156,7 +158,7 @@ function cmrLabelLines(doc, labels, x, yTop, maxWidth, startSize, minSize, gap) 
 function cmrNumber(doc, n, x, y) {
     doc.setFont("DejaVuSans", "bold");
     doc.setFontSize(13);
-    doc.setTextColor(RED[0], RED[1], RED[2]);
+    doc.setTextColor(CMR_COLOR[0], CMR_COLOR[1], CMR_COLOR[2]);
     doc.text(x, y, String(n));
     return x + 5;
 }
@@ -188,7 +190,7 @@ function cmrValue(doc, value, x, yTop, maxWidth, maxHeight, startSize, minSize) 
 
 /* Label followed on the same baseline by a value; value continues after the label text. */
 function cmrLabelValue(doc, label, value, x, y, maxWidth, labelSize, valueSize) {
-    doc.setTextColor(RED[0], RED[1], RED[2]);
+    doc.setTextColor(CMR_COLOR[0], CMR_COLOR[1], CMR_COLOR[2]);
     var fit = cmrFit(doc, label, maxWidth, labelSize, 3.5, "normal", 2);
     cmrDrawLines(doc, fit.lines, x, y, fit.size * 1.25);
     var lastLine = fit.lines[fit.lines.length - 1];
@@ -207,37 +209,42 @@ function cmrLabelValue(doc, label, value, x, y, maxWidth, labelSize, valueSize) 
 function cmrDrawPage(doc, copyIndex) {
     var thin = 0.1, fat = 0.6;
     var copy = CMR_COPIES[copyIndex];
+    CMR_COLOR = copy.color;
 
-    doc.setDrawColor(RED[0], RED[1], RED[2]);
+    doc.setDrawColor(CMR_COLOR[0], CMR_COLOR[1], CMR_COLOR[2]);
     doc.setLineWidth(thin);
     doc.rect(14, 25, 182, 262);
 
     /* copy indicator */
     doc.setFont("DejaVuSans", "bold");
-    doc.setTextColor(RED[0], RED[1], RED[2]);
+    doc.setTextColor(CMR_COLOR[0], CMR_COLOR[1], CMR_COLOR[2]);
     doc.setFontSize(28);
     doc.text(7, 25, String(copyIndex + 1));
     doc.setFontSize(6.5);
-    cmrDrawLines(doc, copy, 14, 20, 2);
+    cmrDrawLines(doc, copy.labels, 14, 20, 2);
 
     /* header box */
     doc.rect(105, 25, 91, 24);
     doc.setFont("DejaVuSans", "normal");
     doc.setFontSize(5.5);
-    doc.setTextColor(RED[0], RED[1], RED[2]);
-    cmrDrawLines(doc, CMR_LABELS.header, 108, 27, 2);
+    doc.setTextColor(CMR_COLOR[0], CMR_COLOR[1], CMR_COLOR[2]);
+    cmrDrawLines(doc, CMR_LABELS.header, 108, 26.8, 1.8);
     doc.setFont("DejaVuSans", "bold");
     doc.setFontSize(14);
+    doc.setTextColor(CMR_COLOR[0], CMR_COLOR[1], CMR_COLOR[2]);
     doc.text(145, 33.5, "CMR");
-    doc.setFontSize(10);
-    doc.text(155, 33, "No:");
-    cmrValue(doc, cmrVal("cmrnumber"), 165, 31, 28, 5, 10, 5);
-    var convY = 36.5;
+    doc.setFont("DejaVuSans", "normal");
+    doc.setFontSize(9);
+    var noLbl = "No:";
+    var noW = doc.getTextWidth(noLbl);
+    doc.text(160, 33, noLbl);
+    cmrValue(doc, cmrVal("cmrnumber"), 160 + noW + 1.5, 32.2, 194 - 160 - noW - 1.5, 4, 9, 5);
+    var convY = 35.8;
     doc.setFont("DejaVuSans", "normal");
     for (var ci = 0; ci < CMR_LABELS.convention.length; ci++) {
-        var conv = cmrFit(doc, CMR_LABELS.convention[ci], 84, 5, 2.8, "normal", 3);
-        cmrDrawLines(doc, conv.lines, 108, convY, conv.size * 1.35);
-        convY += conv.lines.length * conv.size * 1.35;
+        var conv = cmrFit(doc, CMR_LABELS.convention[ci], 84, 4.6, 3.2, "normal", 4);
+        cmrDrawLines(doc, conv.lines, 108, convY, 1.55);
+        convY += conv.lines.length * 1.55;
     }
 
     /* left column boxes 1-3 */
@@ -295,7 +302,7 @@ function cmrDrawPage(doc, copyIndex) {
     /* ADR row */
     doc.rect(14, 180, 182, 7);
     doc.setFont("DejaVuSans", "normal");
-    doc.setTextColor(RED[0], RED[1], RED[2]);
+    doc.setTextColor(CMR_COLOR[0], CMR_COLOR[1], CMR_COLOR[2]);
     var adrX = 17;
     for (var ar = 0; ar < CMR_LABELS.adrRow.length; ar++) {
         var aFit = cmrFit(doc, CMR_LABELS.adrRow[ar], 20, 5, 3, "normal", 2);
@@ -414,7 +421,7 @@ function cmrDrawPage(doc, copyIndex) {
     /* vertical notes, left margin */
     doc.setFont("DejaVuSans", "normal");
     doc.setFontSize(4.5);
-    doc.setTextColor(RED[0], RED[1], RED[2]);
+    doc.setTextColor(CMR_COLOR[0], CMR_COLOR[1], CMR_COLOR[2]);
     for (var vs = 0; vs < CMR_LABELS.vertSender.length; vs++) {
         doc.text(8.5 + vs * 1.8, 231, CMR_LABELS.vertSender[vs], null, 90);
     }

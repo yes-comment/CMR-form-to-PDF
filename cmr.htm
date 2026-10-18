@@ -40,13 +40,13 @@
   .num { position: absolute; color: #ED1748; font-weight: bold; font-size: 18px; line-height: 1; }
   .inp, .cmr-page textarea {
     position: absolute;
-    border: 0; background: transparent;
+    border: 1px solid #b8c4d0; background: #fdfefe;
     font-size: 11px; color: #000;
     padding: 0 2px; margin: 0;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
   }
-  .inp:focus, .cmr-page textarea:focus { outline: 1px solid #4a90d9; background: #f2f8ff; }
+  .inp:focus, .cmr-page textarea:focus { outline: 1px solid #4a90d9; background: #f2f8ff; border-color: #4a90d9; }
   .cmr-page textarea { resize: none; overflow: hidden; }
   .vnote { position: absolute; color: #ED1748; font-size: 6px; transform-origin: left top; white-space: nowrap; }
   .main-rect { position: absolute; border: 0.5px solid #ED1748; box-sizing: border-box; }
@@ -70,8 +70,8 @@
   <div class="lbl" style="left:432px; top:106px;">INTERNATIONAL CONSIGNMENT<br>INTERNATIONALER FRACHTBRIEF<br>NEMZETK&Ouml;ZI FUVARLEV&Eacute;L</div>
   <div class="lbl" style="left:580px; top:128px; font-weight:bold; font-size:19px;">CMR</div>
   <div class="lbl" style="left:632px; top:128px; font-size:13px;">No:</div>
-  <input class="inp" type="number" id="cmrnumber" min="1" max="99999" style="left:664px; top:124px; width:110px; height:18px;">
-  <div class="lbl" style="left:432px; top:146px; font-size:7px; line-height:1.25; white-space:normal; width:330px;">
+  <input class="inp" type="text" id="cmrnumber" style="left:664px; top:124px; width:110px; height:18px;">
+  <div class="lbl" style="left:432px; top:146px; font-size:6px; line-height:1.2; white-space:normal; width:336px;">
     This carriage is subject notwithstanding any clause to the contrary, to the Convention on the Contract for the international Carriage of goods by road (CMR)<br>
     Diese Bef&ouml;rderung unterliegt trotz einer gegen-teiligen Abmachung den Bestimmungen des &Uuml;bereinkommens &uuml;ber den Bef&ouml;rderungsvertrag im internationalen Strasseng&uuml;terverkehr (CMR)<br>
     A fuvaroz&aacute;sra elt&eacute;r&otilde; meg&aacute;llapod&aacute;s eset&eacute;n is a Nemzetk&ouml;zi &Aacute;rufuvaroz&aacute;si Egyezm&eacute;ny (CMR) rendelke-z&eacute;sei az ir&aacute;nyad&oacute;k.
@@ -111,19 +111,19 @@
   <!-- goods table 6-12 -->
   <div class="box" style="left:56px; top:508px; width:728px; height:212px;"></div>
   <div class="num" style="left:68px; top:512px;">6</div>
-  <div class="lbl" style="left:88px; top:512px;">Marks and Nos<br>Kennzeichen und Nummern<br>Jelz&eacute;s &eacute;s sz&aacute;mok</div>
+  <div class="lbl" style="left:88px; top:512px; font-size:7px;">Marks and Nos<br>Kennzeichen u. Nummern<br>Jelz&eacute;s &eacute;s sz&aacute;mok</div>
   <div class="num" style="left:188px; top:512px;">7</div>
-  <div class="lbl" style="left:208px; top:512px;">Number of packages<br>Anzahl der Packst&uuml;cke<br>Csomagok sz&aacute;ma</div>
+  <div class="lbl" style="left:208px; top:512px; font-size:7px;">Number of packages<br>Anzahl d. Packst&uuml;cke<br>Csomagok sz&aacute;ma</div>
   <div class="num" style="left:304px; top:512px;">8</div>
-  <div class="lbl" style="left:324px; top:512px;">Method of packing<br>Art der Verpackung<br>Csomagol&aacute;s m&oacute;dja</div>
+  <div class="lbl" style="left:324px; top:512px; font-size:7px;">Method of packing<br>Art der Verpackung<br>Csomagol&aacute;s m&oacute;dja</div>
   <div class="num" style="left:408px; top:512px;">9</div>
-  <div class="lbl" style="left:428px; top:512px;">Nature of the goods<br>Bezeichnung des Gutes<br>&Aacute;ru megnevez&eacute;se</div>
+  <div class="lbl" style="left:428px; top:512px; font-size:7px;">Nature of the goods<br>Bezeichnung des Gutes<br>&Aacute;ru megnevez&eacute;se</div>
   <div class="num" style="left:512px; top:512px;">10</div>
-  <div class="lbl" style="left:532px; top:512px;">Statistical number<br>Statistiknummer<br>Statisztikai sz&aacute;m</div>
+  <div class="lbl" style="left:532px; top:512px; font-size:7px;">Statistical number<br>Statistiknummer<br>Statisztikai sz&aacute;m</div>
   <div class="num" style="left:604px; top:512px;">11</div>
-  <div class="lbl" style="left:624px; top:512px;">Gross weight in kg<br>Bruttogewicht in kg<br>Brutt&oacute; s&uacute;ly (kg)</div>
+  <div class="lbl" style="left:624px; top:512px; font-size:7px;">Gross weight in kg<br>Bruttogewicht kg<br>Brutt&oacute; s&uacute;ly (kg)</div>
   <div class="num" style="left:696px; top:512px;">12</div>
-  <div class="lbl" style="left:716px; top:512px; white-space:normal; width:60px;">Volume in m3<br>Umfang m3<br>T&eacute;rfogat (m3)</div>
+  <div class="lbl" style="left:716px; top:512px; white-space:normal; width:60px; font-size:7px;">Volume in m3<br>Umfang m3<br>T&eacute;rfogat (m3)</div>
   <div class="box" style="left:184px; top:508px; width:0; height:212px; border-width:0; border-right-width:0.5px;"></div>
   <!-- column separators -->
   <div class="box" style="left:300px; top:508px; height:212px; width:0; border-width:0 0 0 0.5px;"></div>
@@ -136,10 +136,10 @@
   <input class="inp" id="6marks2" style="left:60px; top:598px; width:120px; height:20px;" maxlength="16">
   <input class="inp" id="6marks3" style="left:60px; top:640px; width:120px; height:20px;" maxlength="16">
   <input class="inp" id="6marks4" style="left:60px; top:682px; width:120px; height:20px;" maxlength="16">
-  <input class="inp" type="number" id="7number1" min="1" max="99999" style="left:188px; top:556px; width:105px; height:20px;">
-  <input class="inp" type="number" id="7number2" min="1" max="99999" style="left:188px; top:598px; width:105px; height:20px;">
-  <input class="inp" type="number" id="7number3" min="1" max="99999" style="left:188px; top:640px; width:105px; height:20px;">
-  <input class="inp" type="number" id="7number4" min="1" max="99999" style="left:188px; top:682px; width:105px; height:20px;">
+  <input class="inp" type="text" id="7number1" style="left:188px; top:556px; width:105px; height:20px;">
+  <input class="inp" type="text" id="7number2" style="left:188px; top:598px; width:105px; height:20px;">
+  <input class="inp" type="text" id="7number3" style="left:188px; top:640px; width:105px; height:20px;">
+  <input class="inp" type="text" id="7number4" style="left:188px; top:682px; width:105px; height:20px;">
   <input class="inp" id="8method1" style="left:304px; top:556px; width:92px; height:20px;" maxlength="16">
   <input class="inp" id="8method2" style="left:304px; top:598px; width:92px; height:20px;" maxlength="16">
   <input class="inp" id="8method3" style="left:304px; top:640px; width:92px; height:20px;" maxlength="16">
@@ -152,14 +152,14 @@
   <input class="inp" id="10number2" style="left:512px; top:598px; width:82px; height:20px;">
   <input class="inp" id="10number3" style="left:512px; top:640px; width:82px; height:20px;">
   <input class="inp" id="10number4" style="left:512px; top:682px; width:82px; height:20px;">
-  <input class="inp" type="number" id="11kg1" min="1" max="28000" style="left:604px; top:556px; width:82px; height:20px;">
-  <input class="inp" type="number" id="11kg2" min="1" max="28000" style="left:604px; top:598px; width:82px; height:20px;">
-  <input class="inp" type="number" id="11kg3" min="1" max="28000" style="left:604px; top:640px; width:82px; height:20px;">
-  <input class="inp" type="number" id="11kg4" min="1" max="28000" style="left:604px; top:682px; width:82px; height:20px;">
-  <input class="inp" type="number" id="12volume1" min="1" max="28000" style="left:696px; top:556px; width:84px; height:20px;">
-  <input class="inp" type="number" id="12volume2" min="1" max="28000" style="left:696px; top:598px; width:84px; height:20px;">
-  <input class="inp" type="number" id="12volume3" min="1" max="28000" style="left:696px; top:640px; width:84px; height:20px;">
-  <input class="inp" type="number" id="12volume4" min="1" max="28000" style="left:696px; top:682px; width:84px; height:20px;">
+  <input class="inp" type="text" id="11kg1" style="left:604px; top:556px; width:82px; height:20px;">
+  <input class="inp" type="text" id="11kg2" style="left:604px; top:598px; width:82px; height:20px;">
+  <input class="inp" type="text" id="11kg3" style="left:604px; top:640px; width:82px; height:20px;">
+  <input class="inp" type="text" id="11kg4" style="left:604px; top:682px; width:82px; height:20px;">
+  <input class="inp" type="text" id="12volume1" style="left:696px; top:556px; width:84px; height:20px;">
+  <input class="inp" type="text" id="12volume2" style="left:696px; top:598px; width:84px; height:20px;">
+  <input class="inp" type="text" id="12volume3" style="left:696px; top:640px; width:84px; height:20px;">
+  <input class="inp" type="text" id="12volume4" style="left:696px; top:682px; width:84px; height:20px;">
   <!-- row separators -->
   <div class="box" style="left:56px; top:546px; width:728px; height:0; border-width:0.5px 0 0 0;"></div>
   <div class="box" style="left:56px; top:588px; width:728px; height:0; border-width:0.5px 0 0 0;"></div>
@@ -204,12 +204,12 @@
   <!-- 22. Signature sender -->
   <div class="box" style="left:56px; top:1008px; width:240px; height:140px;"></div>
   <div class="num" style="left:62px; top:1014px;">22</div>
-  <div class="lbl" style="left:62px; top:1126px; font-size:7px;">Signature and stamp of the sender<br>Unterschrift und Stempel des Absenders<br>Felad&oacute; al&aacute;&iacute;r&aacute;sa &eacute;s b&eacute;lyegz&otilde;je</div>
+  <div class="lbl" style="left:62px; top:1126px; font-size:6px;">Signature and stamp of the sender<br>Unterschrift und Stempel des Absenders<br>Felad&oacute; al&aacute;&iacute;r&aacute;sa &eacute;s b&eacute;lyegz&otilde;je</div>
 
   <!-- 23. Signature carrier -->
   <div class="box" style="left:296px; top:1008px; width:240px; height:140px;"></div>
   <div class="num" style="left:302px; top:1014px;">23</div>
-  <div class="lbl" style="left:302px; top:1126px; font-size:7px;">Signature and stamp of the carrier<br>Unterschrift und Stempel des Frachtf&uuml;hrers<br>Fuvaroz&oacute; al&aacute;&iacute;r&aacute;sa &eacute;s b&eacute;lyegz&otilde;je</div>
+  <div class="lbl" style="left:302px; top:1126px; font-size:6px;">Signature and stamp of the carrier<br>Unterschrift und Stempel des Frachtf&uuml;hrers<br>Fuvaroz&oacute; al&aacute;&iacute;r&aacute;sa &eacute;s b&eacute;lyegz&otilde;je</div>
 
   <!-- 16. Carrier -->
   <div class="box fat" style="left:420px; top:196px; width:364px; height:96px;"></div>
@@ -249,19 +249,19 @@
   <input class="inp" id="20currency" style="left:536px; top:892px; width:112px; height:16px;">
   <div class="lbl" style="left:658px; top:866px; font-size:7px;">Consignee<br>Empf&auml;nger<br>&Aacute;tvev&otilde;</div>
   <input class="inp" id="20byconsignee" style="left:660px; top:892px; width:112px; height:16px;">
-  <div class="lbl" style="left:414px; top:912px; font-size:7px;">Carriage charges / Fracht / Fuvaroz&aacute;si d&iacute;j</div>
+  <div class="lbl" style="left:414px; top:912px; font-size:6px; width:178px;">Carriage charges / Fracht / Fuvaroz&aacute;si d&iacute;j</div>
   <input class="inp" id="20carriage" style="left:600px; top:910px; width:176px; height:14px;">
-  <div class="lbl" style="left:414px; top:922px; font-size:7px;">Deductions / Erm&auml;&szlig;igungen / Kedvezm&eacute;nyek</div>
+  <div class="lbl" style="left:414px; top:922px; font-size:6px; width:178px;">Deductions / Erm&auml;&szlig;igungen / Kedvezm&eacute;nyek</div>
   <input class="inp" id="20deductions" style="left:600px; top:920px; width:176px; height:14px;">
-  <div class="lbl" style="left:414px; top:932px; font-size:7px;">Balance / Zuschl&auml;ge / Egyenleg</div>
+  <div class="lbl" style="left:414px; top:932px; font-size:6px; width:178px;">Balance / Zuschl&auml;ge / Egyenleg</div>
   <input class="inp" id="20balance" style="left:600px; top:930px; width:176px; height:14px;">
-  <div class="lbl" style="left:414px; top:942px; font-size:7px;">Supplementary charges / Nebengeb&uuml;hren</div>
+  <div class="lbl" style="left:414px; top:942px; font-size:6px; width:178px;">Supplementary charges / Nebengeb&uuml;hren</div>
   <input class="inp" id="20supplementary" style="left:600px; top:940px; width:176px; height:14px;">
-  <div class="lbl" style="left:414px; top:952px; font-size:7px;">Miscellaneous / Sonstiges / Egy&eacute;b</div>
+  <div class="lbl" style="left:414px; top:952px; font-size:6px; width:178px;">Miscellaneous / Sonstiges / Egy&eacute;b</div>
   <input class="inp" id="20misc" style="left:600px; top:950px; width:176px; height:14px;">
-  <div class="lbl" style="left:414px; top:962px; font-size:7px;">Insurance / Versicherung / Biztos&iacute;t&aacute;s</div>
+  <div class="lbl" style="left:414px; top:962px; font-size:6px; width:178px;">Insurance / Versicherung / Biztos&iacute;t&aacute;s</div>
   <input class="inp" id="20insurance" style="left:600px; top:960px; width:176px; height:14px;">
-  <div class="lbl" style="left:414px; top:971px; font-weight:bold; font-size:7px;">Total to be paid / Gesamtsumme / V&eacute;g&ouml;sszeg</div>
+  <div class="lbl" style="left:414px; top:971px; font-weight:bold; font-size:6px; width:178px;">Total to be paid / Gesamtsumme / V&eacute;g&ouml;sszeg</div>
   <input class="inp" id="20total" style="left:600px; top:969px; width:176px; height:14px;">
 
   <!-- 15. Cash on delivery -->
@@ -278,7 +278,7 @@
   <input class="inp" id="24place" style="left:604px; top:1044px; width:80px; height:14px;">
   <div class="lbl" style="left:692px; top:1046px; font-size:7px;">on / am / id&otilde;pont</div>
   <input class="inp hasDatepicker" type="text" id="24date" style="left:716px; top:1044px; width:60px; height:14px;">
-  <div class="lbl" style="left:544px; top:1126px; font-size:7px;">Signature and stamp of the consignee<br>Unterschrift und Stempel des Empf&auml;ngers<br>&Aacute;tvev&otilde; al&aacute;&iacute;r&aacute;sa &eacute;s b&eacute;lyegz&otilde;je</div>
+  <div class="lbl" style="left:544px; top:1126px; font-size:6px;">Signature and stamp of the consignee<br>Unterschrift und Stempel des Empf&auml;ngers<br>&Aacute;tvev&otilde; al&aacute;&iacute;r&aacute;sa &eacute;s b&eacute;lyegz&otilde;je</div>
 
   <!-- vertical margin notes -->
   <div class="vnote" style="left:30px; top:940px; transform: rotate(-90deg) translateY(-100%); transform-origin: left bottom;">To be completed on the sender's responsibility / Auszuf&uuml;llen unter der Verantwortung des Absenders / A felad&oacute; felel&otilde;ss&eacute;g&eacute;re kit&ouml;ltend&otilde;</div>
