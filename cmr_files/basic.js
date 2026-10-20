@@ -3,6 +3,7 @@
    wrapped to its box and auto-shrunk, so any language and any input length fit. */
 
 var CMR_COLOR = [237, 23, 72];
+var cmrChargeSize = null;   /* cached shared charge-row font size */
 var CMR_COPIES = CMR_DICT.copies;
 var CMR_LABELS = CMR_DICT.labels;
 
@@ -393,19 +394,23 @@ function cmrDrawPage(doc, copyIndex, color) {
        left empty to be filled in by hand. */
     var chargeIds = ["20carriage", "20deductions", "20balance", "20supplementary", "20misc", "20insurance", "20total"];
     var chW = col20w - 2 * CMR_PAD;
-    /* find the largest shared size at which every label fits in <= 2 lines */
-    var chSize = 5;
-    doc.setFont("DejaVuSans", "normal");
-    for (var cs = 5; cs >= 3.2; cs -= 0.1) {
-        var allFit = true;
-        doc.setFontSize(cs);
-        for (var ct = 0; ct < CMR_LABELS.charges.length; ct++) {
-            var lns = cmrWrap(doc, CMR_LABELS.charges[ct], chW);
-            if (lns.length > 2) { allFit = false; break; }
+    /* find the largest shared size at which every label fits in <= 2 lines;
+       computed once and cached across the four copies */
+    if (cmrChargeSize === null) {
+        cmrChargeSize = 5;
+        doc.setFont("DejaVuSans", "normal");
+        for (var cs = 5; cs >= 3.2; cs -= 0.1) {
+            var allFit = true;
+            doc.setFontSize(cs);
+            for (var ct = 0; ct < CMR_LABELS.charges.length; ct++) {
+                var lns = cmrWrap(doc, CMR_LABELS.charges[ct], chW);
+                if (lns.length > 2) { allFit = false; break; }
+            }
+            if (allFit) { cmrChargeSize = cs; break; }
+            cmrChargeSize = cs;
         }
-        if (allFit) { chSize = cs; break; }
-        chSize = cs;
     }
+    var chSize = cmrChargeSize;
     doc.setFontSize(chSize);
     var chGap = chSize * 0.42;          /* line gap in mm for the shared size */
     var chH = chSize * 0.3528;          /* glyph height in mm */
