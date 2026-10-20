@@ -31,7 +31,21 @@
   }
   #cmrwrap { margin: 0 auto; overflow: visible; }
   #cmrwrap.scaled .cmr-page { border: 0; }
-  .lbl20row { font-size: 5px; line-height: 1.15; white-space: normal !important; width: 142px; }
+  /* Section 20: real CSS grid inside the fixed box (rows/lines derive from the grid) */
+  .s20grid {
+    position: absolute; left: 408px; top: 864px; width: 376px; height: 140px;
+    display: grid;
+    grid-template-columns: 152px 1fr 1fr 1fr;
+    grid-template-rows: repeat(7, 1fr);
+  }
+  .s20cell {
+    display: flex; align-items: center; padding: 0 5px;
+    box-sizing: border-box; min-width: 0; overflow: hidden;
+  }
+  .s20cell .lbl { position: static; white-space: normal; line-height: 1.15; }
+  .s20cell input { width: 100%; }
+  .s20cell:nth-child(4n+2), .s20cell:nth-child(4n+3), .s20cell:nth-child(4n+4) { border-left: 0.5px solid #ED1748; }
+  .s20cell:nth-child(n+5) { border-top: 0.5px solid #ED1748; }
   .inp20cell { font-size: 8px; padding: 0 1px; }
   .btn {
     display: inline-block; padding: 5px 12px; margin: 0 3px;
@@ -120,19 +134,19 @@
   <!-- goods table 6-12 -->
   <div class="box" style="left:56px; top:508px; width:728px; height:212px;"></div>
   <div class="num" style="left:62px; top:512px;">6</div>
-  <div class="lbl" style="left:79px; top:512px; font-size:6px; white-space:normal; width:101px; line-height:1.1;" data-dict="f6"><br></div>
+  <div class="lbl" style="left:79px; top:512px; font-size:6px; white-space:normal; width:101px; line-height:1.1;" data-dict="f6" data-fit data-fitw="101" data-fitl="3" data-fits="6" data-fitmin="4"><br></div>
   <div class="num" style="left:190px; top:512px;">7</div>
-  <div class="lbl" style="left:207px; top:512px; font-size:6px; white-space:normal; width:89px; line-height:1.1;" data-dict="f7"><br></div>
+  <div class="lbl" style="left:207px; top:512px; font-size:6px; white-space:normal; width:89px; line-height:1.1;" data-dict="f7" data-fit data-fitw="89" data-fitl="3" data-fits="6" data-fitmin="4"><br></div>
   <div class="num" style="left:306px; top:512px;">8</div>
-  <div class="lbl" style="left:323px; top:512px; font-size:6px; white-space:normal; width:77px; line-height:1.1;" data-dict="f8"><br></div>
+  <div class="lbl" style="left:323px; top:512px; font-size:6px; white-space:normal; width:77px; line-height:1.1;" data-dict="f8" data-fit data-fitw="77" data-fitl="3" data-fits="6" data-fitmin="4"><br></div>
   <div class="num" style="left:410px; top:512px;">9</div>
-  <div class="lbl" style="left:427px; top:512px; font-size:6px; white-space:normal; width:77px; line-height:1.1;" data-dict="f9"><br></div>
+  <div class="lbl" style="left:427px; top:512px; font-size:6px; white-space:normal; width:77px; line-height:1.1;" data-dict="f9" data-fit data-fitw="77" data-fitl="3" data-fits="6" data-fitmin="4"><br></div>
   <div class="num" style="left:514px; top:512px;">10</div>
-  <div class="lbl" style="left:542px; top:512px; font-size:6px; white-space:normal; width:54px; line-height:1.1;" data-dict="f10"><br></div>
+  <div class="lbl" style="left:542px; top:512px; font-size:6px; white-space:normal; width:54px; line-height:1.1;" data-dict="f10" data-fit data-fitw="54" data-fitl="3" data-fits="6" data-fitmin="4"><br></div>
   <div class="num" style="left:606px; top:512px;">11</div>
-  <div class="lbl" style="left:634px; top:512px; font-size:6px; white-space:normal; width:54px; line-height:1.1;" data-dict="f11"><br></div>
+  <div class="lbl" style="left:634px; top:512px; font-size:6px; white-space:normal; width:54px; line-height:1.1;" data-dict="f11" data-fit data-fitw="54" data-fitl="3" data-fits="6" data-fitmin="4"><br></div>
   <div class="num" style="left:698px; top:512px;">12</div>
-  <div class="lbl" style="left:726px; top:512px; white-space:normal; width:54px; font-size:6px; line-height:1.1;" data-dict="f12"><br></div>
+  <div class="lbl" style="left:726px; top:512px; white-space:normal; width:54px; font-size:6px; line-height:1.1;" data-dict="f12" data-fit data-fitw="54" data-fitl="3" data-fits="6" data-fitmin="4"><br></div>
   <div class="box" style="left:184px; top:508px; width:0; height:212px; border-width:0; border-right-width:0.5px;"></div>
   <!-- column separators -->
   <div class="box" style="left:300px; top:508px; height:212px; width:0; border-width:0 0 0 0.5px;"></div>
@@ -141,6 +155,34 @@
   <div class="box" style="left:600px; top:508px; height:212px; width:0; border-width:0 0 0 0.5px;"></div>
   <div class="box" style="left:692px; top:508px; height:212px; width:0; border-width:0 0 0 0.5px;"></div>
   <!-- 4 value rows, row height 10.5mm = 42px, first at 552px -->
+  <input class="inp" id="6marks1" style="left:60px; top:556px; width:120px; height:20px;" maxlength="16">
+  <input class="inp" id="6marks2" style="left:60px; top:598px; width:120px; height:20px;" maxlength="16">
+  <input class="inp" id="6marks3" style="left:60px; top:640px; width:120px; height:20px;" maxlength="16">
+  <input class="inp" id="6marks4" style="left:60px; top:682px; width:120px; height:20px;" maxlength="16">
+  <input class="inp" type="text" id="7number1" style="left:188px; top:556px; width:105px; height:20px;">
+  <input class="inp" type="text" id="7number2" style="left:188px; top:598px; width:105px; height:20px;">
+  <input class="inp" type="text" id="7number3" style="left:188px; top:640px; width:105px; height:20px;">
+  <input class="inp" type="text" id="7number4" style="left:188px; top:682px; width:105px; height:20px;">
+  <input class="inp" id="8method1" style="left:304px; top:556px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="8method2" style="left:304px; top:598px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="8method3" style="left:304px; top:640px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="8method4" style="left:304px; top:682px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="9nature1" style="left:408px; top:556px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="9nature2" style="left:408px; top:598px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="9nature3" style="left:408px; top:640px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="9nature4" style="left:408px; top:682px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="10number1" style="left:512px; top:556px; width:82px; height:20px;">
+  <input class="inp" id="10number2" style="left:512px; top:598px; width:82px; height:20px;">
+  <input class="inp" id="10number3" style="left:512px; top:640px; width:82px; height:20px;">
+  <input class="inp" id="10number4" style="left:512px; top:682px; width:82px; height:20px;">
+  <input class="inp" type="text" id="11kg1" style="left:604px; top:556px; width:82px; height:20px;">
+  <input class="inp" type="text" id="11kg2" style="left:604px; top:598px; width:82px; height:20px;">
+  <input class="inp" type="text" id="11kg3" style="left:604px; top:640px; width:82px; height:20px;">
+  <input class="inp" type="text" id="11kg4" style="left:604px; top:682px; width:82px; height:20px;">
+  <input class="inp" type="text" id="12volume1" style="left:696px; top:556px; width:84px; height:20px;">
+  <input class="inp" type="text" id="12volume2" style="left:696px; top:598px; width:84px; height:20px;">
+  <input class="inp" type="text" id="12volume3" style="left:696px; top:640px; width:84px; height:20px;">
+  <input class="inp" type="text" id="12volume4" style="left:696px; top:682px; width:84px; height:20px;">
   <input class="inp" id="6marks1" style="left:60px; top:556px; width:120px; height:20px;" maxlength="16">
   <input class="inp" id="6marks2" style="left:60px; top:598px; width:120px; height:20px;" maxlength="16">
   <input class="inp" id="6marks3" style="left:60px; top:640px; width:120px; height:20px;" maxlength="16">
@@ -250,9 +292,9 @@
 <div class="box fat" style="left:408px; top:836px; width:376px; height:168px;"></div>
 <div class="num" style="left:414px; top:842px;">20</div>
 <div class="lbl" style="left:442px; top:842px;" data-dict="f20"><br></div>
-<div class="box" style="left:560px; top:836px; width:0; height:168px; border-width:0 0 0 0.5px;"></div>
-<div class="box" style="left:635px; top:836px; width:0; height:168px; border-width:0 0 0 0.5px;"></div>
-<div class="box" style="left:709px; top:836px; width:0; height:168px; border-width:0 0 0 0.5px;"></div>
+<div class="box" style="left:560px; top:836px; width:0; height:28px; border-width:0 0 0 0.5px;"></div>
+<div class="box" style="left:635px; top:836px; width:0; height:28px; border-width:0 0 0 0.5px;"></div>
+<div class="box" style="left:709px; top:836px; width:0; height:28px; border-width:0 0 0 0.5px;"></div>
 <div class="box" style="left:408px; top:864px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
 <div class="lbl" style="left:566px; top:842px;" data-dict="bySender"><br></div>
 <div class="lbl" style="left:641px; top:842px;" data-dict="currency"><br></div>
@@ -260,40 +302,36 @@
 <input type="hidden" id="20bysender">
 <input type="hidden" id="20currency">
 <input type="hidden" id="20byconsignee">
-  <div class="lbl lbl20row" style="left:414px; top:867px;" data-dict-line="charges,0"></div>
-  <input class="inp inp20cell" id="20carriage" style="left:566px; top:868px; width:60px; height:11px;">
-  <input class="inp inp20cell" id="20carriage_c2" style="left:641px; top:868px; width:60px; height:11px;">
-  <input class="inp inp20cell" id="20carriage_c3" style="left:715px; top:868px; width:60px; height:11px;">
-  <div class="box" style="left:408px; top:884px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
-  <div class="lbl lbl20row" style="left:414px; top:887px;" data-dict-line="charges,1"></div>
-  <input class="inp inp20cell" id="20deductions" style="left:566px; top:888px; width:60px; height:11px;">
-  <input class="inp inp20cell" id="20deductions_c2" style="left:641px; top:888px; width:60px; height:11px;">
-  <input class="inp inp20cell" id="20deductions_c3" style="left:715px; top:888px; width:60px; height:11px;">
-  <div class="box" style="left:408px; top:904px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
-  <div class="lbl lbl20row" style="left:414px; top:907px;" data-dict-line="charges,2"></div>
-  <input class="inp inp20cell" id="20balance" style="left:566px; top:908px; width:60px; height:11px;">
-  <input class="inp inp20cell" id="20balance_c2" style="left:641px; top:908px; width:60px; height:11px;">
-  <input class="inp inp20cell" id="20balance_c3" style="left:715px; top:908px; width:60px; height:11px;">
-  <div class="box" style="left:408px; top:924px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
-  <div class="lbl lbl20row" style="left:414px; top:927px;" data-dict-line="charges,3"></div>
-  <input class="inp inp20cell" id="20supplementary" style="left:566px; top:928px; width:60px; height:11px;">
-  <input class="inp inp20cell" id="20supplementary_c2" style="left:641px; top:928px; width:60px; height:11px;">
-  <input class="inp inp20cell" id="20supplementary_c3" style="left:715px; top:928px; width:60px; height:11px;">
-  <div class="box" style="left:408px; top:944px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
-  <div class="lbl lbl20row" style="left:414px; top:947px;" data-dict-line="charges,4"></div>
-  <input class="inp inp20cell" id="20misc" style="left:566px; top:948px; width:60px; height:11px;">
-  <input class="inp inp20cell" id="20misc_c2" style="left:641px; top:948px; width:60px; height:11px;">
-  <input class="inp inp20cell" id="20misc_c3" style="left:715px; top:948px; width:60px; height:11px;">
-  <div class="box" style="left:408px; top:964px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
-  <div class="lbl lbl20row" style="left:414px; top:967px;" data-dict-line="charges,5"></div>
-  <input class="inp inp20cell" id="20insurance" style="left:566px; top:968px; width:60px; height:11px;">
-  <input class="inp inp20cell" id="20insurance_c2" style="left:641px; top:968px; width:60px; height:11px;">
-  <input class="inp inp20cell" id="20insurance_c3" style="left:715px; top:968px; width:60px; height:11px;">
-  <div class="box" style="left:408px; top:984px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
-  <div class="lbl lbl20row" style="left:414px; top:987px;" data-dict-line="charges,6"></div>
-  <input class="inp inp20cell" id="20total" style="left:566px; top:988px; width:60px; height:11px;">
-  <input class="inp inp20cell" id="20total_c2" style="left:641px; top:988px; width:60px; height:11px;">
-  <input class="inp inp20cell" id="20total_c3" style="left:715px; top:988px; width:60px; height:11px;">
+  <div class="s20grid">
+  <div class="s20cell"><div class="lbl" data-dict-line="charges,0" data-fit data-fitw="144" data-fitl="2" data-fits="5.5" data-fitmin="4"></div></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20carriage"></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20carriage_c2"></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20carriage_c3"></div>
+  <div class="s20cell"><div class="lbl" data-dict-line="charges,1" data-fit data-fitw="144" data-fitl="2" data-fits="5.5" data-fitmin="4"></div></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20deductions"></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20deductions_c2"></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20deductions_c3"></div>
+  <div class="s20cell"><div class="lbl" data-dict-line="charges,2" data-fit data-fitw="144" data-fitl="2" data-fits="5.5" data-fitmin="4"></div></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20balance"></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20balance_c2"></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20balance_c3"></div>
+  <div class="s20cell"><div class="lbl" data-dict-line="charges,3" data-fit data-fitw="144" data-fitl="2" data-fits="5.5" data-fitmin="4"></div></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20supplementary"></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20supplementary_c2"></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20supplementary_c3"></div>
+  <div class="s20cell"><div class="lbl" data-dict-line="charges,4" data-fit data-fitw="144" data-fitl="2" data-fits="5.5" data-fitmin="4"></div></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20misc"></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20misc_c2"></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20misc_c3"></div>
+  <div class="s20cell"><div class="lbl" data-dict-line="charges,5" data-fit data-fitw="144" data-fitl="2" data-fits="5.5" data-fitmin="4"></div></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20insurance"></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20insurance_c2"></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20insurance_c3"></div>
+  <div class="s20cell"><div class="lbl" data-dict-line="charges,6" data-fit data-fitw="144" data-fitl="2" data-fits="5.5" data-fitmin="4"></div></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20total"></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20total_c2"></div>
+  <div class="s20cell"><input class="inp inp20cell" id="20total_c3"></div>
+  </div>
 <!-- 15. Cash on delivery -->
   <div class="box" style="left:408px; top:1004px; width:376px; height:36px;"></div>
   <div class="num" style="left:414px; top:1010px;">15</div>
@@ -365,6 +403,38 @@ function cmrRenderLabels() {
     }
 }
 
+/* fitText: shrink a rendered label until it fits its box (width x maxLines),
+   the same shrink-to-fit policy the PDF engine uses. Canvas metrics = real widths. */
+function cmrFitText() {
+    var m = null;
+    try { m = document.createElement("canvas").getContext("2d"); } catch (e) { m = null; }
+    if (!m || !m.measureText) return;   /* no canvas 2D: keep the CSS font size */
+    var nodes = document.querySelectorAll("[data-fit]");
+    for (var i = 0; i < nodes.length; i++) {
+        var el = nodes[i];
+        var maxW = parseFloat(el.getAttribute("data-fitw")) || 100;
+        var maxLines = parseInt(el.getAttribute("data-fitl"), 10) || 2;
+        var start = parseFloat(el.getAttribute("data-fits")) || 5.5;
+        var min = parseFloat(el.getAttribute("data-fitmin")) || 4;
+        var text = el.textContent.replace(/\s+/g, " ").trim();
+        if (!text) continue;
+        var size = start;
+        while (size >= min) {
+            m.font = size + "px Arial";
+            var lines = 1, line = "";
+            var words = text.split(" ");
+            for (var w = 0; w < words.length; w++) {
+                var cand = line ? line + " " + words[w] : words[w];
+                if (m.measureText(cand).width <= maxW) line = cand;
+                else { lines++; line = words[w]; }
+            }
+            if (lines <= maxLines) break;
+            size -= 0.2;
+        }
+        el.style.fontSize = size + "px";
+    }
+}
+
 /* Export: load the PDF engine pieces on first use, then generate. */
 var cmrExportReady = false;
 function cmrExportPDF() {
@@ -412,6 +482,7 @@ function cmrSetFit(mode) {
 }
 jQuery(function () {
     cmrRenderLabels();
+    cmrFitText();
     cmrApplyFit();
 });
 jQuery(window).on("resize", cmrApplyFit);
