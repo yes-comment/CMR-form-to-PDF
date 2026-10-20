@@ -1,472 +1,425 @@
 <!DOCTYPE html>
-<html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers no-applicationcache svg inlinesvg smil svgclippaths" lang="en" style=""><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="CMR Form">
-<meta name="keywords" content="CMR, Form, PDF">
-
 <title>CMR Form</title>
 
-<link rel="stylesheet" href="cmr_files/normalize.css">
-<link rel="stylesheet" href="cmr_files/animate.css">
-<link rel="stylesheet" href="cmr_files/stellarnav.min.css">
-<link rel="stylesheet" href="cmr_files/owl.carousel.css">
-<link href="cmr_files/bootstrap.min.css" rel="stylesheet">
-<link href="cmr_files/font-awesome.min.css" rel="stylesheet">
-<link href="cmr_files/style.css" rel="stylesheet">
-<link href="cmr_files/responsive.css" rel="stylesheet">
+<link rel="stylesheet" href="cmr_files/jquery-ui.min.css">
+<link rel="stylesheet" href="cmr_files/jquery-ui.theme.min.css">
 
-<script src="cmr_files/modernizr-2.8.3.min.js"></script>
-<script type="text/javascript" charset="UTF-8" src="cmr_files/common.js"></script>
-<script type="text/javascript" charset="UTF-8" src="cmr_files/util.js"></script>
+<script src="cmr_files/jquery.min.js"></script>
+<script src="cmr_files/jquery-ui.min.js"></script>
+<script src="cmr_files/cmr_labels.js"></script>
 
-<!-- Bootstrap for form -->
-<link href="cmr_files/bootstrap.min2.css" rel="stylesheet" media="screen">
-<link href="cmr_files/bootstrap-responsive.css" rel="stylesheet">
-<link rel="stylesheet" href="cmr_files/jquery-ui.css">
-
-<script type="text/javascript" src="cmr_files/basic.js"></script>
-<script type="text/javascript" src="cmr_files/variables.js"></script>
-<script type="text/javascript" src="cmr_files/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="cmr_files/jquery-ui-1.8.17.custom.min.js"></script>
-<script type="text/javascript" src="cmr_files/jspdf.debug.js"></script>
-<script src="cmr_files/jquery.js"></script>
-<script src="cmr_files/bootstrap.min.js"></script>
-<script src="cmr_files/jquery-1.9.1.js"></script>
-<script src="cmr_files/jquery-ui.js"></script>
 
 <style type="text/css">
-  body {
-    padding-top: 40px;
-    padding-bottom: 40px;
-    background-color: #fcfcfc;
+  body { background-color: #fcfcfc; font-family: Arial, Helvetica, sans-serif; margin: 20px; }
+  .cmr-toolbox { max-width: 860px; margin: 0 auto 15px; text-align: center; }
+  .cmr-toolbox p { color: #555; font-size: 13px; margin: 6px 0; }
+  .cmr-page {
+    position: relative;
+    width: 840px;  /* 210mm at 4px/mm */
+    height: 1212px; /* slightly taller than A4 so no box clips text */
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 4px rgba(0,0,0,.12);
+    overflow: hidden;
+    transform-origin: top left;
   }
-  @font-face {
-    font-family: NHaasLt;
-    src: url(font/NHaasLt.ttf);
+  #cmrwrap { margin: 0 auto; overflow: visible; }
+  #cmrwrap.scaled .cmr-page { border: 0; }
+  .lbl20row { font-size: 5.5px; line-height: 1.1; white-space: normal !important; width: 142px; }
+  .inp20cell { font-size: 8px; padding: 0 1px; }
+  .btn {
+    display: inline-block; padding: 5px 12px; margin: 0 3px;
+    font-size: 13px; line-height: 1.4; text-align: center; cursor: pointer;
+    color: #333; background-color: #fff; border: 1px solid #ccc;
+    border-radius: 4px; vertical-align: middle; font-family: Arial, Helvetica, sans-serif;
   }
-  @font-face {
-    font-family: NHaasBd;
-    src: url(font/NHaasBd.ttf);
+  .btn:hover { background-color: #e6e6e6; }
+  .btn-large { padding: 9px 18px; font-size: 15px; }
+  .btn-primary { color: #fff; background-color: #337ab7; border-color: #2e6da4; }
+  .btn-primary:hover { background-color: #286090; }
+  .cmr-fitbtn.active { background: #337ab7; color: #fff; }
+  .box { position: absolute; border: 0.5px solid #ED1748; box-sizing: border-box; }
+  .box.fat { border-width: 2.4px; }
+  .lbl { position: absolute; color: #ED1748; font-size: 8px; line-height: 1.15; white-space: nowrap; overflow: visible; }
+  .lbl b { font-size: 8px; }
+  .num { position: absolute; color: #ED1748; font-weight: bold; font-size: 18px; line-height: 1; }
+  .inp, .cmr-page textarea {
+    position: absolute;
+    border: 1px solid #b8c4d0; background: #fdfefe;
+    font-size: 11px; color: #000;
+    padding: 0 2px; margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
   }
-  p.small { padding: 1px; font-size: 0.75em; margin:0px;}
-  h1.typein { text-align: center; font-family: NHaasBd; color:#002453; }
-  h3.typein { text-align: center; font-family: NHaasBd; color:#002453; }
-  h4.align-right { text-align: right; }
-  .form-signin {
-    max-width: 1000px;
-    padding: 19px 29px 29px;
-    margin: 0 auto 0px;
-    background-color: #fff;
-    border: 1px solid #e5e5e5;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-    box-shadow: 0 1px 2px rgba(0,0,0,.05);
-  }
-  .form-signin .form-signin-heading,
-  .form-signin .checkbox {
-    margin-bottom: 10px;
-  }
-  .form-signin input[type="text"],
-  .form-signin input[type="password"] {
-    font-size: 16px;
-    height: auto;
-    margin-bottom: 15px;
-    padding: 7px 9px;
-  }
+  .inp:focus, .cmr-page textarea:focus { outline: 1px solid #4a90d9; background: #f2f8ff; border-color: #4a90d9; }
+  .cmr-page textarea { resize: none; overflow: hidden; }
+  .vnote { position: absolute; color: #ED1748; font-size: 6px; transform: rotate(-90deg); transform-origin: left top; white-space: nowrap; }
+  .main-rect { position: absolute; border: 0.5px solid #ED1748; box-sizing: border-box; }
 </style>
 </head>
 
 <body>
-<section class="contact-area" id="contact">
-    <div class="container">
-        <form class="form-signin" charset="windows-1252" onclick="usun_pl(this)">
-
-<div class="row-fluid">
-  <div class="span6" style="position:relative; min-height:80px"><div style="position:absolute; bottom:0; left:0"> <font style="font-size:35px; color:#ED1748">1</font><font style="color:#ED1748">Copy for sender</font> </div>
-</div>
-  <div class="span6" style="position:relative; min-height:80px"><div style="position:absolute; bottom:25px; right:10px"><!--<img src="img/logo.png">--></div></div>
+<div class="cmr-toolbox">
+  <p>The form below mirrors the generated PDF. Fill in any field; the button produces a 4-copy PDF (sender, consignee, carrier, extra copy).</p>
+  <button class="btn cmr-fitbtn active" id="fitWidthBtn" type="button" onclick="cmrSetFit('width')">Fit to width</button>
+  <button class="btn cmr-fitbtn" id="fitHeightBtn" type="button" onclick="cmrSetFit('height')">Fit to height</button>
+  <button class="btn btn-large btn-primary" type="button" onclick="cmrExportPDF()">Export PDF</button>
 </div>
 
-<div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span6" style="border:1px; border-style:solid; color:#ED1748; padding:6px; min-height:135px">
-          <b>&nbsp;&nbsp; 1. Sender (name, address, country)</b>
-	  <textarea class="input-block-level" id="senderaddress" style="resize:none; border:0px; margin-left:12px; width:95%" rows="4" cols="60" placeholder="Írja be Feladó adatait"></textarea>
-        <div class="row-fluid">
-        </div>
-      </div>
-      <div class="span6" style="border:1px; border-bottom:0px; border-left:0px; border-style:solid; color:#ED1748; padding:6px; min-height:135px; margin-left:0px">
-          INTERNATIONAL CONSIGNMENT
-<div class="row-fluid">
-          <div class="span6"><h4 class="align-right">CMR no.</h4></div>
-          <div class="span5"><input type="number" class="input-block-level" id="cmrnumber" placeholder="Írja be a  számát" style="border:0px" min="1" max="99999" onkeypress="return isNumberKey(event)"></div>
-		<div class="span10"><p class="small">This carriage is subject 
-notwithstanding any clause to the contrary, to the Convention on the 
-Contract for the International Carriage of goods by road</p></div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div id="cmrwrap"><div class="cmr-page" id="cmrpage">
+  <div class="main-rect" style="left:56px; top:100px; width:728px; height:1080px;"></div>
 
-<div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:165px">
-          <b>&nbsp;&nbsp; 2. Consignee (name, address, country)</b>
-	  <textarea class="input-block-level" id="consigneename" style="resize:none; border:0px; margin-left:12px; width:95%" rows="4" placeholder="Írja be a Feladó adatait"></textarea>
-        <div class="row-fluid">
-        </div>
-      </div>
-      <div class="span6" style="border:3px; border-bottom:1px; border-left:2px; border-style:solid; color:#ED1748; padding:6px; min-height:165px; margin-left:0px"><b>&nbsp;&nbsp; 16. Carrier (name, address, country)</b>
-	  <textarea class="input-block-level" id="carrieraddress" style="resize:none; border:0px; margin-left:12px; width:95%" rows="3" placeholder="Írja be a Fuvarozó adatait"></textarea>
-          <div class="span6">Vehicle Reg. no.</div>
-          <div class="span5"><input type="text" id="vehiclereg" class="input-block-level" placeholder="Jármű Rendszáma
-			  " style="border:0px"></div>
+  <!-- copy indicator -->
+  <div class="lbl" style="left:56px; top:68px; font-size:9px;" data-dict-join="copy0"></div>
 
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- header box -->
+  <div class="box" style="left:420px; top:100px; width:364px; height:96px;"></div>
+  <div class="lbl" style="left:432px; top:106px;" data-dict="header"></div>
+  <div class="lbl" style="left:580px; top:112px; font-weight:bold; font-size:19px;">CMR</div>
+  <div class="lbl" style="left:640px; top:112px; font-size:13px;">No:</div>
+  <input class="inp" type="text" id="cmrnumber" style="left:668px; top:108px; width:110px; height:18px;">
+  <div class="lbl" style="left:432px; top:136px; font-size:6px; line-height:1.35; white-space:normal; width:220px;" data-dict="convention"></div>
 
-<div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:135px">
-          <b>&nbsp;&nbsp; 3. Place of delivery of the goods (place, country)</b>
-	  <textarea class="input-block-level" id="deliveryplace" style="resize:none; border:0px; margin-left:12px; width:95%" rows="4" placeholder="Írja be a Lerakóhely adatait"></textarea>
-        <div class="row-fluid">
-        </div>
-      </div>
-      <div class="span6" style="border:3px; border-bottom:1px; border-top:0px; border-left:2px; border-style:solid; color:#ED1748; padding:6px; min-height:135px; margin-left:0px"><b>&nbsp;&nbsp; 17. Successive carriers (name, address, country)</b>
-	  <textarea class="input-block-level" id="nextcarriers" style="resize:none; border:0px; margin-left:12px; width:95%" rows="4" placeholder="További Fuvarozók adatai"></textarea>
+  <!-- 1. Sender -->
+  <div class="box" style="left:56px; top:100px; width:364px; height:96px;"></div>
+  <div class="num" style="left:62px; top:104px;">1</div>
+  <div class="lbl" style="left:84px; top:104px;" data-dict="f1"><br></div>
+  <textarea id="senderaddress" rows="3" style="left:84px; top:134px; width:330px; height:58px;"></textarea>
 
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- 2. Consignee -->
+  <div class="box" style="left:56px; top:196px; width:364px; height:96px;"></div>
+  <div class="num" style="left:62px; top:200px;">2</div>
+  <div class="lbl" style="left:84px; top:200px;" data-dict="f2"><br></div>
+  <textarea id="consigneename" rows="3" style="left:84px; top:230px; width:330px; height:58px;"></textarea>
 
-<script>
-$(document).ready(
+  <!-- 3. Place of delivery -->
+  <div class="box" style="left:56px; top:292px; width:364px; height:96px;"></div>
+  <div class="num" style="left:62px; top:296px;">3</div>
+  <div class="lbl" style="left:84px; top:296px;" data-dict="f3"><br></div>
+  <textarea id="deliveryplace" rows="3" style="left:84px; top:326px; width:330px; height:58px;"></textarea>
 
-  /* This is the function that will get executed after the DOM is fully loaded */
-  function () { $( "#datepicker" ).datepicker({
-      changeMonth: true,//this option for allowing user to select month
-      changeYear: true, //this option for allowing user to select from year range
-      dateFormat: "dd/mm/yy"
-    });
-  }
-);
-</script>
+  <!-- 4. Place and date taking over -->
+  <div class="box" style="left:56px; top:388px; width:364px; height:60px;"></div>
+  <div class="num" style="left:62px; top:392px;">4</div>
+  <div class="lbl" style="left:84px; top:392px;" data-dict="f4"><br></div>
+  <textarea id="takingoverplace" rows="1" style="left:84px; top:424px; width:180px; height:20px;"></textarea>
+  <input class="inp" type="text" id="datepicker" style="left:280px; top:424px; width:130px; height:20px;">
 
-<div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:80px">
-          <b>&nbsp;&nbsp; 4. Place and date taking over the goods (place, country, date)</b>
-	  <div class="span7"><textarea class="input-block-level" id="takingoverplace" style="resize:none; border:0px; margin-left:12px; width:95%" rows="1" placeholder="Indulás helye"></textarea></div>
-	  <div class="span3"><input class="input-block-level hasDatepicker" id="datepicker" style="resize:none; border:0px; margin-left:12px; width:95%" rows="1" placeholder="dátuma"></div>
-        <div class="row-fluid">
-        </div>
-      </div>
-      <div class="span6" style="border:3px; border-bottom:0px; border-left:2px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:80px; margin-left:0px"><b>&nbsp;&nbsp; 18. Carriers reservations and observations</b>
-          <textarea class="input-block-level" id="carrierobservations" style="resize:none; border:0px; margin-left:12px; width:95%;" rows="1" placeholder="Írja be a Fuvarozó esetleges fenntartásait, megjegyzéseit"></textarea>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- 5. Documents attached -->
+  <div class="box" style="left:56px; top:448px; width:364px; height:60px;"></div>
+  <div class="num" style="left:62px; top:452px;">5</div>
+  <div class="lbl" style="left:84px; top:452px;" data-dict="f5"><br></div>
+  <textarea id="documents" rows="1" style="left:84px; top:482px; width:330px; height:22px;"></textarea>
 
-<div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:80px">
-          <b>&nbsp;&nbsp; 5. Documents attached</b>
-	  <textarea class="input-block-level" id="documents" style="resize:none; border:0px; margin-left:12px; width:95%" rows="1" placeholder="Csatolt okmányok"></textarea>
-        <div class="row-fluid">
-        </div>
-      </div>
-      <div class="span6" style="border:3px; border-top:0px; border-left:2px; border-style:solid; color:#ED1748; padding:6px; min-height:80px; margin-left:0px">
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- goods table 6-12 -->
+  <div class="box" style="left:56px; top:508px; width:728px; height:212px;"></div>
+  <div class="num" style="left:62px; top:512px;">6</div>
+  <div class="lbl" style="left:79px; top:512px; font-size:6px; white-space:normal; width:101px; line-height:1.1;" data-dict="f6"><br></div>
+  <div class="num" style="left:190px; top:512px;">7</div>
+  <div class="lbl" style="left:207px; top:512px; font-size:6px; white-space:normal; width:89px; line-height:1.1;" data-dict="f7"><br></div>
+  <div class="num" style="left:306px; top:512px;">8</div>
+  <div class="lbl" style="left:323px; top:512px; font-size:6px; white-space:normal; width:77px; line-height:1.1;" data-dict="f8"><br></div>
+  <div class="num" style="left:410px; top:512px;">9</div>
+  <div class="lbl" style="left:427px; top:512px; font-size:6px; white-space:normal; width:77px; line-height:1.1;" data-dict="f9"><br></div>
+  <div class="num" style="left:514px; top:512px;">10</div>
+  <div class="lbl" style="left:542px; top:512px; font-size:6px; white-space:normal; width:54px; line-height:1.1;" data-dict="f10"><br></div>
+  <div class="num" style="left:606px; top:512px;">11</div>
+  <div class="lbl" style="left:634px; top:512px; font-size:6px; white-space:normal; width:54px; line-height:1.1;" data-dict="f11"><br></div>
+  <div class="num" style="left:698px; top:512px;">12</div>
+  <div class="lbl" style="left:726px; top:512px; white-space:normal; width:54px; font-size:6px; line-height:1.1;" data-dict="f12"><br></div>
+  <div class="box" style="left:184px; top:508px; width:0; height:212px; border-width:0; border-right-width:0.5px;"></div>
+  <!-- column separators -->
+  <div class="box" style="left:300px; top:508px; height:212px; width:0; border-width:0 0 0 0.5px;"></div>
+  <div class="box" style="left:404px; top:508px; height:212px; width:0; border-width:0 0 0 0.5px;"></div>
+  <div class="box" style="left:508px; top:508px; height:212px; width:0; border-width:0 0 0 0.5px;"></div>
+  <div class="box" style="left:600px; top:508px; height:212px; width:0; border-width:0 0 0 0.5px;"></div>
+  <div class="box" style="left:692px; top:508px; height:212px; width:0; border-width:0 0 0 0.5px;"></div>
+  <!-- 4 value rows, row height 10.5mm = 42px, first at 552px -->
+  <input class="inp" id="6marks1" style="left:60px; top:556px; width:120px; height:20px;" maxlength="16">
+  <input class="inp" id="6marks2" style="left:60px; top:598px; width:120px; height:20px;" maxlength="16">
+  <input class="inp" id="6marks3" style="left:60px; top:640px; width:120px; height:20px;" maxlength="16">
+  <input class="inp" id="6marks4" style="left:60px; top:682px; width:120px; height:20px;" maxlength="16">
+  <input class="inp" type="text" id="7number1" style="left:188px; top:556px; width:105px; height:20px;">
+  <input class="inp" type="text" id="7number2" style="left:188px; top:598px; width:105px; height:20px;">
+  <input class="inp" type="text" id="7number3" style="left:188px; top:640px; width:105px; height:20px;">
+  <input class="inp" type="text" id="7number4" style="left:188px; top:682px; width:105px; height:20px;">
+  <input class="inp" id="8method1" style="left:304px; top:556px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="8method2" style="left:304px; top:598px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="8method3" style="left:304px; top:640px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="8method4" style="left:304px; top:682px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="9nature1" style="left:408px; top:556px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="9nature2" style="left:408px; top:598px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="9nature3" style="left:408px; top:640px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="9nature4" style="left:408px; top:682px; width:92px; height:20px;" maxlength="16">
+  <input class="inp" id="10number1" style="left:512px; top:556px; width:82px; height:20px;">
+  <input class="inp" id="10number2" style="left:512px; top:598px; width:82px; height:20px;">
+  <input class="inp" id="10number3" style="left:512px; top:640px; width:82px; height:20px;">
+  <input class="inp" id="10number4" style="left:512px; top:682px; width:82px; height:20px;">
+  <input class="inp" type="text" id="11kg1" style="left:604px; top:556px; width:82px; height:20px;">
+  <input class="inp" type="text" id="11kg2" style="left:604px; top:598px; width:82px; height:20px;">
+  <input class="inp" type="text" id="11kg3" style="left:604px; top:640px; width:82px; height:20px;">
+  <input class="inp" type="text" id="11kg4" style="left:604px; top:682px; width:82px; height:20px;">
+  <input class="inp" type="text" id="12volume1" style="left:696px; top:556px; width:84px; height:20px;">
+  <input class="inp" type="text" id="12volume2" style="left:696px; top:598px; width:84px; height:20px;">
+  <input class="inp" type="text" id="12volume3" style="left:696px; top:640px; width:84px; height:20px;">
+  <input class="inp" type="text" id="12volume4" style="left:696px; top:682px; width:84px; height:20px;">
+  <!-- row separators -->
+  <div class="box" style="left:56px; top:546px; width:728px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="box" style="left:56px; top:588px; width:728px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="box" style="left:56px; top:630px; width:728px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="box" style="left:56px; top:672px; width:728px; height:0; border-width:0.5px 0 0 0;"></div>
 
-    <div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
+  <!-- ADR row -->
+  <div class="box" style="left:56px; top:720px; width:728px; height:28px;"></div>
+  <div class="lbl" style="left:68px; top:725px;" data-dict-line="adrRow,0"></div>
+  <input class="inp" id="6class" style="left:96px; top:722px; width:60px; height:20px;">
+  <div class="lbl" style="left:164px; top:725px;" data-dict-line="adrRow,1"></div>
+  <input class="inp" id="7number" style="left:202px; top:722px; width:60px; height:20px;">
+  <div class="lbl" style="left:270px; top:725px;" data-dict-line="adrRow,2"></div>
+  <input class="inp" id="8letter" style="left:304px; top:722px; width:50px; height:20px;">
+  <div class="lbl" style="left:362px; top:725px;" data-dict-line="adrRow,3"></div>
+  <input class="inp" id="9adr" style="left:394px; top:722px; width:386px; height:20px;">
 
-      <div class="span2" style="border:1px; border-top:0px; border-right:0px; border-style:solid; color:#ED1748; padding:2px; margin-right:0px; min-height:220px">
-          <b>&nbsp;&nbsp; 6. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Jelek, és számok</font></b>
-	  <input class="input-block-level" id="6marks1" style="border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Jelek, és számok" maxlength="16">
-      <input class="input-block-level" id="6marks2" style="border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Jelek, és számok" maxlength="16">
-      <input class="input-block-level" id="6marks3" style="border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Jelek, és számok" maxlength="16">
-      <input class="input-block-level" id="6marks4" style="border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Jelek, és számok" maxlength="16">
-      </div>
+  <!-- 13. Sender's instructions -->
+  <div class="box fat" style="left:56px; top:748px; width:352px; height:168px;"></div>
+  <div class="num" style="left:62px; top:754px;">13</div>
+  <div class="lbl" style="left:90px; top:754px;" data-dict="f13"><br></div>
+  <textarea id="sendersinstructions" rows="4" style="left:84px; top:786px; width:316px; height:124px;"></textarea>
 
-      <div class="span2" style="width:125px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px"><b>&nbsp;&nbsp; 7. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Csomag darabszám</font></b>
-            <input type="number" class="input-block-level" id="7number1" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Csomag darabszám" min="1" max="99999" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="7number2" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Csomag darabszám" min="1" max="99999" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="7number3" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Csomag darabszám" min="1" max="99999" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="7number4" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Csomag darabszám" min="1" max="99999" onkeypress="return isNumberKey(event)">
-        </div>
+  <!-- 14. Payment for carriage -->
+  <div class="box" style="left:56px; top:916px; width:352px; height:88px;"></div>
+  <div class="num" style="left:62px; top:922px;">14</div>
+  <div class="lbl" style="left:90px; top:922px;" data-dict="f14"><br></div>
+  <textarea id="carriageinstructions" rows="1" style="left:84px; top:952px; width:316px; height:16px;"></textarea>
+  <div class="lbl" style="left:84px; top:974px; font-size:6px;" data-dict-join="paid"></div>
+  <input class="inp" id="carriagepaid" style="left:190px; top:972px; width:60px; height:13px;">
+  <div class="lbl" style="left:84px; top:990px; font-size:6px;" data-dict-join="forward"></div>
+  <input class="inp" id="carriageforward" style="left:240px; top:988px; width:60px; height:13px;">
 
-        <div class="span2" style="width:115px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px"><b>&nbsp;&nbsp; 8. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Csomagolás fajtája</font></b>
-	  <input class="input-block-level" id="8method1" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Csomagolás fajtája" maxlength="16">
-      <input class="input-block-level" id="8method2" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Csomagolás fajtája" maxlength="16">
-      <input class="input-block-level" id="8method3" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Csomagolás fajtája" maxlength="16">
-      <input class="input-block-level" id="8method4" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Csomagolás fajtája" maxlength="16">
-        </div>
+  <!-- 21. Established in / on -->
+  <div class="box" style="left:56px; top:1004px; width:352px; height:36px;"></div>
+  <div class="num" style="left:62px; top:1010px;">21</div>
+  <div class="lbl" style="left:90px; top:1010px; font-size:7px;" data-dict="f21"><br></div>
+  <input class="inp" id="establishedin" style="left:84px; top:1024px; width:120px; height:12px;">
+  <div class="lbl" style="left:212px; top:1010px; font-size:6px;" data-dict="on"></div>
+  <input class="inp" type="text" id="datepicker2" style="left:248px; top:1022px; width:150px; height:16px;">
 
-        <div class="span2" style="width:165px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px"><b>&nbsp;&nbsp; 9. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Árumegnevezés</font></b>
-	  <input class="input-block-level" id="9nature1" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Árumegnevezés" maxlength="16">
-      <input class="input-block-level" id="9nature2" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Árumegnevezés" maxlength="16">
-      <input class="input-block-level" id="9nature3" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Árumegnevezés">
-      <input class="input-block-level" id="9nature4" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Árumegnevezés">
-        </div>
+  <!-- 22. Signature sender -->
+  <div class="box" style="left:56px; top:1040px; width:240px; height:140px;"></div>
+  <div class="num" style="left:62px; top:1046px;">22</div>
+  <div class="lbl" style="left:62px; top:1158px; font-size:6px;" data-dict="f22"><br></div>
 
-        <div class="span2" style="width:120px; border:0px; border-bottom:0px; border-left:1px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px"><b>&nbsp;&nbsp; 10. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Vámtarifaszám</font></b>
-	  <input class="input-block-level" id="10number1" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Vámtarifaszám">
-      <input class="input-block-level" id="10number2" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Vámtarifaszám">
-      <input class="input-block-level" id="10number3" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Vámtarifaszám">
-      <input class="input-block-level" id="10number4" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Vámtarifaszám">
-        </div>
+  <!-- 23. Signature carrier -->
+  <div class="box" style="left:296px; top:1040px; width:240px; height:140px;"></div>
+  <div class="num" style="left:302px; top:1046px;">23</div>
+  <div class="lbl" style="left:302px; top:1158px; font-size:6px;" data-dict="f23"><br></div>
 
-        <div class="span2" style="width:129px; border:0px; border-bottom:0px; border-left:1px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px"><b>&nbsp;&nbsp; 11. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Bruttó súly [kg]</font></b>
-	       <input type="number" class="input-block-level" id="11kg1" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Bruttó súly [kg]" min="1" max="28000" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="11kg2" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Bruttó súly [kg]" min="1" max="28000" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="11kg3" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Bruttó súly [kg]" min="1" max="28000" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="11kg4" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Bruttó súly [kg]" min="1" max="28000" onkeypress="return isNumberKey(event)">
-        </div>
-        <div class="span2" style="width:125px; border:1px; border-bottom:0px; border-top:0px; border-style:solid; color:#ED1748; padding:2px; min-height:220px; margin-left:0px; margin-right:0px"><b>&nbsp;&nbsp; 12. <font style="font-size:11px"><br>&nbsp;&nbsp;&nbsp; Térfogat [m3]</font></b>
-	       <input type="number" class="input-block-level" id="12volume1" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Térfogat [m3]" min="1" max="28000" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="12volume2" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Térfogat [m3]" min="1" max="28000" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="12volume3" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Térfogat [m3]" min="1" max="28000" onkeypress="return isNumberKey(event)">
-            <input type="number" class="input-block-level" id="12volume4" style="resize:none; border:0px; margin-bottom:10px; margin-left:12px; width:80%" placeholder="Térfogat [m3]" min="1" max="28000" onkeypress="return isNumberKey(event)">
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- 16. Carrier -->
+  <div class="box fat" style="left:420px; top:196px; width:364px; height:96px;"></div>
+  <div class="num" style="left:428px; top:200px;">16</div>
+  <div class="lbl" style="left:456px; top:200px;" data-dict="f16"><br></div>
+  <textarea id="carrieraddress" rows="2" style="left:448px; top:232px; width:324px; height:44px;"></textarea>
+  <div class="lbl" style="left:448px; top:280px; font-size:7px;" data-dict="regno"></div>
+  <input class="inp" id="vehiclereg" style="left:608px; top:277px; width:164px; height:13px;">
 
-    <div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
+  <!-- 17. Successive carriers -->
+  <div class="box fat" style="left:420px; top:292px; width:364px; height:96px;"></div>
+  <div class="num" style="left:428px; top:298px;">17</div>
+  <div class="lbl" style="left:456px; top:298px;" data-dict="f17"><br></div>
+  <textarea id="nextcarriers" rows="2" style="left:448px; top:330px; width:324px; height:52px;"></textarea>
 
-      <div class="span2" style="width:100px; border:1px; border-top:0px; border-right:0px; border-style:solid; color:#ED1748; padding:2px; margin-right:0px; min-height:66px">
-          <b><font style="font-size:11px">&nbsp;&nbsp;&nbsp; Class</font></b>
-	  <input class="input-block-level" id="6class" style="border:0px; margin-bottom:10px; margin-left:12px; width:95%" placeholder="Osztály">
-      </div>
+  <!-- 18. Carrier's reservations -->
+  <div class="box fat" style="left:420px; top:388px; width:364px; height:120px;"></div>
+  <div class="num" style="left:428px; top:394px;">18</div>
+  <div class="lbl" style="left:456px; top:394px;" data-dict="f18"><br></div>
+  <textarea id="carrierobservations" rows="2" style="left:448px; top:426px; width:324px; height:76px;"></textarea>
 
-      <div class="span2" style="width:70px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:69px; margin-left:0px"><b><font style="font-size:11px">&nbsp;&nbsp;&nbsp; Number</font></b>
-            <input type="number" class="input-block-level" id="7number" style="resize:none; border:0px; margin-left:12px; width:95%" placeholder="Szám" min="1" max="99999" onkeypress="return isNumberKey(event)">
-        </div>
+  <!-- 19. Special agreements -->
+  <div class="box" style="left:408px; top:748px; width:376px; height:88px;"></div>
+  <div class="num" style="left:414px; top:754px;">19</div>
+  <div class="lbl" style="left:442px; top:754px;" data-dict="f19"><br></div>
+  <textarea id="specialagreements" rows="2" style="left:440px; top:786px; width:336px; height:44px;"></textarea>
 
-        <div class="span2" style="width:90px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:66px; margin-left:0px"><b><font style="font-size:11px">&nbsp;&nbsp;&nbsp; Letter</font></b>
-	  <input class="input-block-level" id="8letter" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Csom.csoport">
-        </div>
+  <!-- 20. To be paid by: 4-column x 7-row grid with an input in every cell -->
+<div class="box fat" style="left:408px; top:836px; width:376px; height:132px;"></div>
+<div class="num" style="left:414px; top:842px;">20</div>
+<div class="lbl" style="left:442px; top:842px;" data-dict="f20"><br></div>
+<div class="box" style="left:560px; top:836px; width:0; height:132px; border-width:0 0 0 0.5px;"></div>
+<div class="box" style="left:635px; top:836px; width:0; height:132px; border-width:0 0 0 0.5px;"></div>
+<div class="box" style="left:709px; top:836px; width:0; height:132px; border-width:0 0 0 0.5px;"></div>
+<div class="box" style="left:408px; top:864px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+<div class="lbl" style="left:566px; top:842px;" data-dict="bySender"><br></div>
+<div class="lbl" style="left:641px; top:842px;" data-dict="currency"><br></div>
+<div class="lbl" style="left:715px; top:842px;" data-dict="byConsignee"><br></div>
+<input type="hidden" id="20bysender">
+<input type="hidden" id="20currency">
+<input type="hidden" id="20byconsignee">
+  <div class="lbl lbl20row" style="left:414px; top:866px;" data-dict-line="charges,0"></div>
+  <input class="inp inp20cell" id="20carriage" style="left:566px; top:866px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20carriage_c2" style="left:641px; top:866px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20carriage_c3" style="left:715px; top:866px; width:60px; height:9px;">
+  <div class="box" style="left:408px; top:879px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:881px;" data-dict-line="charges,1"></div>
+  <input class="inp inp20cell" id="20deductions" style="left:566px; top:881px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20deductions_c2" style="left:641px; top:881px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20deductions_c3" style="left:715px; top:881px; width:60px; height:9px;">
+  <div class="box" style="left:408px; top:894px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:896px;" data-dict-line="charges,2"></div>
+  <input class="inp inp20cell" id="20balance" style="left:566px; top:896px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20balance_c2" style="left:641px; top:896px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20balance_c3" style="left:715px; top:896px; width:60px; height:9px;">
+  <div class="box" style="left:408px; top:909px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:911px;" data-dict-line="charges,3"></div>
+  <input class="inp inp20cell" id="20supplementary" style="left:566px; top:911px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20supplementary_c2" style="left:641px; top:911px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20supplementary_c3" style="left:715px; top:911px; width:60px; height:9px;">
+  <div class="box" style="left:408px; top:923px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:925px;" data-dict-line="charges,4"></div>
+  <input class="inp inp20cell" id="20misc" style="left:566px; top:926px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20misc_c2" style="left:641px; top:926px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20misc_c3" style="left:715px; top:926px; width:60px; height:9px;">
+  <div class="box" style="left:408px; top:938px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:940px;" data-dict-line="charges,5"></div>
+  <input class="inp inp20cell" id="20insurance" style="left:566px; top:941px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20insurance_c2" style="left:641px; top:941px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20insurance_c3" style="left:715px; top:941px; width:60px; height:9px;">
+  <div class="box" style="left:408px; top:953px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:955px;" data-dict-line="charges,6"></div>
+  <input class="inp inp20cell" id="20total" style="left:566px; top:956px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20total_c2" style="left:641px; top:956px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20total_c3" style="left:715px; top:956px; width:60px; height:9px;">
+<!-- 15. Cash on delivery -->
+  <div class="box" style="left:408px; top:972px; width:376px; height:36px;"></div>
+  <div class="num" style="left:414px; top:978px;">15</div>
+  <div class="lbl" style="left:442px; top:978px; font-size:7px;" data-dict="f15"><br></div>
+  <input class="inp" id="cashondelivery" style="left:440px; top:992px; width:200px; height:14px;">
 
-        <div class="span2" style="width:282px; border:0px; border-bottom:1px; border-style:solid; color:#ED1748; padding:2px; min-height:66px; margin-left:0px"><b><font style="font-size:11px">&nbsp;&nbsp;&nbsp; (ADR*)</font></b>
-	  <input class="input-block-level" id="9adr" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="UN szám, ADR szállítási megnevezés">
-        </div>
+  <!-- 24. Consignee receipt -->
+  <div class="box" style="left:536px; top:1040px; width:248px; height:140px;"></div>
+  <div class="num" style="left:542px; top:1046px;">24</div>
+  <div class="lbl" style="left:574px; top:1050px; font-size:7px;" data-dict="f24"><br></div>
+  <div class="lbl" style="left:544px; top:1078px; font-size:7px;" data-dict="f24place"></div>
+  <input class="inp" id="24place" style="left:604px; top:1076px; width:80px; height:14px;">
+  <div class="lbl" style="left:692px; top:1078px; font-size:7px;" data-dict="f24on"></div>
+  <input class="inp" type="text" id="24date" style="left:716px; top:1076px; width:60px; height:14px;">
+  <div class="lbl" style="left:544px; top:1158px; font-size:6px;" data-dict="f24sign"></div>
 
-        <div class="span2" style="width:119px; border:0px; border-bottom:1px; border-left:1px; border-style:solid; color:#ED1748; padding:2px; min-height:69px; margin-left:0px">
-        </div>
+  <!-- vertical margin notes (3 language lines per block, anchored as in the PDF) -->
+  <div class="vnote" style="left:28.8px; top:1016px;" data-dict-line="vertSender,0"></div>
+  <div class="vnote" style="left:34.8px; top:1016px;" data-dict-line="vertSender,1"></div>
+  <div class="vnote" style="left:40.8px; top:1016px;" data-dict-line="vertSender,2"></div>
+  <div class="vnote" style="left:28.8px; top:720px;" data-dict-line="vertIncl,0"></div>
+  <div class="vnote" style="left:34.8px; top:720px;" data-dict-line="vertIncl,1"></div>
+  <div class="vnote" style="left:40.8px; top:720px;" data-dict-line="vertIncl,2"></div>
+  <div class="vnote" style="left:28.8px; top:520px;" data-dict-line="vertCarrier,0"></div>
+  <div class="vnote" style="left:34.8px; top:520px;" data-dict-line="vertCarrier,1"></div>
+  <div class="vnote" style="left:40.8px; top:520px;" data-dict-line="vertCarrier,2"></div>
+  <div class="vnote" style="left:22px; top:812px; font-weight:bold; font-size:10px;">1 - 15</div>
+  <div class="vnote" style="left:22px; top:664px; font-weight:bold; font-size:10px;">19 + 20 + 22</div>
 
-        <div class="span2" style="width:129px; border:0px; border-bottom:1px; border-left:1px; border-style:solid; color:#ED1748; padding:2px; min-height:69px; margin-left:0px">
-        </div>
+  <div class="lbl" style="left:56px; top:1196px; font-size:9px;">Sic itur ad astra!</div>
+</div></div>
 
-        <div class="span2" style="width:125px; border:1px; border-bottom:1px; border-top:0px; border-style:solid; color:#ED1748; padding:2px; min-height:69px; margin-left:0px; margin-right:0px">
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:120px">
-          <b>&nbsp;&nbsp; 13. Sender's instructions</b>
-	  <textarea class="input-block-level" id="sendersinstructions" style="resize:none; border:0px; margin-left:12px; width:90%" rows="3" placeholder="Írja be a feladó utasításai"></textarea>
-        <div class="row-fluid">
-        </div>
-      </div>
-      <div class="span6" style="border:1px; border-top:0px; border-left:0px; border-style:solid; color:#ED1748; padding:6px; min-height:120px; margin-left:0px">
-        <b>&nbsp;&nbsp; 19. Special agreements</b>
-        <textarea class="input-block-level" id="specialagreements" style="resize:none; border:0px; margin-left:12px; width:90%" rows="3" placeholder="Irja be a külön utasításokat"></textarea>
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:120px">
-          <b>&nbsp;&nbsp; 14. Instruction as to payment for carriage</b>
-	  <textarea class="input-block-level" id="carriageinstructions" style="resize:none; border:0px; margin-left:12px; width:90%" rows="1" placeholder="Írja be a fuvardíj fizetésére vonatkozó utasításokat"></textarea>
-        <div class="row-fluid">
-        <div class="span3" style="width:105px; margin:-4px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
-            Carriage paid:
-            </div>
-            <div class="span3" style="margin-top:-4px; margin-left:3px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
-
-            <input class="input-block-level" id="carriagepaid" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Fizetve">
-            </div>
-            <div class="span3" style="width:125px; margin:-4px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
-            Carriage forward:
-            </div>
-            <div class="span3" style="margin-top:-4px; margin-left:3px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
-
-            <input class="input-block-level" id="carriageforward" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Fizetendő">
-            </div>
-          </div>
-      </div>
-      <div class="span6" style="border:3px;  border-style:solid; color:#ED1748; padding:6px; min-height:120px; margin-left:0px">
-        <b>&nbsp;&nbsp; 20. To be paid by</b>
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span6" style="border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:83px">
-          <b>&nbsp;&nbsp; 21. Established in:</b>
-        <div class="row-fluid">
-            <div class="span6" style="margin-top:-4px; margin-left:3px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
-            <input class="input-block-level" id="establishedin" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Kiállítva">
-            </div>
-            <div class="span6" style="margin-top:-4px; margin-left:3px; border:0px; border-top:0px; border-style:solid; color:#ED1748; padding:6px">
-            <input class="input-block-level hasDatepicker" style="resize:none; border:0px; margin-left:12px; width:95%" rows="1" placeholder="Dátum" id="datepicker2">
-            </div>
-          </div>
-      </div>
-      <div class="span6" style="border:1px; border-top:0px; border-left:0px; border-style:solid; color:#ED1748; padding:6px; min-height:85px; margin-left:0px">
-        <b>&nbsp;&nbsp; 15. Cash on delivery</b>
-        <input class="input-block-level" id="cashondelivery" style="border:0px; margin-bottom:10px; margin-left:12px; width:85%" placeholder="Átvételkor készpénzben fizetendő">
-        </div>
-      </div>
-    </div>
-  </div>
-<script>
-$(document).ready(
-
-  /* This is the function that will get executed after the DOM is fully loaded */
-  function () { $( "#datepicker2" ).datepicker({
-      changeMonth: true,//this option for allowing user to select month
-      changeYear: true, //this option for allowing user to select from year range
-      dateFormat: "yyyy.mm.dd"
-    });
-  }
-);
-</script>
-
- <div class="row-fluid">
-  <div class="span12">
-    <div class="row-fluid">
-      <div class="span4" style="width:306px; border:1px; border-top:0px; border-style:solid; color:#ED1748; padding:6px; min-height:83px">
-          <b>&nbsp;&nbsp; 22. Signature and stamp of the sender</b>
-      </div>
-      <div class="span4" style="width:300px; border:1px; border-top:0px; border-left:0px; border-style:solid; color:#ED1748; padding:6px; min-height:83px; margin-left:0px">
-        <b>&nbsp;&nbsp; 23. Signature and stamp of the carrier</b>
-        </div>
-      <div class="span4" style="width:310px; border:1px; border-top:0px; border-left:0px; border-style:solid; color:#ED1748; padding:6px; min-height:83px; margin-left:0px">
-        <b>&nbsp;&nbsp; 24. Signature and stamp of the consignee</b>
-        </div>
-      </div>
-    </div>
-  </div>
-
-<br><p>A program négy példányt fog generálni (feladó, fuvarozó, címzett, plusz 1 példányt). </p><br>
-
-      <button class="btn btn-large btn-primary" type="button" onclick="usun_pl(this); setTimeout( generatePDF, 400 );">Nyomtatás -&gt; PDF fájlba!</button>
-
-      </form>
-    </div>
+<div class="cmr-toolbox">
+  <button class="btn btn-large btn-primary" type="button" onclick="cmrExportPDF()">Export PDF</button>
+</div>
 
 <script>
-// Input max length
-    numberId.oninput = function () {
-    if (this.value.length > 5)
-        this.value = this.value.slice(0,5);
-}
-// Allow only numbers to the input
-    function isNumberKey(evt) {
-    var charCode = (evt.which) ? evt.which : event.keyCode;
-    if (charCode != 46 && charCode > 31
-    && (charCode < 48 || charCode > 57))
-        return false;
-
-    return true;
+/* Fill every data-dict label from the shared dictionary (single source of truth). */
+function cmrRenderLabels() {
+    var esc = function (s) {
+        return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    };
+    var nodes = document.querySelectorAll("[data-dict]");
+    for (var i = 0; i < nodes.length; i++) {
+        var key = nodes[i].getAttribute("data-dict");
+        var strings = CMR_DICT.labels[key];
+        if (!strings) continue;
+        nodes[i].innerHTML = strings.map(esc).join("<br>");
+    }
+    var joins = document.querySelectorAll("[data-dict-join]");
+    for (var k = 0; k < joins.length; k++) {
+        var jk = joins[k].getAttribute("data-dict-join");
+        if (jk.indexOf("copy") === 0) {
+            var cp = CMR_DICT.copies[parseInt(jk.slice(4), 10)].labels;
+            joins[k].innerHTML = esc(cp.join(" / "));
+        } else {
+            var jsr = CMR_DICT.labels[jk];
+            if (jsr) joins[k].innerHTML = esc(jsr.join(" "));
+        }
+    }
+    var lines = document.querySelectorAll("[data-dict-line]");
+    for (var j = 0; j < lines.length; j++) {
+        var spec = lines[j].getAttribute("data-dict-line").split(",");
+        var src;
+        if (spec[0].indexOf("copy") === 0) src = CMR_DICT.copies[parseInt(spec[0].slice(4), 10)].labels;
+        else src = CMR_DICT.labels[spec[0]];
+        var idx = parseInt(spec[1], 10);
+        if (src && src[idx] !== undefined) lines[j].innerHTML = esc(src[idx]);
+    }
 }
 
-    function usun_pl(formularz)
-{
-	for (i = 0; i < formularz.length; i++)
-	{
-		var pole = formularz.elements[i];
-		if (pole.type != "text" && pole.type != "textarea") continue;
-		var str = "";
-		for (j = 0; j < pole.value.length; j++)
-		{
-			switch (pole.value.charAt(j))
-			{
-				case "ą": str += "a"; break;
-				case "ć": str += "c"; break;
-				case "ę": str += "e"; break;
-				case "ł": str += "l"; break;
-				case "ń": str += "n"; break;
-				case "ó": str += "o"; break;
-				case "ś": str += "s"; break;
-				case "ź": str += "z"; break;
-				case "ż": str += "z"; break;
-				case "Ą": str += "a"; break;
-				case "Ć": str += "c"; break;
-				case "Ę": str += "e"; break;
-				case "Ł": str += "l"; break;
-				case "Ń": str += "n"; break;
-				case "Ó": str += "o"; break;
-				case "Ś": str += "s"; break;
-				case "Ź": str += "z"; break;
-				case "Ż": str += "z"; break;
-				default: str += pole.value.charAt(j); break;
-			}
-		}
-		pole.value = str;
-	}
-};
+/* Export: load the PDF engine pieces on first use, then generate. */
+var cmrExportReady = false;
+function cmrExportPDF() {
+    if (cmrExportReady) { generatePDF(); return; }
+    var pending = 0;
+    function done() {
+        if (--pending === 0) {
+            if (!window.jsPDF && window.jspdf) window.jsPDF = window.jspdf.jsPDF;
+            cmrExportReady = true;
+            generatePDF();
+        }
+    }
+    ["cmr_files/jspdf.umd.min.js", "cmr_files/dejavu-font.js", "cmr_files/basic.js"].forEach(function (src) {
+        var s = document.createElement("script");
+        s.src = src;
+        pending++;
+        s.onload = done;
+        s.onerror = done;
+        document.head.appendChild(s);
+    });
+}
 
+var cmrFitMode = "width";
+function cmrApplyFit() {
+    var page = document.getElementById("cmrpage");
+    var wrap = document.getElementById("cmrwrap");
+    var s;
+    if (cmrFitMode === "width") {
+        s = (window.innerWidth - 40) / 840;
+    } else {
+        s = (window.innerHeight - 170) / 1212;
+    }
+    s = Math.max(s, 0.25);
+    page.style.transform = "scale(" + s + ")";
+    wrap.style.width = (840 * s) + "px";
+    wrap.style.height = (1212 * s) + "px";
+}
+function cmrSetFit(mode) {
+    cmrFitMode = mode;
+    var w = document.getElementById("fitWidthBtn");
+    var h = document.getElementById("fitHeightBtn");
+    w.className = "btn cmr-fitbtn" + (mode === "width" ? " active" : "");
+    h.className = "btn cmr-fitbtn" + (mode === "height" ? " active" : "");
+    cmrApplyFit();
+}
+jQuery(function () {
+    cmrRenderLabels();
+    cmrApplyFit();
+});
+jQuery(window).on("resize", cmrApplyFit);
+jQuery(function () {
+    jQuery("#datepicker").datepicker({ changeMonth: true, changeYear: true, dateFormat: "dd/mm/yy" });
+    jQuery("#datepicker2").datepicker({ changeMonth: true, changeYear: true, dateFormat: "yy.mm.dd" });
+    jQuery("#24date").datepicker({ changeMonth: true, changeYear: true, dateFormat: "yy.mm.dd" });
+});
 </script>
-
-<br><br>
-
-<div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>
-    </section>
-
-    <!--====== SCRIPTS JS ======-->
-    <script src="CMR%20form%20to%20PDF_files/jquery-1.12.4.min.js"></script>
-    <script src="CMR%20form%20to%20PDF_files/bootstrap.min_002.js"></script>
-
-    <!--====== PLUGINS JS ======-->
-    <script src="CMR%20form%20to%20PDF_files/jquery.easing.1.3.js"></script>
-    <script src="CMR%20form%20to%20PDF_files/jquery-migrate-1.2.1.min.js"></script>
-    <script src="CMR%20form%20to%20PDF_files/jquery.appear.js"></script>
-    <script src="CMR%20form%20to%20PDF_files/owl.carousel.min.js"></script>
-    <script src="CMR%20form%20to%20PDF_files/stellar.js"></script>
-    <script src="CMR%20form%20to%20PDF_files/wow.min.js"></script>
-    <script src="CMR%20form%20to%20PDF_files/stellarnav.min.js"></script>
-    <script src="CMR%20form%20to%20PDF_files/contact-form.js"></script>
-    <script src="CMR%20form%20to%20PDF_files/jquery.sticky.js"></script>
-
-    <!--===== ACTIVE JS=====-->
-    <script src="CMR%20form%20to%20PDF_files/main.js"></script>
-    <script type="text/javascript" src="CMR%20form%20to%20PDF_files/js"></script>
-    <script src="CMR%20form%20to%20PDF_files/maps.active.js"></script>
 </body>
 </html>
