@@ -2,74 +2,11 @@
    Same page geometry as the original form, but every string is measured,
    wrapped to its box and auto-shrunk, so any language and any input length fit. */
 
-var CMR_COPIES = [
-    { labels: ["Copy for sender", "Exemplar f\u00fcr den Absender", "Felad\u00f3 p\u00e9ld\u00e1nya"], color: [237, 23, 72] },
-    { labels: ["Copy for consignee", "Exemplar f\u00fcr den Empf\u00e4nger", "C\u00edmzett p\u00e9ld\u00e1nya"], color: [0, 130, 200] },
-    { labels: ["Copy for carrier", "Exemplar f\u00fcr den Frachtf\u00fchrer", "Fuvaroz\u00f3 p\u00e9ld\u00e1nya"], color: [0, 169, 79] },
-    { labels: ["Extra copy", "Zus\u00e4tzliches Exemplar", "Plusz egy p\u00e9ld\u00e1ny"], color: [34, 30, 31] }
-];
-
-var CMR_LABELS = {
-    header: ["INTERNATIONAL CONSIGNMENT", "INTERNATIONALER FRACHTBRIEF", "NEMZETK\u00d6ZI FUVARLEV\u00c9L"],
-    convention: [
-        "This carriage is subject notwithstanding any clause to the contrary, to the Convention on the Contract for the international Carriage of goods by road (CMR)",
-        "Diese Bef\u00f6rderung unterliegt trotz einer gegenteiligen Abmachung den Bestimmungen des \u00dcbereinkommens \u00fcber den Bef\u00f6rderungsvertrag im internationalen Strasseng\u00fcterverkehr (CMR)",
-        "A fuvaroz\u00e1sra elt\u00e9r\u0151 meg\u00e1llapod\u00e1s eset\u00e9n is a Nemzetk\u00f6zi \u00c1rufuvaroz\u00e1si Egyezm\u00e9ny (CMR) rendelkez\u00e9sei az ir\u00e1nyad\u00f3k."
-    ],
-    f1: ["Sender (name, address, country)", "Absender (Name, Anschrift, Land)", "Felad\u00f3 (n\u00e9v, c\u00edm, orsz\u00e1g)"],
-    f2: ["Consignee (name, address, country)", "Empf\u00e4nger (Name, Anschrift, Land)", "\u00c1tvev\u0151 (n\u00e9v, c\u00edm, orsz\u00e1g)"],
-    f3: ["Place of delivery of the goods (place, country)", "Auslieferungsort des Gutes (Ort, Land)", "Az \u00e1ru kiszolg\u00e1ltat\u00e1si helye (hely, orsz\u00e1g)"],
-    f4: ["Place and date taking over the goods", "Ort und Tag der \u00dcbernahme des Gutes", "\u00c1ru \u00e1tv\u00e9tel\u00e9nek helye \u00e9s id\u0151pontja"],
-    f5: ["Documents attached", "Beigef\u00fcgte Dokumente", "Mell\u00e9kelt okm\u00e1nyok"],
-    f6: ["Marks and Nos", "Kennzeichen und Nummern", "Jelz\u00e9s \u00e9s sz\u00e1mok"],
-    f7: ["Number of packages", "Anzahl der Packst\u00fccke", "Csomagok sz\u00e1ma"],
-    f8: ["Method of packing", "Art der Verpackung", "Csomagol\u00e1s m\u00f3dja"],
-    f9: ["Nature of the goods", "Bezeichnung des Gutes", "\u00c1ru megnevez\u00e9se"],
-    f10: ["Statistical number", "Statistiknummer", "Statisztikai sz\u00e1m"],
-    f11: ["Gross weight in kg", "Bruttogewicht in kg", "Brutt\u00f3 s\u00faly (kg)"],
-    f12: ["Volume in m3", "Umfang m3", "T\u00e9rfogat (m3)"],
-    adrRow: ["Class", "Number", "Letter", "(ADR*)"],
-    f13: ["Sender's instructions", "Anweisungen des Absenders", "A felad\u00f3 rendelkez\u00e9sei"],
-    f14: ["Instruction as to payment for carriage", "Frachtzahlungsanweisungen", "Fuvard\u00edjfizet\u00e9si rendelkez\u00e9sek"],
-    paid: ["Carriage paid /", "Frei /", "B\u00e9rmentve"],
-    forward: ["Carriage forward /", "Unfrei /", "B\u00e9rmentes\u00edt\u00e9s n\u00e9lk\u00fcl"],
-    f15: ["Reimbursement", "R\u00fcckerstattung", "Visszat\u00e9r\u00edt\u00e9s"],
-    f16: ["Carrier (name, address, country)", "Frachtf\u00fchrer (Name, Anschrift, Land)", "Fuvaroz\u00f3 (n\u00e9v, c\u00edm, orsz\u00e1g)"],
-    regno: ["REG. NO. / Kennzeichen / Rendsz\u00e1m:"],
-    f17: ["Successive carriers (name, address, country)", "Nachfolgende Frachtf\u00fchrer (Name, Anschrift, Land)", "Tov\u00e1bbi fuvaroz\u00f3k (n\u00e9v, c\u00edm, orsz\u00e1g)"],
-    f18: ["Carrier's reservations and observations", "Vorbehalte und Bemerkungen des Frachtf\u00fchrers", "Fuvaroz\u00f3 megjegyz\u00e9sei \u00e9s fenntart\u00e1sai"],
-    f19: ["Special agreements", "Besondere Vereinbarungen", "K\u00fcl\u00f6nleges meg\u00e1llapod\u00e1sok"],
-    f20: ["To be paid by", "Zu zahlen vom", "Fizetend\u0151"],
-    bySender: ["Sender", "Absender", "Felad\u00f3"],
-    currency: ["Currency", "W\u00e4hrung", "P\u00e9nznem"],
-    byConsignee: ["Consignee", "Empf\u00e4nger", "\u00c1tvev\u0151"],
-    charges: ["Carriage charges / Fracht / Fuvaroz\u00e1si d\u00edj", "Deductions / Erm\u00e4\u00dfigungen / Kedvezm\u00e9nyek",
-              "Balance / Zuschl\u00e4ge / Egyenleg", "Supplementary charges / Nebengeb\u00fchren / Egy\u00e9b k\u00f6lt.",
-              "Miscellaneous / Sonstiges / Egy\u00e9b", "Insurance / Versicherung / Biztos\u00edt\u00e1s",
-              "Total to be paid / Gesamtsumme / V\u00e9g\u00f6sszeg"],
-    f21: ["Established in", "Ausgefertigt in", "Ki\u00e1ll\u00edt\u00e1s helye"],
-    on: ["on", "am", "id\u0151pontja"],
-    f22: ["Signature and stamp of the sender", "Unterschrift und Stempel des Absenders", "Felad\u00f3 al\u00e1\u00edr\u00e1sa \u00e9s b\u00e9lyegz\u0151je"],
-    f23: ["Signature and stamp of the carrier", "Unterschrift und Stempel des Frachtf\u00fchrers", "Fuvaroz\u00f3 al\u00e1\u00edr\u00e1sa \u00e9s b\u00e9lyegz\u0151je"],
-    f24: ["Goods received / Gut empfangen / \u00c1ru \u00e1tv\u00e9tele"],
-    f24place: ["Place / Ort / Hely"],
-    f24on: ["on / am / id\u0151pont"],
-    f24sign: ["Signature and stamp of the consignee", "Unterschrift und Stempel des Empf\u00e4ngers", "\u00c1tvev\u0151 al\u00e1\u00edr\u00e1sa \u00e9s b\u00e9lyegz\u0151je"],
-    vertSender: ["To be completed on the sender's responsibility",
-                 "Auszuf\u00fcllen unter der Verantwortung des Absenders",
-                 "A felad\u00f3 felel\u0151ss\u00e9g\u00e9re kit\u00f6ltend\u0151"],
-    vertIncl: ["including and", "einschlie\u00dflich", "bele\u00e9rtve \u00e9s"],
-    vertCarrier: ["The spaces framed with heavy lines must be filled by the carrier.",
-                 "Die mit fett gedruckten Linien eingerahmten Rubriken m\u00fcssen vom Frachtf\u00fchrer ausgef\u00fcllt werden.",
-                 "A vastag vonallal keretezett mez\u0151k kit\u00f6lt\u00e9se a fuvaroz\u00f3 k\u00f6telezetts\u00e9ge."],
-    adrNote: [
-        "* In case of dangerous goods mention, besides the possible certification, on the last line of the column the particulars of the class, the number and the letter, if any.",
-        "* Bei gef\u00e4hrlichen G\u00fctern ist, au\u00dfer der eventuellen Bescheinigung, auf der letzten Linie der Rubrik anzugeben: die Klasse, die Ziffer, sowie gegebenenfalls den Buchstaben.",
-        "* Vesz\u00e9lyes \u00e1ruk eset\u00e9n a lehets\u00e9ges tan\u00fas\u00edtv\u00e1nyon k\u00edv\u00fcl a legutols\u00f3 sorban meg kell adni: az oszt\u00e1lyt, a sz\u00e1mot \u00e9s esetleg a bet\u0171t."
-    ]
-};
-
 var CMR_COLOR = [237, 23, 72];
+var CMR_COPIES = CMR_DICT.copies;
+var CMR_LABELS = CMR_DICT.labels;
+
+
 
 function cmrVal(id) {
     var el = document.getElementById(id);
@@ -217,10 +154,10 @@ function cmrLabelValue(doc, label, value, x, y, maxWidth, labelSize, valueSize) 
 
 /* --- one CMR page --- */
 
-function cmrDrawPage(doc, copyIndex) {
+function cmrDrawPage(doc, copyIndex, color) {
     var thin = 0.1, fat = 0.6;
     var copy = CMR_COPIES[copyIndex];
-    CMR_COLOR = copy.color;
+    CMR_COLOR = color;
 
     doc.setDrawColor(CMR_COLOR[0], CMR_COLOR[1], CMR_COLOR[2]);
     doc.setLineWidth(thin);
@@ -533,7 +470,7 @@ function generatePDF() {
     doc.setFont("DejaVuSans", "normal");
     for (var i = 0; i < CMR_COPIES.length; i++) {
         if (i > 0) doc.addPage();
-        cmrDrawPage(doc, i);
+        cmrDrawPage(doc, i, CMR_COPIES[i].color);
     }
     doc.save("CMR.pdf");
 }
