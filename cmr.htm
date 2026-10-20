@@ -35,8 +35,8 @@
   }
   #cmrwrap { margin: 0 auto; overflow: visible; }
   #cmrwrap.scaled .cmr-page { border: 0; }
-  .lbl20row { font-size: 5.5px; line-height: 1.05; white-space: normal; width: 140px; }
-  .inp20row { font-size: 7px; }
+  .lbl20row { font-size: 5.5px; line-height: 1.1; white-space: normal !important; width: 142px; }
+  .inp20cell { font-size: 8px; padding: 0 1px; }
   .cmr-fitbtn.active { background: #337ab7; color: #fff; }
   .box { position: absolute; border: 0.5px solid #ED1748; box-sizing: border-box; }
   .box.fat { border-width: 2.4px; }
@@ -53,7 +53,7 @@
   }
   .inp:focus, .cmr-page textarea:focus { outline: 1px solid #4a90d9; background: #f2f8ff; border-color: #4a90d9; }
   .cmr-page textarea { resize: none; overflow: hidden; }
-  .vnote { position: absolute; color: #ED1748; font-size: 6px; transform-origin: left top; white-space: nowrap; }
+  .vnote { position: absolute; color: #ED1748; font-size: 6px; transform: rotate(-90deg); transform-origin: left top; white-space: nowrap; }
   .main-rect { position: absolute; border: 0.5px solid #ED1748; box-sizing: border-box; }
 </style>
 </head>
@@ -63,11 +63,11 @@
   <p>The form below mirrors the generated PDF. Fill in any field; the button produces a 4-copy PDF (sender, consignee, carrier, extra copy).</p>
   <button class="btn cmr-fitbtn active" id="fitWidthBtn" type="button" onclick="cmrSetFit('width')">Fit to width</button>
   <button class="btn cmr-fitbtn" id="fitHeightBtn" type="button" onclick="cmrSetFit('height')">Fit to height</button>
-  <button class="btn btn-large btn-primary" type="button" onclick="generatePDF()">Nyomtatás -> PDF fájlba!</button>
+  <button class="btn btn-large btn-primary" type="button" onclick="generatePDF()">Export PDF</button>
 </div>
 
 <div id="cmrwrap"><div class="cmr-page" id="cmrpage">
-  <div class="main-rect" style="left:56px; top:100px; width:728px; height:1092px;"></div>
+  <div class="main-rect" style="left:56px; top:100px; width:728px; height:1080px;"></div>
 
   <!-- copy indicator -->
   <div class="lbl" style="left:56px; top:68px; font-size:9px;">1&nbsp;Copy for sender / Exemplar f&uuml;r den Absender / Felad&oacute; p&eacute;ld&aacute;nya</div>
@@ -86,32 +86,32 @@
 
   <!-- 1. Sender -->
   <div class="box" style="left:56px; top:100px; width:364px; height:96px;"></div>
-  <div class="num" style="left:64px; top:104px;">1</div>
+  <div class="num" style="left:62px; top:104px;">1</div>
   <div class="lbl" style="left:84px; top:104px;">Sender (name, address, country)<br>Absender (Name, Anschrift, Land)<br>Felad&oacute; (n&eacute;v, c&iacute;m, orsz&aacute;g)</div>
   <textarea id="senderaddress" rows="3" style="left:84px; top:134px; width:330px; height:58px;"></textarea>
 
   <!-- 2. Consignee -->
   <div class="box" style="left:56px; top:196px; width:364px; height:96px;"></div>
-  <div class="num" style="left:64px; top:200px;">2</div>
+  <div class="num" style="left:62px; top:200px;">2</div>
   <div class="lbl" style="left:84px; top:200px;">Consignee (name, address, country)<br>Empf&auml;nger (Name, Anschrift, Land)<br>&Aacute;tvev&otilde; (n&eacute;v, c&iacute;m, orsz&aacute;g)</div>
   <textarea id="consigneename" rows="3" style="left:84px; top:230px; width:330px; height:58px;"></textarea>
 
   <!-- 3. Place of delivery -->
   <div class="box" style="left:56px; top:292px; width:364px; height:96px;"></div>
-  <div class="num" style="left:64px; top:296px;">3</div>
+  <div class="num" style="left:62px; top:296px;">3</div>
   <div class="lbl" style="left:84px; top:296px;">Place of delivery of the goods (place, country)<br>Auslieferungsort des Gutes (Ort, Land)<br>Az &aacute;ru kiszolg&aacute;ltat&aacute;si helye (hely, orsz&aacute;g)</div>
   <textarea id="deliveryplace" rows="3" style="left:84px; top:326px; width:330px; height:58px;"></textarea>
 
   <!-- 4. Place and date taking over -->
   <div class="box" style="left:56px; top:388px; width:364px; height:60px;"></div>
-  <div class="num" style="left:64px; top:392px;">4</div>
+  <div class="num" style="left:62px; top:392px;">4</div>
   <div class="lbl" style="left:84px; top:392px;">Place and date taking over the goods<br>Ort und Tag der &Uuml;bernahme des Gutes<br>&Aacute;ru &aacute;tv&eacute;tel&eacute;nek helye &eacute;s id&otilde;pontja</div>
   <textarea id="takingoverplace" rows="1" style="left:84px; top:424px; width:180px; height:20px;"></textarea>
   <input class="inp hasDatepicker" type="text" id="datepicker" style="left:280px; top:424px; width:130px; height:20px;">
 
   <!-- 5. Documents attached -->
   <div class="box" style="left:56px; top:448px; width:364px; height:60px;"></div>
-  <div class="num" style="left:64px; top:452px;">5</div>
+  <div class="num" style="left:62px; top:452px;">5</div>
   <div class="lbl" style="left:84px; top:452px;">Documents attached<br>Beigef&uuml;gte Dokumente<br>Mell&eacute;kelt okm&aacute;nyok</div>
   <textarea id="documents" rows="1" style="left:84px; top:482px; width:330px; height:22px;"></textarea>
 
@@ -187,13 +187,13 @@
   <!-- 13. Sender's instructions -->
   <div class="box fat" style="left:56px; top:748px; width:352px; height:168px;"></div>
   <div class="num" style="left:62px; top:754px;">13</div>
-  <div class="lbl" style="left:84px; top:754px;">Sender's instructions<br>Anweisungen des Absenders<br>A felad&oacute; rendelkez&eacute;sei</div>
+  <div class="lbl" style="left:90px; top:754px;">Sender's instructions<br>Anweisungen des Absenders<br>A felad&oacute; rendelkez&eacute;sei</div>
   <textarea id="sendersinstructions" rows="4" style="left:84px; top:786px; width:316px; height:124px;"></textarea>
 
   <!-- 14. Payment for carriage -->
   <div class="box" style="left:56px; top:916px; width:352px; height:88px;"></div>
   <div class="num" style="left:62px; top:922px;">14</div>
-  <div class="lbl" style="left:84px; top:922px;">Instruction as to payment for carriage<br>Frachtzahlungsanweisungen<br>Fuvard&iacute;jfizet&eacute;si rendel&eacute;sek</div>
+  <div class="lbl" style="left:90px; top:922px;">Instruction as to payment for carriage<br>Frachtzahlungsanweisungen<br>Fuvard&iacute;jfizet&eacute;si rendel&eacute;sek</div>
   <textarea id="carriageinstructions" rows="1" style="left:84px; top:952px; width:316px; height:16px;"></textarea>
   <div class="lbl" style="left:84px; top:974px; font-size:6px;">Carriage paid / Frei / B&eacute;rmentve</div>
   <input class="inp" id="carriagepaid" style="left:190px; top:972px; width:60px; height:13px;">
@@ -203,7 +203,7 @@
   <!-- 21. Established in / on -->
   <div class="box" style="left:56px; top:1004px; width:352px; height:36px;"></div>
   <div class="num" style="left:62px; top:1010px;">21</div>
-  <div class="lbl" style="left:84px; top:1010px; font-size:7px;">Established in / Ausgefertigt in / Ki&aacute;ll&iacute;t&aacute;s helye</div>
+  <div class="lbl" style="left:90px; top:1010px; font-size:7px;">Established in / Ausgefertigt in / Ki&aacute;ll&iacute;t&aacute;s helye</div>
   <input class="inp" id="establishedin" style="left:84px; top:1022px; width:120px; height:16px;">
   <div class="lbl" style="left:212px; top:1010px; font-size:7px;">on / am / id&otilde;pontja</div>
   <input class="inp hasDatepicker" type="text" id="datepicker2" style="left:248px; top:1022px; width:150px; height:16px;">
@@ -221,7 +221,7 @@
   <!-- 16. Carrier -->
   <div class="box fat" style="left:420px; top:196px; width:364px; height:96px;"></div>
   <div class="num" style="left:428px; top:200px;">16</div>
-  <div class="lbl" style="left:448px; top:200px;">Carrier (name, address, country)<br>Frachtf&uuml;hrer (Name, Anschrift, Land)<br>Fuvaroz&oacute; (n&eacute;v, c&iacute;m, orsz&aacute;g)</div>
+  <div class="lbl" style="left:456px; top:200px;">Carrier (name, address, country)<br>Frachtf&uuml;hrer (Name, Anschrift, Land)<br>Fuvaroz&oacute; (n&eacute;v, c&iacute;m, orsz&aacute;g)</div>
   <textarea id="carrieraddress" rows="2" style="left:448px; top:232px; width:324px; height:44px;"></textarea>
   <div class="lbl" style="left:448px; top:280px; font-size:7px;">REG. NO. / Kennzeichen / Rendsz&aacute;m:</div>
   <input class="inp" id="vehiclereg" style="left:608px; top:277px; width:164px; height:13px;">
@@ -229,52 +229,73 @@
   <!-- 17. Successive carriers -->
   <div class="box fat" style="left:420px; top:292px; width:364px; height:96px;"></div>
   <div class="num" style="left:428px; top:298px;">17</div>
-  <div class="lbl" style="left:448px; top:298px;">Successive carriers (name, address, country)<br>Nachfolgende Frachtf&uuml;hrer (Name, Anschrift, Land)<br>Tov&aacute;bbi fuvaroz&oacute;k (n&eacute;v, c&iacute;m, orsz&aacute;g)</div>
+  <div class="lbl" style="left:456px; top:298px;">Successive carriers (name, address, country)<br>Nachfolgende Frachtf&uuml;hrer (Name, Anschrift, Land)<br>Tov&aacute;bbi fuvaroz&oacute;k (n&eacute;v, c&iacute;m, orsz&aacute;g)</div>
   <textarea id="nextcarriers" rows="2" style="left:448px; top:330px; width:324px; height:52px;"></textarea>
 
   <!-- 18. Carrier's reservations -->
   <div class="box fat" style="left:420px; top:388px; width:364px; height:120px;"></div>
   <div class="num" style="left:428px; top:394px;">18</div>
-  <div class="lbl" style="left:448px; top:394px;">Carrier's reservations and observations<br>Vorbehalte und Bemerkungen des Frachtf&uuml;hrers<br>Fuvaroz&oacute; megjegyz&eacute;sei &eacute;s fenntart&aacute;sai</div>
+  <div class="lbl" style="left:456px; top:394px;">Carrier's reservations and observations<br>Vorbehalte und Bemerkungen des Frachtf&uuml;hrers<br>Fuvaroz&oacute; megjegyz&eacute;sei &eacute;s fenntart&aacute;sai</div>
   <textarea id="carrierobservations" rows="2" style="left:448px; top:426px; width:324px; height:76px;"></textarea>
 
   <!-- 19. Special agreements -->
   <div class="box" style="left:408px; top:748px; width:376px; height:88px;"></div>
   <div class="num" style="left:414px; top:754px;">19</div>
-  <div class="lbl" style="left:440px; top:754px;">Special agreements<br>Besondere Vereinbarungen<br>K&uuml;l&ouml;nleges meg&aacute;llapod&aacute;sok</div>
+  <div class="lbl" style="left:442px; top:754px;">Special agreements<br>Besondere Vereinbarungen<br>K&uuml;l&ouml;nleges meg&aacute;llapod&aacute;sok</div>
   <textarea id="specialagreements" rows="2" style="left:440px; top:786px; width:336px; height:44px;"></textarea>
 
-  <!-- 20. To be paid by: 4-column x 7-row grid as in the PDF -->
-<div class="box fat" style="left:408px; top:836px; width:376px; height:136px;"></div>
+  <!-- 20. To be paid by: 4-column x 7-row grid with an input in every cell -->
+<div class="box fat" style="left:408px; top:836px; width:376px; height:132px;"></div>
 <div class="num" style="left:414px; top:842px;">20</div>
-<div class="lbl" style="left:445px; top:842px;">To be paid by<br>Zu zahlen vom<br>Fizetend&otilde;</div>
-<div class="box" style="left:560px; top:836px; width:0; height:136px; border-width:0 0 0 0.5px;"></div>
-<div class="box" style="left:635px; top:836px; width:0; height:136px; border-width:0 0 0 0.5px;"></div>
-<div class="box" style="left:709px; top:836px; width:0; height:136px; border-width:0 0 0 0.5px;"></div>
-<div class="box" style="left:408px; top:880px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+<div class="lbl" style="left:442px; top:842px;">To be paid by<br>Zu zahlen vom<br>Fizetend&otilde;</div>
+<div class="box" style="left:560px; top:836px; width:0; height:132px; border-width:0 0 0 0.5px;"></div>
+<div class="box" style="left:635px; top:836px; width:0; height:132px; border-width:0 0 0 0.5px;"></div>
+<div class="box" style="left:709px; top:836px; width:0; height:132px; border-width:0 0 0 0.5px;"></div>
+<div class="box" style="left:408px; top:876px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
 <div class="lbl" style="left:566px; top:842px;">Sender<br>Absender<br>Felad&oacute;</div>
 <div class="lbl" style="left:641px; top:842px;">Currency<br>W&auml;hrung<br>P&eacute;nznem</div>
 <div class="lbl" style="left:715px; top:842px;">Consignee<br>Empf&auml;nger<br>&Aacute;tvev&otilde;</div>
-<input class="inp" id="20bysender" style="left:566px; top:870px; width:62px; height:12px;">
-<input class="inp" id="20currency" style="left:641px; top:870px; width:62px; height:12px;">
-<input class="inp" id="20byconsignee" style="left:715px; top:870px; width:62px; height:12px;">
-  <div class="lbl lbl20row" style="left:414px; top:882px;">Carriage charges / Fracht / Fuvaroz&aacute;si d&iacute;j</div>
+<input class="inp" id="20bysender" style="left:566px; top:864px; width:60px; height:10px;">
+<input class="inp" id="20currency" style="left:641px; top:864px; width:60px; height:10px;">
+<input class="inp" id="20byconsignee" style="left:715px; top:864px; width:60px; height:10px;">
+  <div class="lbl lbl20row" style="left:414px; top:881px;">Carriage charges / Fracht / Fuvaroz&aacute;si d&iacute;j</div>
+  <input class="inp inp20cell" id="20carriage" style="left:566px; top:881px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20carriage_c2" style="left:641px; top:881px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20carriage_c3" style="left:715px; top:881px; width:60px; height:9px;">
   <div class="box" style="left:408px; top:893px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
-  <div class="lbl lbl20row" style="left:414px; top:895px;">Deductions / Erm&auml;&szlig;igungen / Kedvezm&eacute;nyek</div>
-  <div class="box" style="left:408px; top:906px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
-  <div class="lbl lbl20row" style="left:414px; top:908px;">Balance / Zuschl&auml;ge / Egyenleg</div>
-  <div class="box" style="left:408px; top:919px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
-  <div class="lbl lbl20row" style="left:414px; top:921px;">Supplementary charges / Nebengeb&uuml;hren / Egy&eacute;b k&ouml;lt.</div>
-  <div class="box" style="left:408px; top:933px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
-  <div class="lbl lbl20row" style="left:414px; top:935px;">Miscellaneous / Sonstiges / Egy&eacute;b</div>
-  <div class="box" style="left:408px; top:946px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
-  <div class="lbl lbl20row" style="left:414px; top:948px;">Insurance / Versicherung / Biztos&iacute;t&aacute;s</div>
-  <div class="box" style="left:408px; top:959px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
-  <div class="lbl lbl20row" style="left:414px; top:961px;">Total to be paid / Gesamtsumme / V&eacute;g&ouml;sszeg</div>
+  <div class="lbl lbl20row" style="left:414px; top:894px;">Deductions / Erm&auml;&szlig;igungen / Kedvezm&eacute;nyek</div>
+  <input class="inp inp20cell" id="20deductions" style="left:566px; top:894px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20deductions_c2" style="left:641px; top:894px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20deductions_c3" style="left:715px; top:894px; width:60px; height:9px;">
+  <div class="box" style="left:408px; top:905px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:906px;">Balance / Zuschl&auml;ge / Egyenleg</div>
+  <input class="inp inp20cell" id="20balance" style="left:566px; top:906px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20balance_c2" style="left:641px; top:906px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20balance_c3" style="left:715px; top:906px; width:60px; height:9px;">
+  <div class="box" style="left:408px; top:918px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:919px;">Supplementary charges / Nebengeb&uuml;hren / Egy&eacute;b k&ouml;lt.</div>
+  <input class="inp inp20cell" id="20supplementary" style="left:566px; top:919px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20supplementary_c2" style="left:641px; top:919px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20supplementary_c3" style="left:715px; top:919px; width:60px; height:9px;">
+  <div class="box" style="left:408px; top:930px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:931px;">Miscellaneous / Sonstiges / Egy&eacute;b</div>
+  <input class="inp inp20cell" id="20misc" style="left:566px; top:932px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20misc_c2" style="left:641px; top:932px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20misc_c3" style="left:715px; top:932px; width:60px; height:9px;">
+  <div class="box" style="left:408px; top:943px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:944px;">Insurance / Versicherung / Biztos&iacute;t&aacute;s</div>
+  <input class="inp inp20cell" id="20insurance" style="left:566px; top:944px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20insurance_c2" style="left:641px; top:944px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20insurance_c3" style="left:715px; top:944px; width:60px; height:9px;">
+  <div class="box" style="left:408px; top:955px; width:376px; height:0; border-width:0.5px 0 0 0;"></div>
+  <div class="lbl lbl20row" style="left:414px; top:956px;">Total to be paid / Gesamtsumme / V&eacute;g&ouml;sszeg</div>
+  <input class="inp inp20cell" id="20total" style="left:566px; top:957px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20total_c2" style="left:641px; top:957px; width:60px; height:9px;">
+  <input class="inp inp20cell" id="20total_c3" style="left:715px; top:957px; width:60px; height:9px;">
 <!-- 15. Cash on delivery -->
   <div class="box" style="left:408px; top:972px; width:376px; height:36px;"></div>
   <div class="num" style="left:414px; top:978px;">15</div>
-  <div class="lbl" style="left:440px; top:978px; font-size:7px;">Reimbursement / R&uuml;ckerstattung / Visszat&eacute;r&iacute;t&eacute;s</div>
+  <div class="lbl" style="left:442px; top:978px; font-size:7px;">Reimbursement / R&uuml;ckerstattung / Visszat&eacute;r&iacute;t&eacute;s</div>
   <input class="inp" id="cashondelivery" style="left:440px; top:992px; width:200px; height:14px;">
 
   <!-- 24. Consignee receipt -->
@@ -287,16 +308,24 @@
   <input class="inp hasDatepicker" type="text" id="24date" style="left:716px; top:1076px; width:60px; height:14px;">
   <div class="lbl" style="left:544px; top:1158px; font-size:6px;">Signature and stamp of the consignee<br>Unterschrift und Stempel des Empf&auml;ngers<br>&Aacute;tvev&otilde; al&aacute;&iacute;r&aacute;sa &eacute;s b&eacute;lyegz&otilde;je</div>
 
-  <!-- vertical margin notes -->
-  <div class="vnote" style="left:30px; top:940px; transform: rotate(-90deg) translateY(-100%); transform-origin: left bottom;">To be completed on the sender's responsibility / Auszuf&uuml;llen unter der Verantwortung des Absenders / A felad&oacute; felel&otilde;ss&eacute;g&eacute;re kit&ouml;ltend&otilde;</div>
-  <div class="vnote" style="left:34px; top:940px; transform: rotate(-90deg) translateY(-100%); transform-origin: left bottom;">1 - 15</div>
-  <div class="vnote" style="left:42px; top:940px; transform: rotate(-90deg) translateY(-100%); transform-origin: left bottom;">19 + 20 + 22</div>
+  <!-- vertical margin notes (3 language lines per block, anchored as in the PDF) -->
+  <div class="vnote" style="left:28.8px; top:1016px;">To be completed on the sender's responsibility</div>
+  <div class="vnote" style="left:34.8px; top:1016px;">Auszuf&uuml;llen unter der Verantwortung des Absenders</div>
+  <div class="vnote" style="left:40.8px; top:1016px;">A felad&oacute; felel&otilde;ss&eacute;g&eacute;re kit&ouml;ltend&otilde;</div>
+  <div class="vnote" style="left:28.8px; top:720px;">including and</div>
+  <div class="vnote" style="left:34.8px; top:720px;">einschlie&szlig;lich</div>
+  <div class="vnote" style="left:40.8px; top:720px;">bele&eacute;rtve &eacute;s</div>
+  <div class="vnote" style="left:28.8px; top:520px;">The spaces framed with heavy lines must be filled by the carrier.</div>
+  <div class="vnote" style="left:34.8px; top:520px;">Die mit fett gedruckten Linien eingerahmten Rubriken m&uuml;ssen vom Frachtf&uuml;hrer ausgef&uuml;llt werden.</div>
+  <div class="vnote" style="left:40.8px; top:520px;">A vastag vonallal keretezett mez&otilde;k kit&ouml;lt&eacute;se a fuvaroz&oacute; k&ouml;telezetts&eacute;ge.</div>
+  <div class="vnote" style="left:48.8px; top:812px; font-weight:bold; font-size:10px;">1 - 15</div>
+  <div class="vnote" style="left:48.8px; top:664px; font-weight:bold; font-size:10px;">19 + 20 + 22</div>
 
   <div class="lbl" style="left:56px; top:1196px; font-size:9px;">Sic itur ad astra!</div>
 </div></div>
 
 <div class="cmr-toolbox">
-  <button class="btn btn-large btn-primary" type="button" onclick="generatePDF()">Nyomtatás -> PDF fájlba!</button>
+  <button class="btn btn-large btn-primary" type="button" onclick="generatePDF()">Export PDF</button>
 </div>
 
 <script>
